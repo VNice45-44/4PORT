@@ -1,0 +1,300 @@
+/* ============================= */
+/* ROOT DESIGN TOKENS */
+/* ============================= */
+:root {
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(0,255,255,0.25);
+  --border-active: cyan;
+
+  --text-dim: 0.5;
+  --text-faint: 0.38;
+
+  --card-bg: rgba(255,255,255,0.015);
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+}
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+body.body--dark {
+  background: #000;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+/* subtle scanline */
+body.body--dark::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(255,255,255,0.015) 3px,
+    transparent 4px
+  );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ============================= */
+/* TYPOGRAPHY */
+/* ============================= */
+h1 {
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: var(--space-2);
+}
+
+h2 {
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+p {
+  line-height: 1.6;
+}
+
+.tagline {
+  opacity: var(--text-dim);
+}
+
+.sub {
+  opacity: var(--text-faint);
+}
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+.page {
+  padding: var(--space-5) var(--space-3);
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* ============================= */
+/* HERO */
+/* ============================= */
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.hero h1 {
+  font-size: 2.6rem;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-visual canvas {
+  width: 320px;
+  height: 320px;
+  opacity: 0.55;
+}
+
+/* ============================= */
+/* CARD SYSTEM */
+/* ============================= */
+.card {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+/* ============================= */
+/* FLOW STRUCTURES */
+/* ============================= */
+.design-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.design-step {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--border);
+}
+
+.design-branch {
+  margin-left: var(--space-3);
+  border-left: 2px dashed var(--border);
+  padding-left: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.design-step.final {
+  border-left: 2px solid var(--border-active);
+}
+
+/* ============================= */
+/* CONTEXT FLOW */
+/* ============================= */
+.impact-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.impact-item {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--border);
+}
+
+.impact-item.final {
+  border-left: 2px solid var(--border-active);
+}
+
+/* ============================= */
+/* SYSTEM CARDS */
+/* ============================= */
+.systems {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.system-card {
+  flex: 1;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.system-card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-3px);
+}
+
+/* ============================= */
+/* TOPBAR */
+/* ============================= */
+.topbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.9rem;
+  opacity: var(--text-dim);
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.footer {
+  opacity: var(--text-faint);
+  font-size: 0.85rem;
+  margin-top: var(--space-6);
+}
+
+
+
+.flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.node-box {
+  border: 1px solid var(--border);
+  padding: 6px;
+  border-radius: 6px;
+  text-align: center;
+  width: 70px;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.node-box.active {
+  border-color: var(--border-active);
+  opacity: 1;
+}
+
+.node-box.highlight {
+  border-color: rgba(255,255,255,0.4);
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse {
+  width: 16px;
+  height: 100%;
+  background: cyan;
+  position: absolute;
+  animation: flow 2s linear infinite;
+}
+
+@keyframes flow {
+  from { left: -16px; }
+  to { left: 100%; }
+}
+
+/* timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.timeline-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.timeline-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+}
+
+.timeline-marker.active {
+  border-color: cyan;
+}
+
+.timeline-marker.done {
+  background: cyan;
+  border-color: cyan;
+}
+
+

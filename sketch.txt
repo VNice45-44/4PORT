@@ -1,0 +1,7927 @@
+so we're building a portfolio site. Our client wants or mentioned a chruch management system and 
+a taxi hub for someone with like 15 taxis. 
+before they give us the job, we must or we can show them what we can do. 
+So just something basic. We'll build it on quasar, superfast. 
+Host it somewhere free. I wanted a portfolio that is..no other fancy library, 
+but we work on something magical and simple. Like, can we build a sphere rotating on an axis, 
+and some controls to interact with? a transparent sphere, 
+highlighted by grids (long's and lat's) or something. 
+Anything. 
+We are on Pkg quasar............. v2.18.6
+ » Pkg @quasar/app-vite... v2.4.1  Let me send the quasar files.
+
+
+ This is the basic file structure and the respective code content.
+ quasar
+ .vscode
+ node_modules
+ public
+ src
+ .editorconfig
+ .gitignore
+ .prettierrc.json
+ eslint.config.json
+ index.html
+ jsconfig.json
+ package-lock.json
+ package.json
+ pnpm-workspace.yaml
+ postcss.config.js
+ quasar.config.js
+ README.md
+
+
+
+ package.json
+{
+  "name": "4port",
+  "version": "0.0.1",
+  "description": "4Port",
+  "productName": "Port4",
+  "author": "kelvinhiuhu@hotmail.com",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
+    "format": "prettier --write \"**/*.{js,vue,css,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "postinstall": "quasar prepare"
+  },
+  "dependencies": {
+    "pinia": "^3.0.1",
+    "@quasar/extras": "^1.16.4",
+    "quasar": "^2.16.0",
+    "vue": "^3.5.22",
+    "vue-router": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-vue": "^10.8.0",
+    "globals": "^17.4.0",
+    "vite-plugin-checker": "^0.12.0",
+    "vue-eslint-parser": "^10.4.0",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "prettier": "^3.8.1",
+    "@quasar/app-vite": "^2.5.1",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8"
+  },
+  "engines": {
+    "node": "^28 || ^26 || ^24 || ^22.12",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1",
+    "pnpm": ">= 10.0.0"
+  }
+}
+
+
+
+
+
+
+
+quasar.config.js
+
+// Configuration for your app
+// https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
+
+import { defineConfig } from '#q-app/wrappers'
+
+export default defineConfig((/* ctx */) => {
+  return {
+    // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
+    // preFetch: true,
+
+    // app boot file (/src/boot)
+    // --> boot files are part of "main.js"
+    // https://v2.quasar.dev/quasar-cli-vite/boot-files
+    boot: [
+    ],
+
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
+    css: [
+      'app.scss'
+    ],
+
+    // https://github.com/quasarframework/quasar/tree/dev/extras
+    extras: [
+      // 'ionicons-v4',
+      // 'mdi-v7',
+      // 'fontawesome-v6',
+      // 'eva-icons',
+      // 'themify',
+      // 'line-awesome',
+      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+
+      'roboto-font', // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
+    ],
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
+    build: {
+      target: {
+        browser: 'baseline-widely-available',
+        node: 'node22'
+      },
+
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      // vueRouterBase,
+      // vueDevtools,
+      // vueOptionsAPI: false,
+
+      // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
+
+      // publicPath: '/',
+      // analyze: true,
+      // env: {},
+      // rawDefine: {}
+      // ignorePublicFolder: true,
+      // minify: false,
+      // polyfillModulePreload: true,
+      // distDir
+
+      // extendViteConf (viteConf) {},
+      // viteVuePluginOptions: {},
+
+      vitePlugins: [
+        ['vite-plugin-checker', {
+          eslint: {
+            lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
+            useFlatConfig: true
+          }
+        }, { server: false }]
+      ]
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
+    devServer: {
+      // https: true,
+      open: true // opens browser window automatically
+    },
+
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
+    framework: {
+      config: {},
+
+      // iconSet: 'material-icons', // Quasar icon set
+      // lang: 'en-US', // Quasar language pack
+
+      // For special cases outside of where the auto-import strategy can have an impact
+      // (like functional components as one of the examples),
+      // you can manually specify Quasar components/directives to be available everywhere:
+      //
+      // components: [],
+      // directives: [],
+
+      // Quasar plugins
+      plugins: []
+    },
+
+    // animations: 'all', // --- includes all animations
+    // https://v2.quasar.dev/options/animations
+    animations: [],
+
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
+    // sourceFiles: {
+    //   rootComponent: 'src/App.vue',
+    //   router: 'src/router/index',
+    //   store: 'src/store/index',
+    //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+    //   pwaServiceWorker: 'src-pwa/custom-service-worker',
+    //   pwaManifestFile: 'src-pwa/manifest.json',
+    //   electronMain: 'src-electron/electron-main',
+    //   electronPreload: 'src-electron/electron-preload'
+    //   bexManifestFile: 'src-bex/manifest.json
+    // },
+
+    // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
+    ssr: {
+      prodPort: 3000, // The default port that the production server should use
+                      // (gets superseded if process.env.PORT is specified at runtime)
+
+      middlewares: [
+        'render' // keep this as last one
+      ],
+
+      // extendPackageJson (json) {},
+      // extendSSRWebserverConf (esbuildConf) {},
+
+      // manualStoreSerialization: true,
+      // manualStoreSsrContextInjection: true,
+      // manualStoreHydration: true,
+      // manualPostHydrationTrigger: true,
+
+      pwa: false
+      // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
+
+      // pwaExtendGenerateSWOptions (cfg) {},
+      // pwaExtendInjectManifestOptions (cfg) {}
+    },
+
+    // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
+    pwa: {
+      workboxMode: 'GenerateSW' // 'GenerateSW' or 'InjectManifest'
+      // swFilename: 'sw.js',
+      // manifestFilename: 'manifest.json',
+      // extendManifestJson (json) {},
+      // useCredentialsForManifestTag: true,
+      // injectPwaMetaTags: false,
+      // extendPWACustomSWConf (esbuildConf) {},
+      // extendGenerateSWOptions (cfg) {},
+      // extendInjectManifestOptions (cfg) {}
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
+    cordova: {
+      // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
+    capacitor: {
+      hideSplashscreen: true
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
+    electron: {
+      // extendElectronMainConf (esbuildConf) {},
+      // extendElectronPreloadConf (esbuildConf) {},
+
+      // extendPackageJson (json) {},
+
+      // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
+      preloadScripts: [ 'electron-preload' ],
+
+      // specify the debugging port to use for the Electron app when running in development mode
+      inspectPort: 5858,
+
+      bundler: 'packager', // 'packager' or 'builder'
+
+      packager: {
+        // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
+
+        // OS X / Mac App Store
+        // appBundleId: '',
+        // appCategoryType: '',
+        // osxSign: '',
+        // protocol: 'myapp://path',
+
+        // Windows only
+        // win32metadata: { ... }
+      },
+
+      builder: {
+        // https://www.electron.build/configuration
+
+        appId: '4port'
+      }
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
+    bex: {
+      // extendBexScriptsConf (esbuildConf) {},
+      // extendBexManifestJson (json) {},
+
+      /**
+       * The list of extra scripts (js/ts) not in your bex manifest that you want to
+       * compile and use in your browser extension. Maybe dynamic use them?
+       *
+       * Each entry in the list should be a relative filename to /src-bex/
+       *
+       * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
+       */
+      extraScripts: []
+    }
+  }
+})
+
+
+
+
+
+
+index.html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= productName %></title>
+
+    <meta charset="utf-8">
+    <meta name="description" content="<%= productDescription %>">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
+
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="icon" type="image/ico" href="favicon.ico">
+  </head>
+  <body>
+    <!-- quasar:entry-point -->
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+src we have:
+
+assets
+boot
+components
+css
+layouts
+pages
+router
+stores
+App.vue
+
+
+
+
+
+
+
+src/layouts/MainLayout.vue
+
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
+
+        <q-toolbar-title>
+          Quasar App
+        </q-toolbar-title>
+
+        <div>Quasar v{{ $q.version }}</div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+    >
+      <q-list>
+        <q-item-label
+          header
+        >
+          Essential Links
+        </q-item-label>
+
+        <EssentialLink
+          v-for="link in linksList"
+          :key="link.title"
+          v-bind="link"
+        />
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import EssentialLink from 'components/EssentialLink.vue'
+
+const linksList = [
+  {
+    title: 'Docs',
+    caption: 'quasar.dev',
+    icon: 'school',
+    link: 'https://quasar.dev'
+  },
+  {
+    title: 'Github',
+    caption: 'github.com/quasarframework',
+    icon: 'code',
+    link: 'https://github.com/quasarframework'
+  },
+  {
+    title: 'Discord Chat Channel',
+    caption: 'chat.quasar.dev',
+    icon: 'chat',
+    link: 'https://chat.quasar.dev'
+  },
+  {
+    title: 'Forum',
+    caption: 'forum.quasar.dev',
+    icon: 'record_voice_over',
+    link: 'https://forum.quasar.dev'
+  },
+  {
+    title: 'Twitter',
+    caption: '@quasarframework',
+    icon: 'rss_feed',
+    link: 'https://twitter.quasar.dev'
+  },
+  {
+    title: 'Facebook',
+    caption: '@QuasarFramework',
+    icon: 'public',
+    link: 'https://facebook.quasar.dev'
+  },
+  {
+    title: 'Quasar Awesome',
+    caption: 'Community Quasar projects',
+    icon: 'favorite',
+    link: 'https://awesome.quasar.dev'
+  }
+]
+
+const leftDrawerOpen = ref(false)
+
+function toggleLeftDrawer () {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+</script>
+
+
+
+
+
+src/pages/IndexPage.vue
+
+<template>
+  <q-page class="flex flex-center">
+    <img
+      alt="Quasar logo"
+      src="~assets/quasar-logo-vertical.svg"
+      style="width: 200px; height: 200px"
+    >
+  </q-page>
+</template>
+
+
+src/pages/ErrorNotFound.vue
+
+<template>
+  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+    <div>
+      <div style="font-size: 30vh">
+        404
+      </div>
+
+      <div class="text-h2" style="opacity:.4">
+        Oops. Nothing here...
+      </div>
+
+      <q-btn
+        class="q-mt-xl"
+        color="white"
+        text-color="blue"
+        unelevated
+        to="/"
+        label="Go Home"
+        no-caps
+      />
+    </div>
+  </div>
+</template>
+
+
+
+src/css/quasar.variables.scss
+
+// Quasar Sass (& SCSS) Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
+
+// Check documentation for full list of Quasar variables
+
+// Your own variables (that are declared here) and Quasar's own
+// ones will be available out of the box in your .vue/.scss/.sass files
+
+// It's highly recommended to change the default colors
+// to match your app's branding.
+// Tip: Use the "Theme Builder" on Quasar's documentation website.
+
+$primary   : #1976D2;
+$secondary : #26A69A;
+$accent    : #9C27B0;
+
+$dark      : #1D1D1D;
+$dark-page : #121212;
+
+$positive  : #21BA45;
+$negative  : #C10015;
+$info      : #31CCEC;
+$warning   : #F2C037;
+
+
+I'm a bit rusted. This is not a classwork so we are not diving into any typical deep explanations or anything.
+ Am asking for a deliverable. Build anything, doesn't even have to be a sphere. 
+ So for starters, i wanna clean up this and run an appealing page right away. We're not learning, we've already done that. 
+ So don't get into any deep explanations like we are at a class.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Beautiful. You get what I want. <template>
+  <q-layout view="lHh Lpr lFf">
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script setup>
+
+
+</script>  
+This is the stripped down layout. 
+Now let's proceed. Do everything. Or the heavy lifting.
+A portfolio kind of thing. Use a fake name 'Samuel Kanu', if you need a random johndoe name somewhere. 
+do anything. Just needs to be simple and complete. 
+
+Anythingelse? we can do fancy stuff, or simple minimalist. we can play around with the sphere wherever we want. It looks exactly as i'd wanted. we can improve on it etc.
+your ball.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For construction i have the pictures. 
+For solar we are going to use animations, svgs, maths eqs, etc, 
+to highlight whatever it is we are going to highlight.
+Also, we can't put all our eggs in one basket. That is, we don't have to bamboozle the world and clients with our portfolio. simple yet sophisticated. 
+With that, what can we do? pages? Or whatever? maybe? See github has a good landing page.
+But we don't need that much detail/attention. So does Grok last i checked. 
+Anyway, we're good?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+we look good everywhere. 
+
+const routes = [
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/IndexPage.vue') },
+      {
+  path: '/solar',
+  component: () => import('pages/SolarPage.vue')
+},
+{
+  path: '/construction',
+  component: () => import('pages/ConstructionPage.vue')
+}
+    ]
+  },
+
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '/:catchAll(.*)*',
+    component: () => import('pages/ErrorNotFound.vue')
+  }
+]
+
+export default routes
+
+
+Forward Backward Arrow Keys we had in Plum. As components maybe.
+Actually, it's just backward btns on /construction and on or for /solar  isn't it? 
+what else, i actually like that we don't have the boring background sphere on all pages. Also, we're not going down that rabbithole with a cube, right?
+we're not doing anything there, just the focus. Great. 
+
+
+Next step now.
+
+animate solar energy flow (panel → battery → load)
+add hover-based storytelling
+or 
+build a fake but convincing system UI ( we do this. It's what we're here for. Do It really fake. Ask me for inputs, like names, locations, counties, etc. Like, so fake that it becomes real. kind off.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vite says tr cannot be child of table.
+whatever.
+that's minor. 
+
+
+On solar, do you think we can display radiation rate depending on (idk, weather, time,) or whatever calc we can do. 
+whatever, just shine. 
+
+
+
+whatever is going on here feels 'low/cheap':
+{ name: "Mwangi Family", status: "Active", usage: 12 },
+  { name: "Achieng Home", status: "Active", usage: 9 },
+  { name: "Kamau Shop", status: "High Load", usage: 21 },
+  { name: "Otieno House", status: "Idle", usage: 4 }
+
+we can do something else, not homestead grids. Not necessarily grids. Like a blog too.
+what are the necessary tools for an engineer/contractor/firm/person working on installing solar or in the maintainance?
+We don't have a box. So far so good. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+aha.
+🚀 Optional (if you want extra edge)
+
+We can later add:
+
+sun position (angle over time)
+day/night transition
+simple SVG panel diagram
+
+
+I want.
+
+
+I want badly.
+A small animated solar diagram (panel → inverter → battery → load)
+
+
+Then.
+push the Construction page to match this level.
+
+
+By the way, are these 'my businesses', our businesses or what is the relation of solar and construction to the portfolio?
+Anyway, we're looking good.
+
+oh, and is this what we expect to have so far in solar-page?
+
+<template>
+  <q-page class="page">
+
+    <div class="header">
+      <h1>Solar Micro-Grid Dashboard</h1>
+      <p class="intro">{{ site.name }} • {{ site.location }}</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+  <div class="stat">
+    <span>Irradiance</span>
+    <h2>{{ irradiance }} W/m²</h2>
+  </div>
+
+  <div class="stat">
+    <span>Panel Output</span>
+    <h2>{{ output }} kW</h2>
+  </div>
+
+  <div class="stat">
+    <span>Battery</span>
+    <h2>{{ battery }}%</h2>
+  </div>
+
+</div>
+
+      <div class="stat">
+        <span>Battery</span>
+        <h2>{{ battery }}%</h2>
+      </div>
+
+      <div class="stat">
+        <span>Load</span>
+        <h2>{{ load }} kW</h2>
+      </div>
+
+
+    <!-- CONNECTIONS -->
+    <div class="card">
+  <h2>Field Modules</h2>
+
+  <ul>
+    <li>Panel Alignment (tilt & azimuth)</li>
+    <li>Battery Health Monitoring</li>
+    <li>Load Balancing Analysis</li>
+    <li>Cable Loss Estimation</li>
+    <li>Inverter Efficiency Tracking</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Estimated Output</h2>
+  <p>
+    Estimated Output = Irradiance × Panel Efficiency × Area
+  </p>
+  <p class="formula">
+    P ≈ {{ irradiance }} × 0.2 × 5m² = {{ (irradiance * 0.2 * 5 / 1000).toFixed(2) }} kW
+  </p>
+</div>
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <h2>System Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+    <!-- BACK -->
+    <q-btn flat label="← Back" @click="$router.push('/')" />
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// FAKE SITE
+const site = {
+  name: "Kasarani Micro-Grid",
+  location: "Nairobi County"
+}
+
+// DYNAMIC STATS
+const generation = ref(4.2)
+const load = ref(3.1)
+
+const irradiance = ref(800) // W/m²
+const output = ref(3.5)
+const battery = ref(70)
+
+onMounted(() => {
+  setInterval(() => {
+    // simulate sun fluctuation
+    irradiance.value = (600 + Math.random() * 400).toFixed(0)
+
+    // simple physics-ish relation
+    output.value = (irradiance.value * 0.004).toFixed(2)
+
+    // battery reacts slowly
+    battery.value = Math.max(20, Math.min(100,
+      battery.value + (output.value > 2 ? 0.5 : -0.3)
+    )).toFixed(0)
+
+  }, 2000)
+})
+
+
+
+
+
+// LOGS
+const logs = ref([
+  "System initialized",
+  "Battery stable",
+  "Load within limits"
+])
+
+// FAKE LIVE UPDATES
+onMounted(() => {
+  setInterval(() => {
+    generation.value = (3 + Math.random() * 2).toFixed(1)
+    load.value = (2 + Math.random() * 2).toFixed(1)
+    battery.value = Math.max(20, Math.min(100, battery.value + (Math.random() - 0.5) * 2)).toFixed(0)
+
+    logs.value.unshift("Load adjusted at " + new Date().toLocaleTimeString())
+    if (logs.value.length > 5) logs.value.pop()
+  }, 2000)
+})
+</script>
+
+<style scoped>
+.header {
+  margin-bottom: 30px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+.stat span {
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+
+.card {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 8px;
+  text-align: left;
+}
+
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I like what i see with the build phases thing.
+a simple and nice illustration of visualizations. 
+Now, in construction, what can we say. We need to make that highlight of build phases 
+as real as we can. Not gimmicky. It looks good. It needs now to be relevant. 
+Which lands in the next step, what are we gonna show in construction?
+
+mmh, i was thinking, this solar thing and construction thing are our 'past experiences', right?  
+Oh, and am shipping all the css to app.scss which is fine.
+
+In construction there's a lot of 'stuff' on the side we can venture into, including building maintainance etc. Like cleaning.
+
+
+Hadn't seen this:
+⚠️ Don’t rush this next mistake
+
+You mentioned images.
+
+Don’t dump them yet.
+
+👉 First:
+make this page feel alive (which it now does)
+
+👉 Then later:
+replace phases with visuals (excavation image, etc.)
+
+🚀 Optional upgrade (later)
+
+We can add:
+
+animated “progress bar” flowing across steps
+equipment icons per phase
+risk indicators (delays, weather impact)
+🧭 Where you are now
+
+
+Looks good.
+
+
+This is no longer:
+
+a portfolio
+
+It’s:
+
+a demonstration of thinking  (what am saying, thank you.)
+
+Next question for you (important fork):
+
+Do we now:
+
+tighten the landing page (IndexPage.vue) so it matches this level
+or add one more domain (transport / logistics / fleet) to match your taxi idea.  
+(Tighten the landing page please. 
+That's where we're sticking at we aren't adding further demos, 
+other than perfecting these three (landing page, the solar demo, and construction thing demonstrations))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I like what i see. This is app.scss so far.
+
+// app global css
+body.body--dark {
+  background: #000;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+// smooth text rendering
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  margin-top: 10px;
+  padding-left: 20px;
+  opacity: 0.8;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+.page {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.intro {
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  opacity: 0.7;
+  margin-bottom: 50px;
+}
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0,255,255,0.5);
+}
+
+.sub {
+  opacity: 0.5;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+/* PROCESS FLOW */
+.process {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  opacity: 0.4;
+}
+
+.step.active {
+  opacity: 1;
+  border-color: cyan;
+}
+
+.step.done {
+  opacity: 0.8;
+  background: rgba(0,255,255,0.1);
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+/* CARD */
+.card {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+/* LOGS */
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+
+
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+.card {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+/* FLOW DIAGRAM */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.node {
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse {
+  width: 20px;
+  height: 100%;
+  background: cyan;
+  position: absolute;
+  animation: flow 1.5s linear infinite;
+}
+
+@keyframes flow {
+  from { left: -20px; }
+  to { left: 100%; }
+}
+
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+}
+
+.tagline {
+  opacity: 0.6;
+  max-width: 400px;
+}
+
+.hero-visual canvas {
+  opacity: 0.6;
+}
+
+.systems {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.system-card {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.system-card:hover {
+  border-color: cyan;
+  transform: translateY(-5px);
+}
+
+.system-card span {
+  display: block;
+  margin-top: 10px;
+  opacity: 0.6;
+}
+
+.footer {
+  opacity: 0.5;
+  font-size: 0.9rem;
+}
+
+
+
+
+
+Let's follow:
+
+sync visual style across all pages (same spacing, tone)
+add subtle transitions between routes
+refine typography (this matters more than people admit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Okay. Do it.
+
+
+drop this here. 
+
+<q-circular-progress
+  :value="battery"
+  size="80px"
+  :thickness="0.15"
+  color="cyan"
+  track-color="grey-8"
+  class="q-mx-auto"
+>
+  <div class="text-center">
+    {{ Math.round(battery) }}%
+  </div>
+</q-circular-progress>
+
+
+<template>
+  <q-page class="page">
+
+    <div class="header">
+      <h1>Solar Field Toolkit</h1>
+      <p class="intro">{{ site.name }} • {{ site.location }}</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat">
+        <span>Irradiance</span>
+        <h2>{{ irradiance }} W/m²</h2>
+      </div>
+
+      <div class="stat">
+        <span>Output</span>
+        <h2>{{ output }} kW</h2>
+      </div>
+
+      <div class="stat">
+        <span>Battery</span>
+        <h2>{{ battery }}%</h2>
+      </div>
+    </div>
+
+    <!-- SOLAR FLOW DIAGRAM -->
+    <div class="card diagram">
+      <h2>Energy Flow</h2>
+
+      <div class="flow">
+        <div class="node">☀️</div>
+        <div class="line"><div class="pulse"></div></div>
+
+        <div class="node">Panel</div>
+        <div class="line"><div class="pulse"></div></div>
+
+        <div class="node">Inverter</div>
+        <div class="line"><div class="pulse"></div></div>
+
+        <div class="node">Battery</div>
+        <div class="line"><div class="pulse"></div></div>
+
+        <div class="node">Load</div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="card">
+      <h2>Field Modules</h2>
+      <ul>
+        <li>Panel Alignment (tilt & azimuth)</li>
+        <li>Battery Health Monitoring</li>
+        <li>Load Balancing Analysis</li>
+        <li>Cable Loss Estimation</li>
+        <li>Inverter Efficiency Tracking</li>
+      </ul>
+    </div>
+
+    <!-- CALC -->
+    <div class="card">
+      <h2>Quick Estimate</h2>
+      <p class="formula">
+        P ≈ {{ irradiance }} × 0.2 × 5m² =
+        {{ (irradiance * 0.2 * 5 / 1000).toFixed(2) }} kW
+      </p>
+    </div>
+
+    <!-- LOGS -->
+    <div class="card">
+      <h2>System Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+    <q-btn flat label="← Back" @click="$router.push('/')" />
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const site = {
+  name: "Kasarani Field Node",
+  location: "Nairobi County"
+}
+
+const irradiance = ref(800)
+const output = ref(3.5)
+const battery = ref(70)
+
+const logs = ref([
+  "System initialized",
+  "Battery stable",
+  "Field node active"
+])
+
+onMounted(() => {
+  setInterval(() => {
+    irradiance.value = (600 + Math.random() * 400).toFixed(0)
+    output.value = (irradiance.value * 0.004).toFixed(2)
+
+    battery.value = Math.max(20, Math.min(100,
+      battery.value + (output.value > 2 ? 0.5 : -0.3)
+    )).toFixed(0)
+
+    logs.value.unshift("Flux adjusted at " + new Date().toLocaleTimeString())
+    if (logs.value.length > 5) logs.value.pop()
+  }, 2000)
+})
+</script>
+
+<style scoped>
+</style>
+
+
+
+
+add this:
+irradiance.value = Math.round(600 + Math.random() * 400)
+
+output.value = Number((irradiance.value * 0.004).toFixed(2))
+
+battery.value = Math.round(
+  Math.max(20, Math.min(100,
+    battery.value + (output.value > 2 ? 0.5 : -0.3)
+  ))
+)
+
+
+
+
+
+Upgrade:
+
+<div class="flow">
+  <div class="node" :class="{ active: irradiance > 700 }">Panel</div>
+
+  <div class="line">
+    <div class="pulse" v-if="irradiance > 500"></div>
+  </div>
+
+  <div class="node" :class="{ active: output > 2 }">Inverter</div>
+
+  <div class="line">
+    <div class="pulse" v-if="output > 1.5"></div>
+  </div>
+
+  <div class="node" :class="{ active: battery > 40 }">Battery</div>
+
+  <div class="line">
+    <div class="pulse" v-if="load > 1"></div>
+  </div>
+
+  <div class="node">Load</div>
+</div>
+
+
+
+
+
+
+so this has gone to our css:
+
+.node {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.node.active {
+  border-color: cyan;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+
+
+From here i'm lost:
+
+🧱 4. Spacing rhythm (your CSS ask)
+
+You’re close, but slightly inconsistent.
+
+👉 Normalize spacing using 8px grid:
+
+Replace:
+.page {
+  padding: 40px;
+}
+With:
+.page {
+  padding: 48px 24px;
+}
+
+
+
+Let me show full app.scss:
+
+/* ============================= */
+/* ROOT DESIGN TOKENS */
+/* ============================= */
+:root {
+  --border: rgba(255,255,255,0.1);
+  --border-strong: rgba(0,255,255,0.5);
+  --text-dim: 0.6;
+  --text-faint: 0.4;
+  --card-bg: rgba(255,255,255,0.02);
+
+  /* spacing (8px system) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+}
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+body.body--dark {
+  background: #000;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+
+/* smooth rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================= */
+/* TYPOGRAPHY */
+/* ============================= */
+h1 {
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-2);
+}
+
+h2 {
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+p {
+  line-height: 1.5;
+}
+
+.intro,
+.tagline,
+.sub {
+  opacity: var(--text-dim);
+}
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+.page {
+  padding: var(--space-5);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+/* ============================= */
+/* LISTS */
+/* ============================= */
+ul {
+  margin-top: var(--space-1);
+  padding-left: var(--space-3);
+  opacity: 0.8;
+}
+
+li {
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* CARD SYSTEM */
+/* ============================= */
+.card {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+
+/* ============================= */
+/* STATS */
+/* ============================= */
+.stats {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.stat {
+  flex: 1;
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stat span {
+  display: block;
+  font-size: 0.75rem;
+  opacity: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+/* ============================= */
+/* LOGS */
+/* ============================= */
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  opacity: 0.8;
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* HERO */
+/* ============================= */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-5);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+.hero-visual canvas {
+  opacity: 0.6;
+}
+
+/* ============================= */
+/* SYSTEM CARDS */
+/* ============================= */
+.systems {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.system-card {
+  flex: 1;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.system-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+
+.system-card span {
+  display: block;
+  margin-top: var(--space-1);
+  opacity: var(--text-dim);
+}
+
+/* ============================= */
+/* PROCESS (CONSTRUCTION) */
+/* ============================= */
+.process {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  opacity: 0.4;
+  transition: 0.3s ease;
+}
+
+.step.active {
+  opacity: 1;
+  border-color: var(--border-strong);
+}
+
+.step.done {
+  opacity: 0.8;
+  background: rgba(0,255,255,0.1);
+}
+
+/* ============================= */
+/* FLOW (SOLAR) */
+/* ============================= */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.node {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.node.active {
+  border-color: cyan;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse {
+  width: 20px;
+  height: 100%;
+  background: cyan;
+  position: absolute;
+  animation: flow 2.2s linear infinite;
+}
+
+@keyframes flow {
+  from { left: -20px; }
+  to { left: 100%; }
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.footer {
+  opacity: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+/* ============================= */
+/* ROUTE TRANSITIONS */
+/* ============================= */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* ============================= */
+/* CURSOR POLISH */
+/* ============================= */
+.system-card,
+.card {
+  will-change: transform;
+}
+
+.system-card:active {
+  transform: scale(0.98);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Today's objectives.
+1. Have a real landing page with direction and objective.
+2. Complete our reputable portfolio profiles for the 'industry', that is solar and construction.
+we won't side-step into another hustle.
+
+
+Let me show what we have. Fill me in where we are lacking. 
+I've thrown in a lion face svg in the landing page, but the svg can be used anywhere else, or reshaped anyhow else, 
+and speaking of which, 
+we will need to remove the quasar svg logo on the header. and replace it with our own.
+
+
+
+Finish the construction page changes. and whatever else is missing on in the rest.
+
+
+
+
+
+<template>
+  <q-page class="page">
+
+    <div class="header">
+      <h1>Construction Process</h1>
+      <p class="intro">{{ site.name }} • {{ site.location }}</p>
+    </div>
+
+    <!-- PROCESS FLOW -->
+    <div class="card">
+      <h2>Build Phases</h2>
+
+      <div class="process">
+        <div
+          v-for="(step, i) in steps"
+          :key="i"
+          class="step"
+          :class="{
+            done: i < currentStep,
+            active: i === currentStep
+          }"
+        >
+          {{ step }}
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="stats">
+      <div class="stat">
+        <span>Current Phase</span>
+        <h2>{{ steps[currentStep] }}</h2>
+      </div>
+
+      <div class="stat">
+        <span>Progress</span>
+        <h2>{{ progress }}%</h2>
+      </div>
+
+      <div class="stat">
+        <span>Workers On Site</span>
+        <h2>{{ workers }}</h2>
+      </div>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <h2>Site Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+    <!-- BACK -->
+    <q-btn flat label="← Back" @click="$router.push('/')" />
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const site = {
+  name: "Westlands Foundation Project",
+  location: "Nairobi County"
+}
+
+const steps = [
+  "Excavation",
+  "Foundation",
+  "Reinforcement",
+  "Structure",
+  "Finishing"
+]
+
+const currentStep = ref(1)
+const progress = ref(25)
+const workers = ref(12)
+
+const logs = ref([
+  "Site cleared",
+  "Excavation completed",
+  "Foundation work started"
+])
+
+onMounted(() => {
+  setInterval(() => {
+    // simulate progress
+    progress.value = Math.min(100, progress.value + Math.random() * 5)
+
+    // simulate workers fluctuation
+    workers.value = 10 + Math.floor(Math.random() * 10)
+
+    // move phase forward slowly
+    if (progress.value > (currentStep.value + 1) * 20 && currentStep.value < steps.length - 1) {
+      currentStep.value++
+      logs.value.unshift(steps[currentStep.value] + " phase started")
+    }
+
+    logs.value.unshift("Site check at " + new Date().toLocaleTimeString())
+    if (logs.value.length > 6) logs.value.pop()
+
+  }, 2500)
+})
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <q-page class="page">
+
+    <div class="header">
+      <h1>Solar Field Toolkit</h1>
+      <p class="intro">{{ site.name }} • {{ site.location }}</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+  <div class="stat">
+    <span>Irradiance</span>
+    <h2>{{ irradiance }} W/m²</h2>
+  </div>
+
+  <div class="stat">
+    <span>Output</span>
+    <h2>{{ output }} kW</h2>
+  </div>
+
+  <div class="stat battery-stat">
+    <span>Battery</span>
+
+    <q-circular-progress
+      :value="battery"
+      size="70px"
+      :thickness="0.18"
+      color="cyan"
+      track-color="grey-8"
+      class="q-mt-sm"
+    >
+      {{ battery }}%
+    </q-circular-progress>
+
+  </div>
+
+</div>
+
+    <!-- SOLAR FLOW DIAGRAM -->
+    <div class="flow">
+
+  <div class="node">☀️</div>
+
+  <div class="line">
+    <div class="pulse" v-if="irradiance > 500"></div>
+  </div>
+
+  <div class="node" :class="{ active: irradiance > 700 }">Panel</div>
+
+  <div class="line">
+    <div class="pulse" v-if="output > 1.5"></div>
+  </div>
+
+  <div class="node" :class="{ active: output > 2 }">Inverter</div>
+
+  <div class="line">
+    <div class="pulse" v-if="battery > 40"></div>
+  </div>
+
+  <div class="node" :class="{ active: battery > 40 }">Battery</div>
+
+  <div class="line">
+    <div class="pulse" v-if="load > 1"></div>
+  </div>
+
+  <div class="node">Load</div>
+
+</div>
+
+    <!-- MODULES -->
+    <div class="card">
+      <h2>Field Modules</h2>
+      <ul>
+        <li>Panel Alignment (tilt & azimuth)</li>
+        <li>Battery Health Monitoring</li>
+        <li>Load Balancing Analysis</li>
+        <li>Cable Loss Estimation</li>
+        <li>Inverter Efficiency Tracking</li>
+      </ul>
+    </div>
+
+    <!-- CALC -->
+    <div class="card">
+      <h2>Quick Estimate</h2>
+      <p class="formula">
+        P ≈ {{ irradiance }} × 0.2 × 5m² =
+        {{ (irradiance * 0.2 * 5 / 1000).toFixed(2) }} kW
+      </p>
+    </div>
+
+    <!-- LOGS -->
+    <div class="card">
+      <h2>System Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+    <q-btn flat label="← Back" @click="$router.push('/')" />
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const site = {
+  name: "Kasarani Field Node",
+  location: "Nairobi County"
+}
+
+// Declare your reactive variables
+const irradiance = ref(800)
+const output = ref(3.5)
+const battery = ref(70)
+const load = ref(2.5)
+const logs = ref(["System initialized..."]) // the logs
+
+onMounted(() => {
+  setInterval(() => {
+    irradiance.value = Math.round(600 + Math.random() * 400)
+    output.value = Number((irradiance.value * 0.004).toFixed(2))
+    load.value = Number((1.5 + Math.random() * 2).toFixed(2))
+
+    battery.value = Math.round(
+      Math.max(20, Math.min(100,
+        battery.value + (output.value > load.value ? 0.6 : -0.4)
+      ))
+    )
+
+    // this will work!
+    logs.value.unshift("Flux adjusted at " + new Date().toLocaleTimeString())
+    if (logs.value.length > 5) logs.value.pop()
+
+  }, 2000)
+})
+</script>
+
+<style scoped>
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
+/* ROOT DESIGN TOKENS */
+/* ============================= */
+:root {
+  --border: rgba(255,255,255,0.08); // Even more subtle default
+  --border-strong: rgba(0,255,255,0.3); // Less punchy, cleaner hover
+  --border-active: cyan; // The actual active color
+  
+  --text-dim: 0.6;
+  --text-faint: 0.4;
+  --card-bg: rgba(255,255,255,0.015); // Darker, cleaner card
+
+  /* spacing (8px system) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+}
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+body.body--dark {
+  background: #000;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+/* The 'fancy' scanline effect on body */
+body.body--dark::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // Create faint horizontal lines using linear-gradient
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 3px,
+    rgba(255, 255, 255, 0.015) 3px,
+    transparent 4px
+  );
+  pointer-events: none; // Click through it
+  z-index: 100; // Above everything
+  opacity: 0.6;
+}
+
+/* smooth rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================= */
+/* TYPOGRAPHY */
+/* ============================= */
+h1 {
+  font-weight: 600;
+  letter-spacing: -1px; // tighter spacing on main h1
+  margin-bottom: var(--space-2);
+}
+
+h2 {
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+p {
+  line-height: 1.6; // Slightly more line height
+}
+
+.intro,
+.tagline,
+.sub {
+  opacity: var(--text-dim);
+}
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+.page {
+  padding: var(--space-5) var(--space-3);
+  max-width: 980px; // A bit wider
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+/* ============================= */
+/* LISTS */
+/* ============================= */
+ul {
+  margin-top: var(--space-1);
+  padding-left: var(--space-3);
+  opacity: 0.8;
+}
+
+li {
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* CARD SYSTEM */
+/* ============================= */
+.card {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 12px; // slightly softer border
+  background: var(--card-bg);
+  backdrop-filter: blur(8px); // slightly stronger blur
+  transition: 0.3s ease; // smoother transition
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px); // less vertical travel
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.08); // Add faint glow
+}
+
+/* ============================= */
+/* STATS */
+/* ============================= */
+.stats {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.stat {
+  flex: 1;
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stat span {
+  display: block;
+  font-size: 0.75rem;
+  opacity: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+/* ============================= */
+/* LOGS */
+/* ============================= */
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  opacity: 0.8;
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* HERO (POLISHED) */
+/* ============================= */
+.hero {
+  display: grid; // Switch to grid for better balancing
+  grid-template-columns: 1.2fr 0.8fr; // Left text is slightly wider
+  align-items: center; // Vertical center
+  gap: var(--space-4); // space between
+  margin-bottom: var(--space-6); // Big margin below
+}
+
+.hero h1 {
+  font-size: 2.8rem; // bigger font
+}
+
+.hero .tagline {
+  font-size: 1.1rem;
+  max-width: 400px; // limit width of tagline
+}
+
+/* Force specific size for the canvas container */
+.hero-visual {
+  display: flex;
+  justify-content: flex-end; // move canvas all the way right
+  position: relative;
+  width: 100%;
+}
+
+.hero-visual canvas {
+  width: 350px;
+  height: 350px;
+  opacity: 0.6;
+}
+
+/* ============================= */
+/* SYSTEM CARDS (IMPROVED HOVER) */
+/* ============================= */
+.systems {
+  display: flex;
+  gap: var(--space-3); // bit more gap
+  margin-bottom: var(--space-6);
+}
+
+.system-card {
+  flex: 1;
+  padding: var(--space-4); // more padding
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: var(--card-bg); // add bg to cards
+}
+
+.system-card:hover {
+  border-color: var(--border-active); // full cyan glow on border
+  transform: translateY(-4px); // lift effect
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); // nice glow
+}
+
+.system-card span {
+  display: block;
+  margin-top: var(--space-2); // more space
+  opacity: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* ============================= */
+/* PROCESS (CONSTRUCTION) */
+/* ============================= */
+.process {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  opacity: 0.4;
+  transition: 0.3s ease;
+}
+
+.step.active {
+  opacity: 1;
+  border-color: cyan; // use simple colors here
+}
+
+.step.done {
+  opacity: 0.8;
+  background: rgba(0,255,255,0.08); // less saturation
+}
+
+/* ============================= */
+/* FLOW (SOLAR) */
+/* ============================= */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.node {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.node.active {
+  border-color: cyan;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse {
+  width: 20px;
+  height: 100%;
+  background: cyan;
+  position: absolute;
+  animation: flow 2.2s linear infinite;
+}
+
+@keyframes flow {
+  from { left: -20px; }
+  to { left: 100%; }
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.footer {
+  opacity: var(--text-faint);
+  font-size: 0.9rem;
+  margin-top: var(--space-6); // add margin above footer
+}
+
+/* ============================= */
+/* ROUTE TRANSITIONS */
+/* ============================= */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+.system-card,
+.card {
+  will-change: transform;
+}
+
+.system-card:active {
+  transform: scale(0.98);
+}
+
+.battery-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+  <q-page class="page landing">
+
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Samuel Kanu</h1>
+        <p class="tagline">
+          Designing real-world systems through simulation and code
+        </p>
+        <p>
+          <svg
+              width="48px"
+              height="48px"
+              viewBox="0 0 48 48"
+              data-name="Layer 1"
+            >
+              <title>leo</title>
+              <g fill="#33ac51" class="nc-icon-wrapper">
+                <path
+                  d="M42.667 13.583a5.984 5.984 0 0 1 2.833 1.334c-.333-5.667-5.458-5-8.5-10 0 0 1.5.125 2-1.917-2.333.013-5-3-10-1a12.133 12.133 0 0 0-5-1 12.133 12.133 0 0 0-5 1c-5-2-7.667 1.013-10 1 .5 2.042 2 1.917 2 1.917-3.042 5-8.167 4.333-8.5 10a5.984 5.984 0 0 1 2.833-1.334C-3.417 32 8.581 42.167 8.581 42.167A18.447 18.447 0 0 1 9.333 38c2.834 8.5 11.084 5.5 14.667 8.833C27.583 43.5 35.833 46.5 38.667 38a18.447 18.447 0 0 1 .752 4.167S51.417 32 42.667 13.583zm-4.179 10.534l-3.94 5.571h-.013a4.989 4.989 0 0 1 .657 4.141l-.363 1.27A4 4 0 0 1 30.983 38H30v1a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-1h-.983a4 4 0 0 1-3.846-2.9l-.363-1.27a4.989 4.989 0 0 1 .657-4.141h-.012l-3.941-5.572a5 5 0 0 1-.646-4.57l2.744-7.776a6.339 6.339 0 0 1 8.812-3.56 8 8 0 0 0 7.156 0 6.339 6.339 0 0 1 8.812 3.56l2.744 7.776a5 5 0 0 1-.646 4.57z"
+                  opacity=".8"
+                ></path>
+                <path
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                  d="M19 30l2-8"
+                ></path>
+                <path
+                  d="M21 23h-2.037a3.178 3.178 0 0 1-2.841-1.755L15 19h4.72A2.28 2.28 0 0 1 22 21.28V22a1 1 0 0 1-1 1z"
+                ></path>
+                <path
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                  d="M29 30l-2-8"
+                ></path>
+                <path
+                  d="M27 23h2.037a3.178 3.178 0 0 0 2.841-1.755L33 19h-4.72A2.28 2.28 0 0 0 26 21.28V22a1 1 0 0 0 1 1z"
+                ></path>
+                <path
+                  d="M19.425 29h9.15a.5.5 0 0 1 .312.89l-3.613 2.891a1 1 0 0 1-.625.219h-1.3a1 1 0 0 1-.625-.219l-3.611-2.891a.5.5 0 0 1 .312-.89z"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M30 38v1a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-1"
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                  d="M24 35v-2"
+                ></path>
+                <path
+                  d="M24 33v1a4 4 0 0 1-4 4h-2.983a4 4 0 0 1-3.846-2.9l-.363-1.27a5 5 0 0 1 1.272-4.91L16 27"
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M24 33v1a4 4 0 0 0 4 4h2.983a4 4 0 0 0 3.846-2.9l.363-1.27a5 5 0 0 0-1.272-4.91L32 27"
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M34.548 29.688l3.94-5.571a5 5 0 0 0 .646-4.57l-2.744-7.776a6.339 6.339 0 0 0-8.812-3.56 8 8 0 0 1-7.156 0 6.339 6.339 0 0 0-8.812 3.56l-2.744 7.776a5 5 0 0 0 .646 4.57l3.941 5.571"
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M24 46.833C27.583 43.5 35.833 46.5 38.667 38a18.447 18.447 0 0 1 .752 4.167s12-10.167 3.248-28.584a5.984 5.984 0 0 1 2.833 1.334c-.333-5.667-5.458-5-8.5-10 0 0 1.5.125 2-1.917-2.333.013-5-3-10-1a12.133 12.133 0 0 0-5-1 12.133 12.133 0 0 0-5 1c-5-2-7.667 1.013-10 1 .5 2.042 2 1.917 2 1.917-3.042 5-8.167 4.333-8.5 10a5.984 5.984 0 0 1 2.833-1.334C-3.417 32 8.581 42.167 8.581 42.167A18.447 18.447 0 0 1 9.333 38c2.834 8.5 11.084 5.5 14.667 8.833z"
+                  fill="none"
+                  stroke="#33ac51"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <!-- Left Eye -->
+                <circle cx="20" cy="23" r="2" id="left-eye" fill="#000000" />
+
+                <!-- Right Eye -->
+                <circle cx="28" cy="23" r="2" id="right-eye" fill="#000000" />
+              </g></svg>
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <canvas id="sphereCanvas"></canvas>
+      </div>
+    </section>
+
+    <section class="systems">
+
+      <div class="system-card" @click="$router.push('/solar')">
+        <h2>Solar Systems</h2>
+        <p>
+          Simulation of energy flow, irradiance behavior, and storage dynamics
+          in micro-grid environments.
+        </p>
+        <span>View →</span>
+      </div>
+
+      <div class="system-card" @click="$router.push('/construction')">
+        <h2>Construction Systems</h2>
+        <p>
+          Process tracking of build phases from excavation to structure,
+          reflecting real site progression.
+        </p>
+        <span>View →</span>
+      </div>
+
+    </section>
+
+    <section class="footer">
+      <p>Nairobi, Kenya</p>
+      <p>Available for system design & implementation</p>
+    </section>
+
+  </q-page>
+</template>
+
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const canvas = document.getElementById("sphereCanvas")
+  if (!canvas) return
+
+  const ctx = canvas.getContext("2d")
+  const size = 350 // Match the SCSS size
+  canvas.width = size
+  canvas.height = size
+  const center = size / 2
+
+  // --- Core Sphere Config ---
+  const radius = 100
+  const totalRings = 10
+  const stepsPerRing = 18
+
+  // --- Dynamic Points (The 'Fancy' part) ---
+  const dynamicPoints = []
+  const maxDynamicPoints = 15 // Keep it sparse
+
+  // Pre-generate static vertices
+  const vertices = []
+  for (let i = 0; i <= totalRings; i++) {
+    const lat = Math.PI * (i / totalRings - 0.5) // Latitude -90 to 90
+    for (let j = 0; j < stepsPerRing; j++) {
+      const lon = 2 * Math.PI * (j / stepsPerRing) // Longitude 0 to 360
+      const x = radius * Math.cos(lat) * Math.cos(lon)
+      const y = radius * Math.cos(lat) * Math.sin(lon)
+      const z = radius * Math.sin(lat)
+      vertices.push({ x, y, z })
+    }
+  }
+
+  // Generate real random 3D points *on* the sphere surface
+  function generateDynamicPoint() {
+    const phi = Math.random() * Math.PI * 2;
+    const theta = Math.acos((Math.random() * 2) - 1);
+    const pointRadius = radius; // Start on surface
+
+    return {
+      x: pointRadius * Math.sin(theta) * Math.cos(phi),
+      y: pointRadius * Math.sin(theta) * Math.sin(phi),
+      z: pointRadius * Math.cos(theta),
+      life: Math.random() * 0.5 + 0.5, // 0.5s to 1s life
+      pulseFactor: Math.random() * 2 // How much it 'projects'
+    }
+  }
+
+  let angle = 0
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    angle += 0.005 // Slower, purposeful spin
+
+    // --- 1. Project and Rotate all Static Vertices ---
+    const projected2D = vertices.map(v => {
+      // Basic 3D rotation matrix application
+      // Rotate Y (Vertical)
+      const ryX = v.x * Math.cos(angle) + v.z * Math.sin(angle)
+      const ryZ = -v.x * Math.sin(angle) + v.z * Math.cos(angle)
+
+      // Rotate X (Horizontal)
+      const yX = ryZ * Math.sin(angle) + v.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - v.y * Math.sin(angle)
+
+      // Perspective projection (simple, good enough for wireframe)
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+      return { x: screenX, y: screenY, z: yZ }
+    })
+
+    // --- 2. Draw Wireframe Lines ---
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)"
+    ctx.lineWidth = 0.5
+    ctx.beginPath()
+
+    // Draw Latitudes
+    for (let i = 0; i < totalRings; i++) {
+      const start = i * stepsPerRing
+      ctx.moveTo(projected2D[start].x, projected2D[start].y)
+      for (let j = 1; j < stepsPerRing; j++) {
+        ctx.lineTo(projected2D[start + j].x, projected2D[start + j].y)
+      }
+      ctx.lineTo(projected2D[start].x, projected2D[start].y) // Close ring
+    }
+
+    // Draw Longitudes
+    for (let j = 0; j < stepsPerRing; j++) {
+      ctx.moveTo(projected2D[j].x, projected2D[j].y)
+      for (let i = 1; i < totalRings; i++) {
+        ctx.lineTo(projected2D[i * stepsPerRing + j].x, projected2D[i * stepsPerRing + j].y)
+      }
+    }
+    ctx.stroke()
+
+    // --- 3. Manage and Draw Dynamic 'Micro-grid' Points ---
+    if (dynamicPoints.length < maxDynamicPoints && Math.random() > 0.95) {
+      dynamicPoints.push(generateDynamicPoint());
+    }
+
+    for (let i = dynamicPoints.length - 1; i >= 0; i--) {
+      const p = dynamicPoints[i];
+      p.life -= 0.01; // Fade life
+
+      if (p.life <= 0) {
+        dynamicPoints.splice(i, 1);
+        continue;
+      }
+
+      // Project the dynamic point (with the current rotation)
+      const ryX = p.x * Math.cos(angle) + p.z * Math.sin(angle)
+      const ryZ = -p.x * Math.sin(angle) + p.z * Math.cos(angle)
+      const yX = ryZ * Math.sin(angle) + p.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - p.y * Math.cos(angle)
+
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+
+      // Calculate opacity based on life and depth (Z)
+      const depthAlpha = Math.max(0, (yZ + radius) / (radius * 2)); // Faint on back
+      const opacity = p.life * depthAlpha * 0.7;
+
+      if (opacity <= 0.05) continue; // Skip hidden/faded points
+
+      // Draw the point (a faint blue pulse)
+      ctx.fillStyle = `rgba(0, 255, 255, ${opacity})`;
+      ctx.beginPath();
+      // Use the pulseFactor to subtly vary the point size
+      ctx.arc(screenX, screenY, 1.5 + (1 - p.life) * p.pulseFactor, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Fancy connection: Find *one* nearest neighbor vertex and connect with a faint line
+      let minDst = 1000;
+      let targetV = null;
+      for(let j=0; j<projected2D.length; j++) {
+        const v = projected2D[j];
+        if (v.z > p.z) continue; // Only connect 'down' in depth
+        const dst = Math.pow(v.x-screenX, 2) + Math.pow(v.y-screenY, 2);
+        if(dst < minDst && dst < 500) { // arbitrary limit to prevent long crazy lines
+          minDst = dst;
+          targetV = v;
+        }
+      }
+
+      if(targetV) {
+        ctx.strokeStyle = `rgba(0, 255, 255, ${opacity * 0.9})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(screenX, screenY);
+        ctx.lineTo(targetV.x, targetV.y);
+        ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(draw)
+  }
+
+  draw()
+})
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Good. Now, Samuel Kanu is the name of my presumed boss. 
+Can't have his name thrown around like a CTA but we can 'hide' it somewhere. 
+
+
+Okay, next step, landing page. I have no much idea. We've already talked. Give me what you can.
+Context/content wise. The end goal, it has to look real and convincing for a client. 
+I can of course adjust minor issues, with you here too. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Good. The back btn on solar and construction pages was also a suggestion. at the bottom of the page feels odd.
+but that's small too. We look very decent visually at a glance. 
+Let's continue working on the landing page context.
+
+
+
+For context, on landing page:
+
+What this work focuses on
+
+    Designing systems before they are deployed
+    Simulating real-world behavior under changing conditions
+    Reducing inefficiencies in energy and construction workflows
+    Making processes visible, trackable, and predictable
+for each highlight, how can we put the explanation in a tree format kind of thing? Maybe.
+
+
+
+Also, if we're going to explain system design, we might as well do it perfectly. 
+With a good design highlight flow. 
+
+
+Below is our version of lorem ipsum, right? 
+Why this matters
+
+    Energy systems fail when behavior isn’t understood
+    Construction delays come from poor phase coordination
+    Most problems appear before deployment — not after
+    Clear systems reduce cost, downtime, and guesswork
+
+Okay, we can go ahead and integrate everything slowly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+System Design 
+we look at scalling.
+
+Scalling
+
+
+
+1. Foundations & Scalability
+
+    Single Server Setup: a simple architecture of components (web app, database, cache) live on one server.
+    Vertical vs. Horizontal Scaling.
+    Identifying and mitigating components that could bring down the entire system.
+2. API Design & Protocols
+
+    Design Principles: Creating consistent, simple, and secure APIs.
+    Styles: REST, GraphQL, and gRPC.
+    Transport Layer: TCP (reliable) and UDP (faster, but no delivery guarantee) for data transmission.
+
+3. Security & Access Management
+
+    Authentication.
+    Authorization.
+    Production Security.
+maybe, i am just saying. we will of course illustrate or highlight with solar and construction too, eother. whatever fits.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Standardize these:
+We take the css to app.scss and remain with the rest, then sharpen or bring at pa with our context.
+
+<template>
+  <q-page class="page solar-case-study">
+
+    <div class="row items-center justify-between q-mb-xl">
+      <q-btn flat dense icon="arrow_back" color="white" @click="$router.push('/')" label="Back to Portfolio" />
+      <div class="text-overline text-weight-bold text-red-5">Live Telemetry Node: 254-NBO</div>
+    </div>
+
+    <header class="header q-mb-xl">
+      <h1 class="text-weight-bolder">Sustainable ICT Infrastructure</h1>
+      <p class="intro text-h6 text-grey-5">
+        Optimizing Off-Grid Solar Performance for Remote East African Sites
+      </p>
+    </header>
+
+    <div class="row q-col-gutter-lg">
+
+      <div class="col-12 col-md-7">
+        <div class="card main-card">
+          <div class="row items-center q-mb-md">
+            <q-icon name="analytics" color="red-5" size="md" class="q-mr-sm" />
+            <h2 class="q-ma-none">Executive Summary</h2>
+          </div>
+          <p>
+            As an ICT Manager, ensuring 99.9% uptime for equipment in areas with unstable grids is a logistical challenge.
+            This case study demonstrates our deployment of a **Smart Micro-Grid** that uses reactive load-balancing.
+            By monitoring "Flux Density" (irradiance), our systems automatically decide when to throttle non-essential
+            ICT peripherals to protect the core network stack.
+          </p>
+
+          <div class="q-mt-lg">
+            <div class="row q-col-gutter-sm">
+              <div class="col-6"><div class="tech-tag">Remote Monitoring</div></div>
+              <div class="col-6"><div class="tech-tag">Load Shedding Logic</div></div>
+              <div class="col-6"><div class="tech-tag">LiFePO4 Optimization</div></div>
+              <div class="col-6"><div class="tech-tag">Thermal Regulation</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5">
+        <div class="card gauge-card flex flex-center column relative-position">
+          <span class="text-overline text-grey-5 q-mb-md">Storage Status (SOC)</span>
+
+          <div class="arc-container">
+            <svg class="rays" viewBox="0 0 100 100">
+              <g stroke-linecap="round" stroke-width="2">
+                <line v-for="n in 12" :key="n"
+                  x1="50" y1="10" x2="50" y2="20"
+                  :style="{ transform: `rotate(${(n-1) * 30}deg)`, transformOrigin: '50% 50%' }"
+                  :class="{ 'ray-active': battery > (n * 8) }"
+                />
+              </g>
+            </svg>
+
+            <q-circular-progress
+              show-value
+              :value="battery"
+              size="200px"
+              :thickness="0.12"
+              color="transparent"
+              track-color="grey-9"
+              class="battery-arc"
+              angle="240"
+            >
+              <div class="text-center">
+                <div class="text-h3 text-weight-bolder text-white">{{ battery }}%</div>
+                <div class="text-caption text-red-5 text-weight-bold">LEVEL STATUS</div>
+              </div>
+            </q-circular-progress>
+          </div>
+
+          <p class="q-mt-md text-caption text-grey-6 text-center">
+            Thermal drift compensated at +2.4% <br/>
+            Current Draw: {{ load }} kW
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label q-mt-xl text-red-5 text-weight-bold">REAL-TIME ENERGY TOPOLOGY</div>
+    <div class="card flow-card q-mt-sm">
+      <div class="flow">
+        <div class="node-box">
+          <div class="icon">☀️</div>
+          <span>Source</span>
+        </div>
+        <div class="line"><div class="pulse" :style="{ animationDuration: (1000/irradiance) + 's' }"></div></div>
+
+        <div class="node-box" :class="{ 'node-active': irradiance > 600 }">
+          <div class="icon">🔌</div>
+          <span>Array</span>
+        </div>
+        <div class="line"><div class="pulse" v-if="output > 1.5"></div></div>
+
+        <div class="node-box highlight">
+          <div class="icon">⚡</div>
+          <span>Inverter</span>
+        </div>
+        <div class="line"><div class="pulse" v-if="battery > 20"></div></div>
+
+        <div class="node-box" :class="{ 'node-active': battery > 80 }">
+          <div class="icon">🔋</div>
+          <span>Storage</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card q-mt-lg">
+      <div class="row justify-between items-center q-mb-md">
+        <h3 class="q-ma-none text-subtitle1">System Activity Logs</h3>
+        <q-badge outline color="red-5" label="Live Stream" />
+      </div>
+      <ul class="logs-modern">
+        <li v-for="(log, i) in logs" :key="i">
+          <span class="timestamp">{{ log.time }}</span>
+          <span class="message">{{ log.msg }}</span>
+        </li>
+      </ul>
+    </div>
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+
+const irradiance = ref(840)
+const output = ref(3.8)
+const battery = ref(74)
+const load = ref(2.1)
+const logs = ref([
+  { time: '08:00:01', msg: 'System cold boot successful.' },
+  { time: '08:00:05', msg: 'Gateway synchronized with Nairobi HQ.' }
+])
+
+onMounted(() => {
+  setInterval(() => {
+    irradiance.value = Math.round(650 + Math.random() * 300)
+    output.value = Number((irradiance.value * 0.0045).toFixed(2))
+    load.value = Number((1.5 + Math.random() * 1.5).toFixed(2))
+
+    // Battery Logic: Charge if output > load
+    const chargeRate = output.value > load.value ? 0.5 : -0.3
+    battery.value = Math.round(Math.max(10, Math.min(100, battery.value + chargeRate)))
+
+    // Update Logs
+    const now = new Date().toLocaleTimeString()
+    logs.value.unshift({ time: now, msg: `Telemetry update: Output at ${output.value}kW` })
+    if (logs.value.length > 4) logs.value.pop()
+  }, 3000)
+})
+</script>
+
+<style lang="scss">
+// I am including the specific "Arc" and "Ray" styles here
+// because they are unique to this UI request.
+
+.solar-case-study {
+  background: radial-gradient(circle at top right, #1a0505 0%, #000 70%);
+
+  .card {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+  }
+
+  .tech-tag {
+    background: rgba(255, 70, 70, 0.1);
+    border: 1px solid rgba(255, 70, 70, 0.2);
+    color: #ff4d4d;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* THE ARC AND RAYS */
+  .arc-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+  }
+
+  .battery-arc {
+    // Custom gradient coloring for the "Heat" look
+    .q-circular-progress__svg {
+      filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.3));
+    }
+    circle.q-circular-progress__text { fill: white; }
+
+    // We target the progress path via CSS to give it the yellow-to-red gradient
+    path.q-circular-progress__path {
+      stroke: url(#heatGradient) !important;
+      stroke-linecap: round;
+    }
+  }
+
+  // To make the gradient work in SVG, we'd normally need a defs tag.
+  // For a quick fix, we can simulate it with a CSS filter or a transition:
+  .q-circular-progress__path {
+    transition: stroke 0.5s ease;
+    stroke: hsl(calc(60 - v-bind(battery) * 0.6), 100%, 50%) !important;
+    // This shifts from Yellow (60) to Red (0) based on battery
+  }
+
+  .rays {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 240px;
+    height: 240px;
+    pointer-events: none;
+
+    line {
+      stroke: rgba(255, 255, 255, 0.05);
+      transition: stroke 0.5s, opacity 0.5s;
+    }
+
+    .ray-active {
+      stroke: #ff4d4d;
+      opacity: 0.8;
+      stroke-width: 3;
+      filter: blur(1px);
+    }
+  }
+
+  /* FLOW BOXES */
+  .node-box {
+    background: #111;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    width: 80px;
+
+    .icon { font-size: 1.5rem; margin-bottom: 4px; }
+    span { font-size: 0.7rem; color: #777; text-transform: uppercase; }
+
+    &.node-active { border-color: #ff4d4d; box-shadow: 0 0 10px rgba(255, 70, 70, 0.2); }
+    &.highlight { border-color: #ffeb3b; }
+  }
+
+  /* LOGS */
+  .logs-modern {
+    list-style: none;
+    padding: 0;
+    li {
+      display: flex;
+      gap: 15px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+
+      .timestamp { color: #ff4d4d; font-weight: bold; }
+      .message { color: #aaa; }
+    }
+  }
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Do the following changes in this file. 
+
+
+The file:
+
+<template>
+  <q-page class="page landing">
+
+    <div class="topbar">
+
+  <div class="brand">
+    <div class="mark">
+      <!-- your lion svg here (shrink it) -->
+      <svg width="28" height="28" viewBox="0 0 48 48">
+        <!-- keep only main paths, remove extra noise later -->
+        <g fill="#33ac51">
+          <circle cx="20" cy="23" r="2" fill="#000"/>
+          <circle cx="28" cy="23" r="2" fill="#000"/>
+        </g>
+      </svg>
+    </div>
+
+    <span>Kanu Systems</span>
+  </div>
+
+</div>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="hero-text">
+        <h1>Designing systems that hold under real conditions</h1>
+
+        <p class="tagline">
+          Solar infrastructure and construction processes designed with
+          clarity, simulation, and execution in mind.
+        </p>
+
+        <p class="sub">
+          Built for environments where failure has cost — energy systems,
+          build sites, and operational workflows.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <canvas id="sphereCanvas"></canvas>
+      </div>
+
+    </section>
+
+    <!-- WHAT YOU DO -->
+    <section class="card">
+  <h2>How systems are designed</h2>
+
+  <div class="design-flow">
+
+    <div class="design-step">
+      <h3>1. Define the system</h3>
+      <p>Identify the environment, constraints, and failure points before anything is built.</p>
+    </div>
+
+    <div class="design-branch">
+      <div class="design-step">
+        <h3>2. Simulate behavior</h3>
+        <p>Model how the system reacts under real conditions — load, stress, variability.</p>
+      </div>
+
+      <div class="design-step">
+        <h3>3. Observe breakdowns</h3>
+        <p>Expose inefficiencies, instability, and edge-case failures early.</p>
+      </div>
+    </div>
+
+    <div class="design-step">
+      <h3>4. Refine execution</h3>
+      <p>Adjust structure, flow, and decision logic before deployment.</p>
+    </div>
+
+    <div class="design-step final">
+      <h3>5. Deploy with clarity</h3>
+      <p>Systems go live already understood, predictable, and easier to manage.</p>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!--  WHAT YOU DO PART II-->
+
+    <section class="card">
+  <h2>System design considerations</h2>
+
+  <div class="design-grid">
+
+    <div class="design-block">
+      <h3>Scalability</h3>
+      <p>
+        Systems are designed to grow from simple deployments to distributed setups.
+        Early decisions consider load, failure points, and how components scale
+        under increased demand.
+      </p>
+      <span>Single node → distributed systems</span>
+    </div>
+
+    <div class="design-block">
+      <h3>Reliability</h3>
+      <p>
+        Identifying weak points before deployment reduces the risk of total system failure.
+        Focus is placed on redundancy, fallback behavior, and failure isolation.
+      </p>
+      <span>Failure-aware design</span>
+    </div>
+
+    <div class="design-block">
+      <h3>Interfaces & Communication</h3>
+      <p>
+        Systems rely on clear and consistent interfaces. API design is kept predictable,
+        with attention to performance and data flow between components.
+      </p>
+      <span>REST · GraphQL · gRPC</span>
+    </div>
+
+    <div class="design-block">
+      <h3>Security</h3>
+      <p>
+        Access control, data protection, and system integrity are considered from the start,
+        not added later as patches.
+      </p>
+      <span>Authentication · Authorization</span>
+    </div>
+
+  </div>
+</section>
+
+    <!-- SYSTEMS -->
+    <section class="systems">
+
+      <div class="system-card" @click="$router.push('/solar')">
+        <h2>Solar Systems</h2>
+        <p>
+          Modeling energy generation, storage, and load interaction
+          to ensure stable and efficient micro-grid performance.
+        </p>
+        <span>View system →</span>
+      </div>
+
+      <div class="system-card" @click="$router.push('/construction')">
+        <h2>Construction Systems</h2>
+        <p>
+          Tracking build phases, workforce dynamics, and site progression
+          to improve execution and reduce delays.
+        </p>
+        <span>View system →</span>
+      </div>
+
+    </section>
+
+    <!-- WHY IT MATTERS -->
+    <section class="card">
+  <h2>Why this approach works</h2>
+
+  <div class="impact-flow">
+
+    <div class="impact-item">
+      <h4>Unseen failures are the most expensive</h4>
+      <p>
+        Systems often break after deployment because their behavior was never tested under real conditions.
+      </p>
+    </div>
+
+    <div class="impact-item">
+      <h4>Delays come from poor coordination</h4>
+      <p>
+        In construction, inefficiencies appear between phases — not within them.
+      </p>
+    </div>
+
+    <div class="impact-item">
+      <h4>Simulation reduces uncertainty</h4>
+      <p>
+        Modeling systems early exposes problems before they become operational risks.
+      </p>
+    </div>
+
+    <div class="impact-item final">
+      <h4>Clarity reduces cost</h4>
+      <p>
+        Better understanding leads to fewer delays, more stability, and predictable outcomes.
+      </p>
+    </div>
+
+  </div>
+</section>
+<section class="card">
+  <h2>Work direction</h2>
+
+  <p>
+    Focused on building and simulating systems where operational failure has real cost —
+    energy infrastructure, construction execution, and process-driven environments.
+  </p>
+
+  <p class="sub">
+    Available for system design, modeling, and implementation support.
+  </p>
+</section>
+
+    <!-- QUIET SIGNATURE -->
+    <section class="footer">
+      <p>Nairobi, Kenya</p>
+      <p class="subtle-sign">Kanu Systems</p>
+    </section>
+
+  </q-page>
+</template>
+
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const canvas = document.getElementById("sphereCanvas")
+  if (!canvas) return
+
+  const ctx = canvas.getContext("2d")
+  const size = 350 // Match the SCSS size
+  canvas.width = size
+  canvas.height = size
+  const center = size / 2
+
+  // --- Core Sphere Config ---
+  const radius = 100
+  const totalRings = 10
+  const stepsPerRing = 18
+
+  // --- Dynamic Points (The 'Fancy' part) ---
+  const dynamicPoints = []
+  const maxDynamicPoints = 15 // Keep it sparse
+
+  // Pre-generate static vertices
+  const vertices = []
+  for (let i = 0; i <= totalRings; i++) {
+    const lat = Math.PI * (i / totalRings - 0.5) // Latitude -90 to 90
+    for (let j = 0; j < stepsPerRing; j++) {
+      const lon = 2 * Math.PI * (j / stepsPerRing) // Longitude 0 to 360
+      const x = radius * Math.cos(lat) * Math.cos(lon)
+      const y = radius * Math.cos(lat) * Math.sin(lon)
+      const z = radius * Math.sin(lat)
+      vertices.push({ x, y, z })
+    }
+  }
+
+  // Generate real random 3D points *on* the sphere surface
+  function generateDynamicPoint() {
+    const phi = Math.random() * Math.PI * 2;
+    const theta = Math.acos((Math.random() * 2) - 1);
+    const pointRadius = radius; // Start on surface
+
+    return {
+      x: pointRadius * Math.sin(theta) * Math.cos(phi),
+      y: pointRadius * Math.sin(theta) * Math.sin(phi),
+      z: pointRadius * Math.cos(theta),
+      life: Math.random() * 0.5 + 0.5, // 0.5s to 1s life
+      pulseFactor: Math.random() * 2 // How much it 'projects'
+    }
+  }
+
+  let angle = 0
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    angle += 0.005 // Slower, purposeful spin
+
+    // --- 1. Project and Rotate all Static Vertices ---
+    const projected2D = vertices.map(v => {
+      // Basic 3D rotation matrix application
+      // Rotate Y (Vertical)
+      const ryX = v.x * Math.cos(angle) + v.z * Math.sin(angle)
+      const ryZ = -v.x * Math.sin(angle) + v.z * Math.cos(angle)
+
+      // Rotate X (Horizontal)
+      const yX = ryZ * Math.sin(angle) + v.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - v.y * Math.sin(angle)
+
+      // Perspective projection (simple, good enough for wireframe)
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+      return { x: screenX, y: screenY, z: yZ }
+    })
+
+    // --- 2. Draw Wireframe Lines ---
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)"
+    ctx.lineWidth = 0.5
+    ctx.beginPath()
+
+    // Draw Latitudes
+    for (let i = 0; i < totalRings; i++) {
+      const start = i * stepsPerRing
+      ctx.moveTo(projected2D[start].x, projected2D[start].y)
+      for (let j = 1; j < stepsPerRing; j++) {
+        ctx.lineTo(projected2D[start + j].x, projected2D[start + j].y)
+      }
+      ctx.lineTo(projected2D[start].x, projected2D[start].y) // Close ring
+    }
+
+    // Draw Longitudes
+    for (let j = 0; j < stepsPerRing; j++) {
+      ctx.moveTo(projected2D[j].x, projected2D[j].y)
+      for (let i = 1; i < totalRings; i++) {
+        ctx.lineTo(projected2D[i * stepsPerRing + j].x, projected2D[i * stepsPerRing + j].y)
+      }
+    }
+    ctx.stroke()
+
+    // --- 3. Manage and Draw Dynamic 'Micro-grid' Points ---
+    if (dynamicPoints.length < maxDynamicPoints && Math.random() > 0.95) {
+      dynamicPoints.push(generateDynamicPoint());
+    }
+
+    for (let i = dynamicPoints.length - 1; i >= 0; i--) {
+      const p = dynamicPoints[i];
+      p.life -= 0.01; // Fade life
+
+      if (p.life <= 0) {
+        dynamicPoints.splice(i, 1);
+        continue;
+      }
+
+      // Project the dynamic point (with the current rotation)
+      const ryX = p.x * Math.cos(angle) + p.z * Math.sin(angle)
+      const ryZ = -p.x * Math.sin(angle) + p.z * Math.cos(angle)
+      const yX = ryZ * Math.sin(angle) + p.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - p.y * Math.cos(angle)
+
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+
+      // Calculate opacity based on life and depth (Z)
+      const depthAlpha = Math.max(0, (yZ + radius) / (radius * 2)); // Faint on back
+      const opacity = p.life * depthAlpha * 0.7;
+
+      if (opacity <= 0.05) continue; // Skip hidden/faded points
+
+      // Draw the point (a faint blue pulse)
+      ctx.fillStyle = `rgba(0, 255, 255, ${opacity})`;
+      ctx.beginPath();
+      // Use the pulseFactor to subtly vary the point size
+      ctx.arc(screenX, screenY, 1.5 + (1 - p.life) * p.pulseFactor, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Fancy connection: Find *one* nearest neighbor vertex and connect with a faint line
+      let minDst = 1000;
+      let targetV = null;
+      for(let j=0; j<projected2D.length; j++) {
+        const v = projected2D[j];
+        if (v.z > p.z) continue; // Only connect 'down' in depth
+        const dst = Math.pow(v.x-screenX, 2) + Math.pow(v.y-screenY, 2);
+        if(dst < minDst && dst < 500) { // arbitrary limit to prevent long crazy lines
+          minDst = dst;
+          targetV = v;
+        }
+      }
+
+      if(targetV) {
+        ctx.strokeStyle = `rgba(0, 255, 255, ${opacity * 0.9})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(screenX, screenY);
+        ctx.lineTo(targetV.x, targetV.y);
+        ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(draw)
+  }
+
+  draw()
+})
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The changes:
+
+
+
+
+### 1. HERO → keep, but sharpen intent
+
+Replace your current text with:
+
+```html
+<h1>Systems don’t fail randomly — they fail predictably</h1>
+
+<p class="tagline">
+  We design and simulate real-world systems before they are deployed,
+  so behavior is understood before it becomes a problem.
+</p>
+
+<p class="sub">
+  Applied across energy infrastructure and construction workflows,
+  where instability leads directly to cost.
+</p>
+```
+
+👉 This sets up the *entire narrative*:
+failure → predictability → simulation → application
+
+---
+
+### 2. REMOVE “How systems are designed” (the numbered list)
+
+It’s correct… but it reads like documentation, not persuasion.
+
+Replace it with a **cause → method → outcome flow**
+
+---
+
+### 3. NEW SECTION: “What actually goes wrong”
+
+```html
+<section class="card">
+  <h2>What actually goes wrong</h2>
+
+  <div class="impact-flow">
+
+    <div class="impact-item">
+      <h4>Systems are built before they are understood</h4>
+      <p>
+        Most deployments begin with assumptions. Real conditions expose gaps later.
+      </p>
+    </div>
+
+    <div class="impact-item">
+      <h4>Behavior changes under load</h4>
+      <p>
+        Energy fluctuates. Workflows shift. Systems that look stable in theory break under variation.
+      </p>
+    </div>
+
+    <div class="impact-item">
+      <h4>Failures appear between components</h4>
+      <p>
+        Not inside individual parts — but in how they interact.
+      </p>
+    </div>
+
+  </div>
+</section>
+```
+
+👉 This creates tension. Now the rest of the page has a reason to exist.
+
+---
+
+### 4. NEW SECTION: “What this work does”
+
+This replaces your earlier “what you do” + tree idea.
+
+```html
+<section class="card">
+  <h2>What this work focuses on</h2>
+
+  <div class="design-flow">
+
+    <div class="design-step">
+      <h3>Make behavior visible</h3>
+      <p>
+        Systems are modeled so flow, stress, and interaction can be seen — not assumed.
+      </p>
+    </div>
+
+    <div class="design-branch">
+      <div class="design-step">
+        <h3>Simulate real conditions</h3>
+        <p>
+          Load variation, timing, and environmental factors are introduced early.
+        </p>
+      </div>
+
+      <div class="design-step">
+        <h3>Expose failure paths</h3>
+        <p>
+          Weak points are identified before deployment.
+        </p>
+      </div>
+    </div>
+
+    <div class="design-step">
+      <h3>Refine system flow</h3>
+      <p>
+        Adjust interactions, not just components.
+      </p>
+    </div>
+
+    <div class="design-step final">
+      <h3>Deploy with predictability</h3>
+      <p>
+        Systems behave as expected under real conditions.
+      </p>
+    </div>
+
+  </div>
+</section>
+```
+
+👉 Now your “tree” idea actually *earns its place*.
+
+---
+
+### 5. KEEP “System design considerations” but compress it
+
+Right now it’s slightly bloated. Tighten:
+
+```html
+<p>
+  Systems are designed with scalability, reliability, communication, and security in mind —
+  not as add-ons, but as part of the structure from the start.
+</p>
+```
+
+Leave the grid as-is. It works.
+
+---
+
+### 6. CRITICAL: Transition into your two systems
+
+Right now you just drop cards. That’s weak.
+
+Add this bridge:
+
+```html
+<section class="card">
+  <h2>Applied systems</h2>
+
+  <p>
+    The same design approach applies across different domains.
+    Below are two implementations where system behavior directly impacts performance and cost.
+  </p>
+</section>
+```
+
+---
+
+### 7. KEEP your system cards (they’re good)
+
+But sharpen slightly:
+
+```html
+<h2>Solar Infrastructure</h2>
+<p>
+  Energy systems modeled to balance generation, storage, and load under real-world variability.
+</p>
+```
+
+```html
+<h2>Construction Execution</h2>
+<p>
+  Build processes structured to track phase flow, coordination, and site progression.
+</p>
+```
+
+---
+
+### 8. REMOVE “Why this approach works”
+
+It’s redundant now. You already proved it above.
+
+---
+
+### 9. FINAL SECTION → Make it feel like a real offering
+
+Replace your “Work direction” with:
+
+```html
+<section class="card">
+  <h2>Work</h2>
+
+  <p>
+    Focused on system design, simulation, and implementation in environments
+    where failure has operational cost.
+  </p>
+
+  <p class="sub">
+    Energy systems · Construction workflows · Process-driven operations
+  </p>
+</section>
+```
+
+---
+
+### 10. Signature → keep subtle
+
+
+<p class="subtle-sign">Kanu Systems</p>
+```
+
+Don’t touch it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Done. Next, as you say. construction.
+
+we do fences, various types, maintainance, construction works (basic masonry). Nothing fancy like equipments we've got.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Do the same.
+
+The file:
+
+<template>
+  <q-page class="page case-study">
+
+    <!-- TOP BAR -->
+    <div class="row items-center justify-between q-mb-lg">
+      <q-btn flat dense icon="arrow_back" @click="$router.push('/')" label="Back" />
+      <div class="text-caption">Project Node: WL-01</div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header">
+      <h1>Construction Timeline Case Study</h1>
+      <p class="intro">
+        Tracking build progression, dependencies, and delays across phases
+      </p>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="card">
+      <h2>Build Timeline</h2>
+
+      <div class="timeline">
+        <div
+          v-for="(step, i) in steps"
+          :key="i"
+          class="timeline-row"
+        >
+          <div class="timeline-marker"
+            :class="{
+              done: i < currentStep,
+              active: i === currentStep
+            }"
+          ></div>
+
+          <div class="timeline-content">
+            <strong>{{ step }}</strong>
+
+            <div class="meta">
+              <span v-if="i === currentStep">In progress</span>
+              <span v-else-if="i < currentStep">Completed</span>
+              <span v-else>Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="stats" :class="{ 'risk': issue }">
+      <div class="stat">
+        <span>Phase</span>
+        <h2>{{ steps[currentStep] }}</h2>
+      </div>
+
+      <div class="stat">
+        <span>Progress</span>
+        <h2>{{ progress }}%</h2>
+      </div>
+
+      <div class="stat">
+        <span>Workers</span>
+        <h2>{{ workers }}</h2>
+      </div>
+    </div>
+
+    <!-- CONDITIONS (THIS IS THE REAL UPGRADE) -->
+    <div class="card">
+      <h2>Site Conditions</h2>
+
+      <p v-if="delayRisk > 0.7">
+        High delay risk due to unstable conditions. Phase progression slowing.
+      </p>
+
+      <p v-else-if="workers < 8">
+        Limited workforce affecting build speed.
+      </p>
+
+      <p v-else>
+        Conditions stable. Progress within expected range.
+      </p>
+    </div>
+
+
+    <div class="card">
+  <h2>Site Condition</h2>
+
+  <p v-if="issue === 'weather'">
+    Weather disruption affecting workflow and slowing progress.
+  </p>
+
+  <p v-else-if="issue === 'materials'">
+    Material supply inconsistency delaying phase execution.
+  </p>
+
+  <p v-else-if="issue === 'labor'">
+    Workforce shortage limiting productivity.
+  </p>
+
+  <p v-else>
+    Site operating under stable conditions.
+  </p>
+</div>
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <h2>Site Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const steps = [
+  "Excavation",
+  "Foundation",
+  "Reinforcement",
+  "Structure",
+  "Finishing"
+]
+
+const currentStep = ref(1)
+const progress = ref(25)
+const workers = ref(12)
+const delayRisk = ref(0.2)
+
+const logs = ref([
+  "Site initialized",
+  "Excavation completed",
+  "Foundation started"
+])
+const issue = ref(null)
+const materialSupply = ref(1) // 0–1
+const weatherImpact = ref(0)  // 0–1
+onMounted(() => {
+  setInterval(() => {
+
+  // workforce fluctuation
+  workers.value = 6 + Math.floor(Math.random() * 10)
+
+  // environmental + supply conditions
+  weatherImpact.value = Math.random()
+  materialSupply.value = Math.random()
+
+  // --- ISSUE DETECTION ---
+  if (weatherImpact.value > 0.75) {
+    issue.value = "weather"
+  }
+  else if (materialSupply.value < 0.3) {
+    issue.value = "materials"
+  }
+  else if (workers.value < 8) {
+    issue.value = "labor"
+  }
+  else {
+    issue.value = null
+  }
+
+  // --- PROGRESS LOGIC ---
+  let speed = 2
+
+  if (issue.value === "weather") speed *= 0.4
+  if (issue.value === "materials") speed *= 0.5
+  if (issue.value === "labor") speed *= 0.6
+
+  progress.value = Math.min(100, progress.value + speed)
+
+  // --- PHASE ADVANCE ---
+  if (
+    progress.value > (currentStep.value + 1) * 20 &&
+    currentStep.value < steps.length - 1
+  ) {
+    currentStep.value++
+    logs.value.unshift(`${steps[currentStep.value]} phase started`)
+  }
+
+  // --- LOGS (CAUSE, NOT NOISE) ---
+  if (issue.value === "weather") {
+    logs.value.unshift("Rain impacting site operations")
+  }
+  else if (issue.value === "materials") {
+    logs.value.unshift("Material delivery delay detected")
+  }
+  else if (issue.value === "labor") {
+    logs.value.unshift("Reduced workforce on site")
+  }
+  else {
+    logs.value.unshift("Site progressing normally")
+  }
+
+  if (logs.value.length > 6) logs.value.pop()
+
+}, 2500)
+})
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+The changes:
+
+## 1. TOP BAR (match solar tone)
+
+```html
+<div class="row items-center justify-between q-mb-xl">
+  <q-btn flat dense icon="arrow_back" color="white" @click="$router.push('/')" label="Back to Portfolio" />
+  <div class="text-overline text-weight-bold text-cyan">Active Site: NBO-WEST-02</div>
+</div>
+```
+
+---
+
+## 2. HEADER → grounded, not inflated
+
+```html
+<header class="header q-mb-xl">
+  <h1 class="text-weight-bolder">Construction Execution Systems</h1>
+  <p class="intro text-h6 text-grey-5">
+    Structured delivery of fencing, masonry, and site maintenance work
+  </p>
+</header>
+```
+
+---
+
+## 3. EXECUTIVE SUMMARY (this is where you sell reality)
+
+```html
+<div class="card">
+  <h2>Execution Overview</h2>
+
+  <p>
+    Small to mid-scale construction projects often fail due to poor coordination
+    between phases, inconsistent labor allocation, and lack of visibility on site progress.
+  </p>
+
+  <p>
+    This system focuses on structuring field work — fencing, masonry, and maintenance —
+    into clear phases, making progress measurable and predictable.
+  </p>
+
+  <p>
+    Instead of reacting to delays, the workflow exposes them early through
+    phase tracking and activity logging.
+  </p>
+</div>
+```
+
+---
+
+## 4. PROCESS FLOW → KEEP yours, but rename + sharpen
+
+Change:
+
+```html
+<h2>Build Phases</h2>
+```
+
+to:
+
+```html
+<h2>Execution Phases</h2>
+```
+
+Update steps to feel real:
+
+```js
+const steps = [
+  "Site Prep",
+  "Layout & Marking",
+  "Foundation / Posts",
+  "Structure Build",
+  "Finishing & Reinforcement"
+]
+```
+
+---
+
+## 5. STATS → make them *operational*
+
+```html
+<div class="stats">
+
+  <div class="stat">
+    <span>Active Phase</span>
+    <h2>{{ steps[currentStep] }}</h2>
+  </div>
+
+  <div class="stat">
+    <span>Completion</span>
+    <h2>{{ progress.toFixed(0) }}%</h2>
+  </div>
+
+  <div class="stat">
+    <span>Crew On Site</span>
+    <h2>{{ workers }}</h2>
+  </div>
+
+</div>
+```
+
+---
+
+## 6. ADD: WORK TYPES (this grounds everything)
+
+```html
+<div class="card">
+  <h2>Scope of Work</h2>
+
+  <ul>
+    <li>Perimeter fencing (chain-link, barbed wire, reinforced posts)</li>
+    <li>Basic masonry (foundations, walling, repairs)</li>
+    <li>Site maintenance and structural fixes</li>
+    <li>Material handling and layout preparation</li>
+  </ul>
+</div>
+```
+
+---
+
+## 7. ADD: SYSTEM BEHAVIOR (like solar “system state”)
+
+```html
+<div class="card">
+  <h2>Site State</h2>
+
+  <p v-if="progress < 30">
+    Early phase. Site preparation and layout determine downstream stability.
+  </p>
+
+  <p v-else-if="progress < 70">
+    Active build phase. Coordination between crew and materials is critical.
+  </p>
+
+  <p v-else>
+    Final phase. Finishing quality and reinforcement determine long-term durability.
+  </p>
+</div>
+```
+
+---
+
+## 8. ACTIVITY LOGS → keep, but sharpen language
+
+Change logs to feel like actual site updates:
+
+```js
+const logs = ref([
+  "Crew mobilized on site",
+  "Layout markers positioned",
+  "Initial excavation started"
+])
+```
+
+Update interval push:
+
+```js
+logs.value.unshift("Inspection logged at " + new Date().toLocaleTimeString())
+```
+
+---
+
+## 9. IMPORTANT: ADD “FAILURE POINTS”
+
+This is what makes you look like a systems thinker.
+
+```html
+<div class="card">
+  <h2>Observed Failure Points</h2>
+
+  <ul>
+    <li>Delays between layout and foundation setup</li>
+    <li>Uneven crew distribution across phases</li>
+    <li>Material arrival mismatched with phase timing</li>
+    <li>Rework caused by poor early measurements</li>
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Okay. Today. Next.
+
+Let me first send the files we move along together.
+we've mostly been working with 
+app.scss 
+IndexPage.vue 
+ConstructionPage.vue 
+SolarPage.vue 
+
+
+/* ============================= */
+/* ROOT DESIGN TOKENS */
+/* ============================= */
+:root {
+  --border: rgba(255,255,255,0.08); // Even more subtle default
+  --border-strong: rgba(0,255,255,0.3); // Less punchy, cleaner hover
+  --border-active: cyan; // The actual active color
+  
+  --text-dim: 0.6;
+  --text-faint: 0.4;
+  --card-bg: rgba(255,255,255,0.015); // Darker, cleaner card
+
+  /* spacing (8px system) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+}
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+body.body--dark {
+  background: #000;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+/* The 'fancy' scanline effect on body */
+body.body--dark::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // Create faint horizontal lines using linear-gradient
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 3px,
+    rgba(255, 255, 255, 0.015) 3px,
+    transparent 4px
+  );
+  pointer-events: none; // Click through it
+  z-index: 100; // Above everything
+  opacity: 0.6;
+}
+
+/* smooth rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================= */
+/* TYPOGRAPHY */
+/* ============================= */
+h1 {
+  font-weight: 600;
+  letter-spacing: -1px; // tighter spacing on main h1
+  margin-bottom: var(--space-2);
+}
+
+h2 {
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+p {
+  line-height: 1.6; // Slightly more line height
+}
+
+.intro,
+.tagline,
+.sub {
+  opacity: var(--text-dim);
+}
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+.page {
+  padding: var(--space-5) var(--space-3);
+  max-width: 980px; // A bit wider
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+/* ============================= */
+/* LISTS */
+/* ============================= */
+ul {
+  margin-top: var(--space-1);
+  padding-left: var(--space-3);
+  opacity: 0.8;
+}
+
+li {
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* CARD SYSTEM */
+/* ============================= */
+.card {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 12px; // slightly softer border
+  background: var(--card-bg);
+  backdrop-filter: blur(8px); // slightly stronger blur
+  transition: 0.3s ease; // smoother transition
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px); // less vertical travel
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.08); // Add faint glow
+}
+
+/* ============================= */
+/* STATS */
+/* ============================= */
+.stats {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.stat {
+  flex: 1;
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stat span {
+  display: block;
+  font-size: 0.75rem;
+  opacity: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+/* ============================= */
+/* LOGS */
+/* ============================= */
+.logs {
+  list-style: none;
+  padding: 0;
+}
+
+.logs li {
+  opacity: 0.8;
+  margin-bottom: var(--space-1);
+}
+
+/* ============================= */
+/* HERO (POLISHED) */
+/* ============================= */
+.hero {
+  display: grid; // Switch to grid for better balancing
+  grid-template-columns: 1.2fr 0.8fr; // Left text is slightly wider
+  align-items: center; // Vertical center
+  gap: var(--space-4); // space between
+  margin-bottom: var(--space-6); // Big margin below
+}
+
+.hero h1 {
+  font-size: 2.8rem; // bigger font
+}
+
+.hero .tagline {
+  font-size: 1.1rem;
+  max-width: 400px; // limit width of tagline
+}
+
+/* Force specific size for the canvas container */
+.hero-visual {
+  display: flex;
+  justify-content: flex-end; // move canvas all the way right
+  position: relative;
+  width: 100%;
+}
+
+.hero-visual canvas {
+  width: 350px;
+  height: 350px;
+  opacity: 0.6;
+}
+
+/* ============================= */
+/* SYSTEM CARDS (IMPROVED HOVER) */
+/* ============================= */
+.systems {
+  display: flex;
+  gap: var(--space-3); // bit more gap
+  margin-bottom: var(--space-6);
+}
+
+.system-card {
+  flex: 1;
+  padding: var(--space-4); // more padding
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: var(--card-bg); // add bg to cards
+}
+
+.system-card:hover {
+  border-color: var(--border-active); // full cyan glow on border
+  transform: translateY(-4px); // lift effect
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); // nice glow
+}
+
+.system-card span {
+  display: block;
+  margin-top: var(--space-2); // more space
+  opacity: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* ============================= */
+/* PROCESS (CONSTRUCTION) */
+/* ============================= */
+.process {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  opacity: 0.4;
+  transition: 0.3s ease;
+}
+
+.step.active {
+  opacity: 1;
+  border-color: cyan; // use simple colors here
+}
+
+.step.done {
+  opacity: 0.8;
+  background: rgba(0,255,255,0.08); // less saturation
+}
+
+/* ============================= */
+/* FLOW (SOLAR) */
+/* ============================= */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.node {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.node.active {
+  border-color: cyan;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse {
+  width: 20px;
+  height: 100%;
+  background: cyan;
+  position: absolute;
+  animation: flow 2.2s linear infinite;
+}
+
+@keyframes flow {
+  from { left: -20px; }
+  to { left: 100%; }
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.footer {
+  opacity: var(--text-faint);
+  font-size: 0.9rem;
+  margin-top: var(--space-6); // add margin above footer
+}
+
+/* ============================= */
+/* ROUTE TRANSITIONS */
+/* ============================= */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+.system-card,
+.card {
+  will-change: transform;
+}
+
+.system-card:active {
+  transform: scale(0.98);
+}
+
+.battery-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+.design-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.design-step {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--border);
+}
+
+.design-step h3 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.design-step p {
+  font-size: 0.9rem;
+  opacity: var(--text-dim);
+}
+
+.design-branch {
+  margin-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-left: 2px dashed var(--border);
+  padding-left: var(--space-2);
+}
+
+.design-step.final {
+  border-left: 2px solid cyan;
+}
+
+
+.impact-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.impact-item {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--border);
+}
+
+.impact-item.final {
+  border-left: 2px solid cyan;
+}
+
+
+.topbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  opacity: var(--text-dim);
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.design-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.design-block {
+  border-left: 2px solid var(--border);
+  padding-left: var(--space-2);
+}
+
+.design-block h3 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.design-block p {
+  font-size: 0.9rem;
+  opacity: var(--text-dim);
+}
+
+.design-block span {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: 0.8rem;
+  opacity: var(--text-faint);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
+/* CASE STUDY VARIANT (SOLAR) */
+/* ============================= */
+.case-study {
+  background: radial-gradient(circle at top right, rgba(0, 255, 255, 0.08), #000 70%);
+}
+
+/* TECH TAGS */
+.tech-tag {
+  background: rgba(0,255,255,0.08);
+  border: 1px solid rgba(0,255,255,0.2);
+  color: cyan;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* GAUGE */
+.arc-container {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.battery-arc {
+  .q-circular-progress__svg {
+    filter: drop-shadow(0 0 8px rgba(0,255,255,0.2));
+  }
+}
+
+/* Rays (subtle, not red anymore) */
+.rays {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 220px;
+  height: 220px;
+
+  line {
+    stroke: rgba(255,255,255,0.05);
+  }
+
+  .ray-active {
+    stroke: cyan;
+    opacity: 0.6;
+  }
+}
+
+/* FLOW BOXES (aligned with node system) */
+.node-box {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  padding: var(--space-1);
+  border-radius: 8px;
+  text-align: center;
+  width: 80px;
+
+  .icon {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  span {
+    font-size: 0.7rem;
+    opacity: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  &.node-active {
+    border-color: var(--border-active);
+    box-shadow: 0 0 10px rgba(0,255,255,0.2);
+  }
+
+  &.highlight {
+    border-color: rgba(255,255,255,0.4);
+  }
+}
+
+/* LOGS (unified) */
+.logs-modern {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--border);
+    font-family: monospace;
+    font-size: 0.85rem;
+
+    .timestamp {
+      color: cyan;
+    }
+
+    .message {
+      opacity: 0.8;
+    }
+  }
+}
+
+
+
+
+
+
+
+/* ============================= */
+/* TIMELINE (CONSTRUCTION) */
+/* ============================= */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.timeline-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+}
+
+.timeline-marker.active {
+  border-color: cyan;
+  box-shadow: 0 0 8px rgba(0,255,255,0.4);
+}
+
+.timeline-marker.done {
+  background: rgba(0,255,255,0.6);
+  border-color: cyan;
+}
+
+.timeline-content {
+  font-size: 0.9rem;
+}
+
+.timeline-content .meta {
+  font-size: 0.75rem;
+  opacity: var(--text-dim);
+}
+
+
+
+
+.battery-stat.critical {
+  border-color: rgba(255,0,0,0.4);
+  box-shadow: 0 0 10px rgba(255,0,0,0.2);
+}
+
+
+
+.stats.risk {
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+.construction-case-study {
+  background: radial-gradient(circle at top left, #001a1a 0%, #000 70%);
+}
+
+.text-cyan {
+  color: cyan;
+}
+Hold on i send the rest.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Okay, i kind of agree with you. The end goal is to be able to have a profile or portfolio 
+that users can view and give us typical jobs like cctv installation, security systems, fence setups, foundation digging, etc. 
+So, I agree.   "We design systems that behave correctly under pressure — whether that pressure is energy load or site execution." 
+
+Next step, we stop “pages” thinking and start building:
+
+a single coherent system story across all views. 
+
+Okay
+
+<template>
+  <q-page class="page landing">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark">
+          <svg width="28" height="28" viewBox="0 0 48 48">
+            <g fill="#33ac51">
+              <circle cx="20" cy="23" r="2" fill="#000"/>
+              <circle cx="28" cy="23" r="2" fill="#000"/>
+            </g>
+          </svg>
+        </div>
+        <span>Kanu Systems</span>
+      </div>
+    </div>
+
+    <section class="hero">
+
+      <div class="hero-text">
+        <h1>Systems fail predictably</h1>
+
+        <p class="tagline">
+          We design and simulate real-world systems before they are deployed,
+          so behavior is understood before it becomes a problem.
+        </p>
+
+        <p class="sub">
+          Applied across energy infrastructure and construction workflows,
+          where instability leads directly to cost.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <canvas id="sphereCanvas"></canvas>
+      </div>
+
+    </section>
+
+    <section class="card">
+      <h2>Common points of failure</h2>
+
+      <div class="impact-flow">
+        <div class="impact-item">
+          <h4>Systems are built before they are understood</h4>
+          <p>
+            Most deployments begin with assumptions. Real conditions expose gaps later.
+          </p>
+        </div>
+
+        <div class="impact-item">
+          <h4>Behavior changes under load</h4>
+          <p>
+            Energy fluctuates. Workflows shift. Systems that look stable in theory break under variation.
+          </p>
+        </div>
+
+        <div class="impact-item">
+          <h4>Failures appear between components</h4>
+          <p>
+            Not inside individual parts — but in how they interact.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Our focus</h2>
+
+      <div class="design-flow">
+        <div class="design-step">
+          <h3>Make behavior visible</h3>
+          <p>
+            Systems are modeled so flow, stress, and interaction can be seen — not assumed.
+          </p>
+        </div>
+
+        <div class="design-branch">
+          <div class="design-step">
+            <h3>Simulate real conditions</h3>
+            <p>
+              Load variation, timing, and environmental factors are introduced early.
+            </p>
+          </div>
+
+          <div class="design-step">
+            <h3>Expose failure paths</h3>
+            <p>
+              Weak points are identified before deployment.
+            </p>
+          </div>
+        </div>
+
+        <div class="design-step">
+          <h3>Refine system flow</h3>
+          <p>
+            Adjust interactions, not just components.
+          </p>
+        </div>
+
+        <div class="design-step final">
+          <h3>Deploy with predictability</h3>
+          <p>
+            Systems behave as expected under real conditions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>System design considerations</h2>
+
+      <p>
+        Systems are designed with scalability, reliability, communication, and security in mind —
+        not as add-ons, but as part of the structure from the start.
+      </p>
+
+      <div class="design-grid">
+        <div class="design-block">
+          <h3>Scalability</h3>
+          <p>
+            Systems are designed to grow from simple deployments to distributed setups.
+            Early decisions consider load, failure points, and how components scale
+            under increased demand.
+          </p>
+          <span>Single node → distributed systems</span>
+        </div>
+
+        <div class="design-block">
+          <h3>Reliability</h3>
+          <p>
+            Identifying weak points before deployment reduces the risk of total system failure.
+            Focus is placed on redundancy, fallback behavior, and failure isolation.
+          </p>
+          <span>Failure-aware design</span>
+        </div>
+
+        <div class="design-block">
+          <h3>Interfaces & Communication</h3>
+          <p>
+            Systems rely on clear and consistent interfaces. API design is kept predictable,
+            with attention to performance and data flow between components.
+          </p>
+          <span>REST · GraphQL · gRPC</span>
+        </div>
+
+        <div class="design-block">
+          <h3>Security</h3>
+          <p>
+            Access control, data protection, and system integrity are considered from the start,
+            not added later as patches.
+          </p>
+          <span>Authentication · Authorization</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+  <h2>Integrated Field Deployment</h2>
+
+  <p>
+    In real environments, systems don’t exist in isolation.
+    Energy and construction must operate together — not separately.
+  </p>
+
+  <p>
+    A site is built while it is being powered. Work progresses while
+    energy availability changes. Each system affects the other.
+  </p>
+
+  <p>
+    This work focuses on aligning both:
+    structuring physical execution while ensuring stable energy flow.
+  </p>
+</section>
+
+<section class="card">
+  <h2>System Interaction</h2>
+
+  <div class="design-flow">
+
+    <div class="design-step">
+      <h3>Construction depends on energy</h3>
+      <p>
+        Tools, timing, and productivity are affected by power availability.
+      </p>
+    </div>
+
+    <div class="design-branch">
+      <div class="design-step">
+        <h3>Energy depends on usage</h3>
+        <p>
+          Load increases as work intensifies across phases.
+        </p>
+      </div>
+
+      <div class="design-step">
+        <h3>Phases influence demand</h3>
+        <p>
+          Early phases are light. Structural phases increase load significantly.
+        </p>
+      </div>
+    </div>
+
+    <div class="design-step">
+      <h3>Mismatch creates instability</h3>
+      <p>
+        Poor coordination leads to downtime, delays, and inefficiency.
+      </p>
+    </div>
+
+    <div class="design-step final">
+      <h3>Aligned systems stay predictable</h3>
+      <p>
+        Coordinated energy and execution reduce friction across the entire site.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+    <section class="card">
+      <h2>Applied Systems</h2>
+      <p>
+        The same design approach applies across different domains.
+        Below are two implementations where system behavior directly impacts performance and cost.
+      </p>
+    </section>
+
+    <section class="systems">
+      <div class="system-card" @click="$router.push('/solar')">
+        <h2>Solar Infrastructure</h2>
+<p>
+  Energy systems modeled to balance generation, storage, and load under real-world variability.
+</p>
+        <span>View system →</span>
+      </div>
+
+      <div class="system-card" @click="$router.push('/construction')">
+        <h2>Construction Execution</h2>
+<p>
+  Build processes structured to track phase flow, coordination, and site progression.
+</p>
+        <span>View system →</span>
+      </div>
+
+    </section>
+
+    <section class="card">
+  <h2>Work</h2>
+
+  <p>
+    Focused on system design, simulation, and implementation in environments
+    where failure has operational cost.
+  </p>
+
+  <p class="sub">
+    Energy systems · Construction workflows · Process-driven operations
+  </p>
+</section>
+
+    <section class="footer">
+      <p>Nairobi, Kenya</p>
+      <p class="subtle-sign">Kanu Systems</p>
+    </section>
+
+  </q-page>
+</template>
+
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const canvas = document.getElementById("sphereCanvas")
+  if (!canvas) return
+
+  const ctx = canvas.getContext("2d")
+  const size = 350 // Match the SCSS size
+  canvas.width = size
+  canvas.height = size
+  const center = size / 2
+
+  // --- Core Sphere Config ---
+  const radius = 100
+  const totalRings = 10
+  const stepsPerRing = 18
+
+  // --- Dynamic Points (The 'Fancy' part) ---
+  const dynamicPoints = []
+  const maxDynamicPoints = 15 // Keep it sparse
+
+  // Pre-generate static vertices
+  const vertices = []
+  for (let i = 0; i <= totalRings; i++) {
+    const lat = Math.PI * (i / totalRings - 0.5) // Latitude -90 to 90
+    for (let j = 0; j < stepsPerRing; j++) {
+      const lon = 2 * Math.PI * (j / stepsPerRing) // Longitude 0 to 360
+      const x = radius * Math.cos(lat) * Math.cos(lon)
+      const y = radius * Math.cos(lat) * Math.sin(lon)
+      const z = radius * Math.sin(lat)
+      vertices.push({ x, y, z })
+    }
+  }
+
+  // Generate real random 3D points *on* the sphere surface
+  function generateDynamicPoint() {
+    const phi = Math.random() * Math.PI * 2;
+    const theta = Math.acos((Math.random() * 2) - 1);
+    const pointRadius = radius; // Start on surface
+
+    return {
+      x: pointRadius * Math.sin(theta) * Math.cos(phi),
+      y: pointRadius * Math.sin(theta) * Math.sin(phi),
+      z: pointRadius * Math.cos(theta),
+      life: Math.random() * 0.5 + 0.5, // 0.5s to 1s life
+      pulseFactor: Math.random() * 2 // How much it 'projects'
+    }
+  }
+
+  let angle = 0
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    angle += 0.005 // Slower, purposeful spin
+
+    // --- 1. Project and Rotate all Static Vertices ---
+    const projected2D = vertices.map(v => {
+      // Basic 3D rotation matrix application
+      // Rotate Y (Vertical)
+      const ryX = v.x * Math.cos(angle) + v.z * Math.sin(angle)
+      const ryZ = -v.x * Math.sin(angle) + v.z * Math.cos(angle)
+
+      // Rotate X (Horizontal)
+      const yX = ryZ * Math.sin(angle) + v.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - v.y * Math.sin(angle)
+
+      // Perspective projection (simple, good enough for wireframe)
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+      return { x: screenX, y: screenY, z: yZ }
+    })
+
+    // --- 2. Draw Wireframe Lines ---
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)"
+    ctx.lineWidth = 0.5
+    ctx.beginPath()
+
+    // Draw Latitudes
+    for (let i = 0; i < totalRings; i++) {
+      const start = i * stepsPerRing
+      ctx.moveTo(projected2D[start].x, projected2D[start].y)
+      for (let j = 1; j < stepsPerRing; j++) {
+        ctx.lineTo(projected2D[start + j].x, projected2D[start + j].y)
+      }
+      ctx.lineTo(projected2D[start].x, projected2D[start].y) // Close ring
+    }
+
+    // Draw Longitudes
+    for (let j = 0; j < stepsPerRing; j++) {
+      ctx.moveTo(projected2D[j].x, projected2D[j].y)
+      for (let i = 1; i < totalRings; i++) {
+        ctx.lineTo(projected2D[i * stepsPerRing + j].x, projected2D[i * stepsPerRing + j].y)
+      }
+    }
+    ctx.stroke()
+
+    // --- 3. Manage and Draw Dynamic 'Micro-grid' Points ---
+    if (dynamicPoints.length < maxDynamicPoints && Math.random() > 0.95) {
+      dynamicPoints.push(generateDynamicPoint());
+    }
+
+    for (let i = dynamicPoints.length - 1; i >= 0; i--) {
+      const p = dynamicPoints[i];
+      p.life -= 0.01; // Fade life
+
+      if (p.life <= 0) {
+        dynamicPoints.splice(i, 1);
+        continue;
+      }
+
+      // Project the dynamic point (with the current rotation)
+      const ryX = p.x * Math.cos(angle) + p.z * Math.sin(angle)
+      const ryZ = -p.x * Math.sin(angle) + p.z * Math.cos(angle)
+      const yX = ryZ * Math.sin(angle) + p.y * Math.cos(angle)
+      const yZ = ryZ * Math.cos(angle) - p.y * Math.cos(angle)
+
+      const scale = 200 / (200 + yZ)
+      const screenX = ryX * scale + center
+      const screenY = yX * scale + center
+
+      // Calculate opacity based on life and depth (Z)
+      const depthAlpha = Math.max(0, (yZ + radius) / (radius * 2)); // Faint on back
+      const opacity = p.life * depthAlpha * 0.7;
+
+      if (opacity <= 0.05) continue; // Skip hidden/faded points
+
+      // Draw the point (a faint blue pulse)
+      ctx.fillStyle = `rgba(0, 255, 255, ${opacity})`;
+      ctx.beginPath();
+      // Use the pulseFactor to subtly vary the point size
+      ctx.arc(screenX, screenY, 1.5 + (1 - p.life) * p.pulseFactor, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Fancy connection: Find *one* nearest neighbor vertex and connect with a faint line
+      let minDst = 1000;
+      let targetV = null;
+      for(let j=0; j<projected2D.length; j++) {
+        const v = projected2D[j];
+        if (v.z > p.z) continue; // Only connect 'down' in depth
+        const dst = Math.pow(v.x-screenX, 2) + Math.pow(v.y-screenY, 2);
+        if(dst < minDst && dst < 500) { // arbitrary limit to prevent long crazy lines
+          minDst = dst;
+          targetV = v;
+        }
+      }
+
+      if(targetV) {
+        ctx.strokeStyle = `rgba(0, 255, 255, ${opacity * 0.9})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(screenX, screenY);
+        ctx.lineTo(targetV.x, targetV.y);
+        ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(draw)
+  }
+
+  draw()
+})
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Solar and Construction
+
+
+<template>
+  <q-page class="page case-study">
+
+    <div class="row items-center justify-between q-mb-xl">
+      <q-btn flat dense icon="arrow_back" color="white" @click="$router.push('/')" label="Back to Portfolio" />
+      <div class="text-overline text-weight-bold text-cyan-5">Live Telemetry Node: 254-NBO</div>
+    </div>
+
+    <header class="header">
+  <h1>Solar Infrastructure Case Study</h1>
+  <p class="intro">
+    Simulation of off-grid energy systems under variable environmental conditions
+  </p>
+</header>
+
+    <div class="row q-col-gutter-lg">
+
+      <div class="col-12 col-md-7">
+        <div class="card main-card">
+          <div class="row items-center q-mb-md">
+            <q-icon name="analytics" color="cyan-5" size="md" class="q-mr-sm" />
+            <h2 class="q-ma-none">Executive Summary</h2>
+          </div>
+          <p>
+  This system models how a small-scale solar installation behaves under changing irradiance,
+  fluctuating load, and constrained storage capacity.
+
+  The goal is to understand system stability before deployment — not after failure.
+</p>
+
+          <div class="q-mt-lg">
+            <div class="row q-col-gutter-sm">
+              <div class="col-6"><div class="tech-tag">Remote Monitoring</div></div>
+              <div class="col-6"><div class="tech-tag">Load Shedding Logic</div></div>
+              <div class="col-6"><div class="tech-tag">LiFePO4 Optimization</div></div>
+              <div class="col-6"><div class="tech-tag">Thermal Regulation</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5">
+        <div class="card gauge-card flex flex-center column relative-position">
+          <span class="text-overline text-grey-5 q-mb-md">Storage Status (SOC)</span>
+
+          <div class="arc-container">
+            <svg class="rays" viewBox="0 0 100 100">
+              <g stroke-linecap="round" stroke-width="2">
+                <line v-for="n in 12" :key="n"
+                  x1="50" y1="10" x2="50" y2="20"
+                  :style="{ transform: `rotate(${(n-1) * 30}deg)`, transformOrigin: '50% 50%' }"
+                  :class="{ 'ray-active': battery > (n * 8) }"
+                />
+              </g>
+            </svg>
+
+            <q-circular-progress
+              show-value
+              :value="battery"
+              size="200px"
+              :thickness="0.12"
+              color="transparent"
+              track-color="grey-9"
+              class="battery-arc"
+              angle="240"
+            >
+              <div class="text-center">
+                <div class="text-h3 text-weight-bolder text-white">{{ battery }}%</div>
+                <div class="text-caption text-cyan-5 text-weight-bold">LEVEL STATUS</div>
+              </div>
+            </q-circular-progress>
+          </div>
+
+          <p class="q-mt-md text-caption text-grey-6 text-center">
+            Thermal drift compensated at +2.4% <br/>
+            Current Draw: {{ load }} kW
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label q-mt-xl text-cyan-5 text-weight-bold">REAL-TIME ENERGY TOPOLOGY</div>
+    <div class="card flow-card q-mt-sm">
+      <div class="flow">
+        <div class="node-box">
+          <div class="icon">☀️</div>
+          <span>Sun</span>
+        </div>
+        <div class="line"><div class="pulse" v-if="irradiance > 500"></div></div>
+
+        <div class="node-box" :class="{ 'node-active': irradiance > 600 }">
+          <div class="icon">🔌</div>
+          <span>Panel</span>
+        </div>
+        <div class="line"><div class="pulse" v-if="output > 1.5"></div></div>
+
+        <div class="node-box highlight">
+          <div class="icon">⚡</div>
+          <span>Inverter</span>
+        </div>
+        <div class="line"><div class="pulse" v-if="battery > 20"></div></div>
+
+        <div class="stat battery-stat" :class="{ 'critical': battery < 25 }">
+          <div class="icon">🔋</div>
+          <span>Battery</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+  <h2>System Condition</h2>
+
+  <p v-if="fault === 'low_irradiance'">
+    Reduced solar input. System relying on stored energy.
+  </p>
+
+  <p v-else-if="fault === 'high_load'">
+    Demand spike detected. Battery discharge accelerating.
+  </p>
+
+  <p v-else-if="battery < 25">
+    Critical reserve level. Load prioritization required.
+  </p>
+
+  <p v-else>
+    System operating within stable parameters.
+  </p>
+</div>
+
+    <div class="card q-mt-lg">
+      <div class="row justify-between items-center q-mb-md">
+        <h3 class="q-ma-none text-subtitle1">System Activity Logs</h3>
+        <q-badge outline color="cyan-5" label="Live Stream" />
+      </div>
+      <ul class="logs-modern">
+        <li v-for="(log, i) in logs" :key="i">
+          <span class="timestamp">{{ log.time }}</span>
+          <span class="message">{{ log.msg }}</span>
+        </li>
+      </ul>
+    </div>
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+
+const irradiance = ref(840)
+const output = ref(3.8)
+const battery = ref(74)
+const load = ref(2.1)
+const logs = ref([
+  { time: '08:00:01', msg: 'System cold boot successful.' },
+  { time: '08:00:05', msg: 'Gateway synchronized with Nairobi HQ.' }
+])
+const fault = ref(null)
+
+onMounted(() => {
+  setInterval(() => {
+
+    irradiance.value = Math.round(600 + Math.random() * 400)
+    output.value = Number((irradiance.value * 0.004).toFixed(2))
+    load.value = Number((1.5 + Math.random() * 2).toFixed(2))
+
+    // --- RANDOM FAULT INJECTION ---
+    const rand = Math.random()
+
+    if (rand > 0.92) {
+      fault.value = "low_irradiance"
+    } else if (rand > 0.85) {
+      fault.value = "high_load"
+    } else {
+      fault.value = null
+    }
+
+    // --- SYSTEM RESPONSE ---
+    let chargeRate = 0
+
+    if (fault.value === "low_irradiance") {
+      irradiance.value *= 0.5
+      chargeRate = -0.6
+    }
+    else if (fault.value === "high_load") {
+      load.value *= 1.5
+      chargeRate = -0.8
+    }
+    else {
+      chargeRate = output.value > load.value ? 0.6 : -0.4
+    }
+
+    battery.value = Math.round(
+      Math.max(10, Math.min(100, battery.value + chargeRate))
+    )
+
+    // --- LOGS WITH MEANING ---
+    if (fault.value === "low_irradiance") {
+      logs.value.unshift("Cloud cover detected — generation drop")
+    }
+    else if (fault.value === "high_load") {
+      logs.value.unshift("Load spike detected — battery strain")
+    }
+    else {
+      logs.value.unshift("System stable")
+    }
+
+    if (logs.value.length > 5) logs.value.pop()
+
+  }, 2000)
+})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+  <q-page class="page case-study">
+
+    <div class="row items-center justify-between q-mb-xl">
+  <q-btn flat dense icon="arrow_back" color="white" @click="$router.push('/')" label="Back to Portfolio" />
+  <div class="text-overline text-weight-bold text-cyan">Active Site: NBO-WEST-02</div>
+</div>
+
+    <header class="header q-mb-xl">
+  <h1 class="text-weight-bolder">Construction Execution Systems</h1>
+  <p class="intro text-h6 text-grey-5">
+    Structured delivery of fencing, masonry, and site maintenance work
+  </p>
+</header>
+
+    <div class="card">
+  <h2>Execution Overview</h2>
+
+  <p>
+    Small to mid-scale construction projects often fail due to poor coordination
+    between phases, inconsistent labor allocation, and lack of visibility on site progress.
+  </p>
+
+  <p>
+    This system focuses on structuring field work — fencing, masonry, and maintenance —
+    into clear phases, making progress measurable and predictable.
+  </p>
+
+  <p>
+    Instead of reacting to delays, the workflow exposes them early through
+    phase tracking and activity logging.
+  </p>
+</div>
+
+    <div class="card">
+      <h2>Scope of Work</h2>
+      <ul>
+        <li>Perimeter fencing (chain-link, barbed wire, reinforced posts)</li>
+        <li>Basic masonry (foundations, walling, repairs)</li>
+        <li>Site maintenance and structural fixes</li>
+        <li>Material handling and layout preparation</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Execution Phases</h2>
+
+      <div class="timeline">
+        <div
+          v-for="(step, i) in steps"
+          :key="i"
+          class="timeline-row"
+        >
+          <div class="timeline-marker"
+            :class="{
+              done: i < currentStep,
+              active: i === currentStep
+            }"
+          ></div>
+
+          <div class="timeline-content">
+            <strong>{{ step }}</strong>
+
+            <div class="meta">
+              <span v-if="i === currentStep">In progress</span>
+              <span v-else-if="i < currentStep">Completed</span>
+              <span v-else>Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+
+  <div class="stat">
+    <span>Active Phase</span>
+    <h2>{{ steps[currentStep] }}</h2>
+  </div>
+
+  <div class="stat">
+    <span>Completion</span>
+    <h2>{{ progress.toFixed(0) }}%</h2>
+  </div>
+
+  <div class="stat">
+    <span>Crew On Site</span>
+    <h2>{{ workers }}</h2>
+  </div>
+
+</div>
+
+    <div class="card">
+      <h2>Site State</h2>
+
+      <p v-if="progress < 30">
+        Early phase. Site preparation and layout determine downstream stability.
+      </p>
+
+      <p v-else-if="progress < 70">
+        Active build phase. Coordination between crew and materials is critical.
+      </p>
+
+      <p v-else>
+        Final phase. Finishing quality and reinforcement determine long-term durability.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Observed Failure Points</h2>
+      <ul>
+        <li>Delays between layout and foundation setup</li>
+        <li>Uneven crew distribution across phases</li>
+        <li>Material arrival mismatched with phase timing</li>
+        <li>Rework caused by poor early measurements</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Site Activity</h2>
+      <ul class="logs">
+        <li v-for="(log, i) in logs" :key="i">{{ log }}</li>
+      </ul>
+    </div>
+
+  </q-page>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const steps = [
+  "Site Prep",
+  "Layout & Marking",
+  "Foundation / Posts",
+  "Structure Build",
+  "Finishing & Reinforcement"
+]
+
+const currentStep = ref(1)
+const progress = ref(25)
+const workers = ref(12)
+
+const logs = ref([
+  "Crew mobilized on site",
+  "Layout markers positioned",
+  "Initial excavation started"
+])
+
+const issue = ref(null)
+const materialSupply = ref(1) // 0–1
+const weatherImpact = ref(0)  // 0–1
+
+onMounted(() => {
+  setInterval(() => {
+
+    // workforce fluctuation
+    workers.value = 6 + Math.floor(Math.random() * 10)
+
+    // environmental + supply conditions
+    weatherImpact.value = Math.random()
+    materialSupply.value = Math.random()
+
+    // --- ISSUE DETECTION ---
+    if (weatherImpact.value > 0.75) {
+      issue.value = "weather"
+    }
+    else if (materialSupply.value < 0.3) {
+      issue.value = "materials"
+    }
+    else if (workers.value < 8) {
+      issue.value = "labor"
+    }
+    else {
+      issue.value = null
+    }
+
+    // --- PROGRESS LOGIC ---
+    let speed = 2
+
+    if (issue.value === "weather") speed *= 0.4
+    if (issue.value === "materials") speed *= 0.5
+    if (issue.value === "labor") speed *= 0.6
+
+    progress.value = Math.min(100, progress.value + speed)
+
+    // --- PHASE ADVANCE ---
+    if (
+      progress.value > (currentStep.value + 1) * 20 &&
+      currentStep.value < steps.length - 1
+    ) {
+      currentStep.value++
+      logs.value.unshift(`${steps[currentStep.value]} phase started`)
+    }
+
+    // --- LOGS ---
+    logs.value.unshift("Inspection logged at " + new Date().toLocaleTimeString())
+
+    if (logs.value.length > 6) logs.value.pop()
+
+  }, 2500)
+})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+From my experience. There are workers, categories of workers, Tools and equipments, their specializations (tools). 
+There are: 
+Foundation and column reinforcement.
+
+Site preparation and excavation. we will do our sample images in black n white. 
+Survey and mark foundation layout 
+Excavate trenches or pits to required depth based on soil type and structural design. 
+Ensure sides are stable 
+Ensure bottom is level 
+
+Blinding layer 
+Thin layer of lean concrete (Thickness in mm?50 - 100 mm) 
+
+
+Provides clean level surface prevents direct contact of reinforcement with soil. 
+
+
+
+
+
+
+There are safety procedures, equipments, etc. There are policies, regulatory approval etc. NCA, NEEMA. (on the side, we do not want to do a lot or any of that neema or NCA talk. That’s standard, assumed.) 
+
+There is time and scheduling, making adjustments. let's say if it is raining, do they still work, do they go home, etc. 
+
+
+
+
+
+All these, with design and construction Principles in mind.
+
+
+Now, the actual big question we've been side-stepping. What's the actual relevance of these images. 
+If i'm putting images, they have to be black and white (to mask a lot of the identity, no body wants their construction site on someone else's website.) 
+And that is if they are necessary. 
+
+Something else is standing out. user levels while designing a system. 
+Let's say in construction, is a user a worker(trench digger), machine operator (engineer/crane operator), 
+electrician, plumber, supervisor, architect, civil engineer, even janitor, or just a small fence project. etctera. 
+Same with solar. Now we are not building those systems. we are building a portfolio that recognizes the depyths of building these systems. Clear?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Correct. We're on the same page. Therefore actually we go back to our landning page, we cannot call anything solar and another construction. 
+Looks borring. We can maybe have two links yes to different various indiustries. I agree, 100% images are not yet relevant in our case. 
+Same way, it looks 'blunt' to say solar, construction. Idk, we started by brainstorming a design. We're good so far, just necessary adjustments and cuts. 
+We are actaaually still in line, are we not? it's not always direct coding, that's what i mean. We are also designing, and hence a lot of back and forth. 
+
+What exactly are we saying by solar and construction? cause in reality, it's all one big field work kind of thing/activities. 
+As much as they can remain that way distinctively, i think you get my point. In fact, where we are, It's a sunday. We don't need motre code, you get me? we've done enough 'what we can'. we need to write the actual portfolio. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+We're back. let's proceed. We rewrite the landing page, then reshape the two views into context. 
+
+
+So we rewrite. Everything. That was just a sketch in code. everything can be discarded. 
+Remove even the idea of solar and construction/ site. 
+If you have to bring them back, do so, your way. As we've discussed. 
+
+Also, I really like the UI on indexpage. It's simple enough. Solar page also. It's gorgeous. But we could be a little bit simpler. 
+ANyway. Whayt's your fb, we code?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Systems don’t fail randomly.
+
+They fail under pressure.
+
+Work happens where conditions change — energy fluctuates, execution shifts, constraints appear. Understanding that behavior early reduces risk later. 
+
+
+
+
+Nice Lorem ipsum. But let's change it.
+
+
+Something positive in language. 
+
+
+'place simple systems.'
+
+and the entire context.
+
+
+1. we place systems buy design.
+2. by construction/ system build.
+3. by maintainance/aftercare.
+
+
+
+Such kind of a flow, i think. My take.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+am not really paying attention but the Big white text contrasted with the small almost greyish less vibrant text looks better than the big white text contrasted with the small black bright white text. Get it? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+we can make it a one page. Reduces complexity far much. 
+Secondly, we will explain the industries of energy and construction, as you put it, as you see best, no images. 
+we will show processes, reports documentation, generation, etc. (basic graphical visuals can benefit) 
+
+Thirdly, if we get time of day, we have two themes. dark and white (not harsh white, something like between white and cream) 
+if it's past 5.45 pm, the site reloads into dark mode. till 8.30 am. 
+that's an example. we can do something else unique. Cause also, to get time we have to get their location, right? 
+and by default we do not want to bug users with location requests or so. So, idk, how do we look at it?
+
+Anyway, we can also leave as is, the skeleton looks just as gorgeous. I've, maybe had time to overthink but i still like it as it is now. I can work with it too. Your call.
+
+It's still designing with code and this is how it's easoer for us, isn't it?  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Energy Flow Systems
+generation → storage → load → stability
+Field Execution Systems
+planning → groundwork → build → reinforcement
+
+
+
+
+flow diagrams (you already have this)
+timelines
+state indicators (active / idle / fault)
+logs
+
+A manual toggle 
+
+
+Lock the landing page (structure + tone) - Okay
+
+merge current SolarPage + ConstructionPage into two tight sections inside the landing page—without losing the depth already built. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="card">
+  <h2>Energy Flow Systems</h2>
+
+  <p class="sub">
+    Systems are structured around how energy moves — not just how it is generated.
+  </p>
+
+  <div class="flow">
+    <div class="node-box active">
+      <div class="icon">☀️</div>
+      <span>Input</span>
+    </div>
+
+    <div class="line"><div class="pulse"></div></div>
+
+    <div class="node-box active">
+      <div class="icon">⚡</div>
+      <span>Conversion</span>
+    </div>
+
+    <div class="line"><div class="pulse"></div></div>
+
+    <div class="node-box">
+      <div class="icon">🔋</div>
+      <span>Storage</span>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="node-box highlight">
+      <div class="icon">🏠</div>
+      <span>Load</span>
+    </div>
+  </div>
+
+  <div class="logs-modern q-mt-md">
+    <li><span class="timestamp">08:12</span><span class="message">Load stable</span></li>
+    <li><span class="timestamp">08:14</span><span class="message">Storage buffering</span></li>
+    <li><span class="timestamp">08:16</span><span class="message">Input fluctuation detected</span></li>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+ <section class="hero">
+      <div class="hero-text">
+        <h1>Systems</h1>
+
+        <p class="tagline">
+          Designed, built, and maintained to hold under real conditions.
+        </p>
+
+        <p class="sub">
+          Work happens, conditions shift — environments change,
+          execution moves, constraints appear.
+          Systems need to remain stable through that.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <canvas id="sphereCanvas"></canvas>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
