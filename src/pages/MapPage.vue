@@ -689,7 +689,7 @@ onMounted(async () => {
       .enter()
       .append('path')
       .attr('d', (fragment) => pathGenerator(fragment))
-      .attr('fill', (fragment) => gradientScale(fragment.fragmentIndex).hex())
+      .attr('fill', (fragment) => gradientScale(fragment.fragmentIndex))
       .attr('stroke', '#33ac51')
       .attr('stroke-width', 0.6)
       .attr('fill-opacity', 0.9)
