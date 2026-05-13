@@ -95,11 +95,11 @@ import * as d3 from 'd3'
 
 const nodes = [
   { id: 'Kanu Systems', radius: 42, fixed: true },
-  { id: 'Construction', radius: 24 },
+  { id: 'Construction', radius: 26 },
   { id: 'Solar', radius: 24 },
   { id: 'Security', radius: 24 },
-  { id: 'Resort Planning', radius: 24 },
-  { id: 'Maintenance', radius: 24 },
+  { id: 'Resort Planning', radius: 21 },
+  { id: 'Maintenance', radius: 29 },
 ]
 
 const links = [
@@ -128,7 +128,7 @@ onMounted(() => {
     .data(links)
     .enter()
     .append('line')
-    .attr('stroke', 'rgba(255,255,255,0.18)')
+    .attr('stroke', 'rgba(255,255,255,0.0009)')
     .attr('stroke-width', 1.2)
 
   const node = svg
