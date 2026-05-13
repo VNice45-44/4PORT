@@ -666,21 +666,10 @@ onMounted(async () => {
     )
   })
 
-  const generateGradientScale = (numFragments) => {
-    const baseColor = [51, 172, 81]
-    const darkColor = [10, 80, 40]
-    return d3
-      .scaleLinear()
-      .domain([0, numFragments - 1])
-      .range([d3.rgb(...darkColor), d3.rgb(...baseColor)])
-  }
-
   const drawSelectedCounty = (county) => {
     if (!county) return
     svg.selectAll('g.county').remove()
 
-    const fragmentCount = county.fragments.length
-    const gradientScale = generateGradientScale(fragmentCount)
     const countyGroup = svg.append('g').attr('class', 'county')
 
     countyGroup
@@ -689,13 +678,13 @@ onMounted(async () => {
       .enter()
       .append('path')
       .attr('d', (fragment) => pathGenerator(fragment))
-      .attr('fill', (fragment) => gradientScale(fragment.fragmentIndex))
-      .attr('stroke', '#33ac51')
-      .attr('stroke-width', 0.6)
-      .attr('fill-opacity', 0.9)
+      .attr('fill', 'none')
+      .attr('stroke', '#ffffff')
+      .attr('stroke-width', 1.2)
+      .attr('stroke-linejoin', 'round')
       .attr('cursor', 'pointer')
       .on('mouseover', function (event) {
-        d3.select(this).attr('fill-opacity', 1)
+        d3.select(this).attr('stroke', '#a6f3ff').attr('stroke-width', 1.8)
         tooltip
           .html(`<strong>${county.properties.code}</strong>`)
           .style('left', `${event.pageX + 15}px`)
@@ -706,7 +695,7 @@ onMounted(async () => {
         tooltip.style('left', `${event.pageX + 15}px`).style('top', `${event.pageY - 30}px`)
       })
       .on('mouseout', function () {
-        d3.select(this).attr('fill-opacity', 0.9)
+        d3.select(this).attr('stroke', '#ffffff').attr('stroke-width', 1.2)
         tooltip.style('opacity', 0)
       })
 
@@ -876,7 +865,6 @@ onMounted(async () => {
   height: auto;
   border-radius: 20px;
   box-shadow: 0 32px 60px rgba(0, 0, 0, 0.35);
-  background: #091014;
 }
 
 #tooltip {
