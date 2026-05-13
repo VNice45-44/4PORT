@@ -37,7 +37,13 @@
             <h4>Sub-Counties</h4>
             <ul class="sub-county-list">
               <li v-for="(subCounty, idx) in selectedCounty.properties.sub_counties" :key="idx">
-                {{ subCounty }}
+                <button
+                  type="button"
+                  :class="{ active: idx === selectedSubCountyIndex }"
+                  @click="selectSubCounty(idx)"
+                >
+                  {{ subCounty }}
+                </button>
               </li>
             </ul>
           </div>
@@ -508,17 +514,27 @@ const richCountyData = [
 const countyNames = ref([])
 const countyFeatures = ref([])
 const selectedCountyIndex = ref(0)
+const selectedSubCountyIndex = ref(0)
 const selectedCounty = ref(null)
 let renderCountyFn = null
 
 const selectCounty = (index) => {
   if (index === selectedCountyIndex.value) return
   selectedCountyIndex.value = index
+  selectedSubCountyIndex.value = 0
   if (countyFeatures.value[index]) {
     selectedCounty.value = countyFeatures.value[index]
     if (renderCountyFn) {
-      renderCountyFn(countyFeatures.value[index])
+      renderCountyFn(countyFeatures.value[index], selectedSubCountyIndex.value)
     }
+  }
+}
+
+const selectSubCounty = (index) => {
+  if (index === selectedSubCountyIndex.value) return
+  selectedSubCountyIndex.value = index
+  if (selectedCounty.value && renderCountyFn) {
+    renderCountyFn(selectedCounty.value, index)
   }
 }
 
@@ -573,7 +589,10 @@ onMounted(async () => {
           name: normalizedName,
           capital: extraInfo.capital || 'N/A',
           code: extraInfo.code || 'N/A',
-          sub_counties: extraInfo.sub_counties || [],
+          sub_counties: fragments.map(
+            (fragment) =>
+              fragment.properties?.adm2_name || fragment.properties?.adm2_ref_name || 'Unknown',
+          ),
         },
         geometry: {
           type: 'MultiPolygon',
@@ -666,7 +685,7 @@ onMounted(async () => {
     )
   })
 
-  const drawSelectedCounty = (county) => {
+  const drawSelectedCounty = (county, activeSubCountyIndex = selectedSubCountyIndex.value) => {
     if (!county) return
     svg.selectAll('g.county').remove()
 
@@ -679,8 +698,12 @@ onMounted(async () => {
       .append('path')
       .attr('d', (fragment) => pathGenerator(fragment))
       .attr('fill', 'none')
-      .attr('stroke', '#ffffff')
-      .attr('stroke-width', 1.2)
+      .attr('stroke', (fragment) =>
+        fragment.fragmentIndex === activeSubCountyIndex ? '#a6f3ff' : '#ffffff',
+      )
+      .attr('stroke-width', (fragment) =>
+        fragment.fragmentIndex === activeSubCountyIndex ? 2.2 : 1.1,
+      )
       .attr('stroke-linejoin', 'round')
       .attr('cursor', 'pointer')
       .on('mouseover', function (event) {
@@ -694,8 +717,11 @@ onMounted(async () => {
       .on('mousemove', (event) => {
         tooltip.style('left', `${event.pageX + 15}px`).style('top', `${event.pageY - 30}px`)
       })
-      .on('mouseout', function () {
-        d3.select(this).attr('stroke', '#ffffff').attr('stroke-width', 1.2)
+      .on('mouseout', function (event, fragment) {
+        const isActive = fragment.fragmentIndex === activeSubCountyIndex
+        d3.select(this)
+          .attr('stroke', isActive ? '#a6f3ff' : '#ffffff')
+          .attr('stroke-width', isActive ? 2.2 : 1.1)
         tooltip.style('opacity', 0)
       })
 
@@ -706,183 +732,12 @@ onMounted(async () => {
   countyNames.value = countyFeatures.value.map((county) => county.properties.name)
   if (countyFeatures.value.length > 0) {
     selectedCountyIndex.value = 0
+    selectedSubCountyIndex.value = 0
     selectedCounty.value = countyFeatures.value[0]
     renderCountyFn = drawSelectedCounty
-    drawSelectedCounty(countyFeatures.value[0])
+    drawSelectedCounty(countyFeatures.value[0], selectedSubCountyIndex.value)
   }
 
   console.log(`County groups appended: ${countyFeatures.value.length}`)
 })
 </script>
-
-<style scoped lang="scss">
-.map-page {
-  padding: 1.5rem 1rem;
-}
-
-.map-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.map-header h1 {
-  margin: 0;
-  font-size: clamp(2rem, 2.6vw, 3rem);
-}
-
-.page-layout {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.left-panel {
-  flex: 0 0 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.county-selector {
-  background: rgba(14, 23, 38, 0.95);
-  border: 1px solid rgba(51, 172, 81, 0.35);
-  border-radius: 18px;
-  padding: 1rem;
-}
-
-.county-selector h2 {
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-}
-
-.county-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.county-list button {
-  width: 100%;
-  text-align: left;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid rgba(67, 113, 186, 0.25);
-  border-radius: 10px;
-  background: rgba(11, 23, 44, 0.9);
-  color: #e7edf7;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.county-list button.active {
-  background: #33ac51;
-  color: #091014;
-  border-color: transparent;
-}
-
-.county-list button:hover {
-  background: rgba(51, 172, 81, 0.16);
-}
-
-.county-details {
-  background: rgba(14, 23, 38, 0.95);
-  border: 1px solid rgba(51, 172, 81, 0.35);
-  border-radius: 18px;
-  padding: 1rem;
-  flex: 1;
-}
-
-.county-details h3 {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
-  color: #33ac51;
-}
-
-.county-details h4 {
-  margin: 0.75rem 0 0.5rem;
-  font-size: 0.9rem;
-  color: #b8d6e9;
-}
-
-.detail-section {
-  margin-bottom: 1rem;
-}
-
-.detail-row {
-  margin: 0.4rem 0;
-  font-size: 0.9rem;
-  color: #e7edf7;
-}
-
-.detail-row strong {
-  color: #33ac51;
-}
-
-.sub-county-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.85rem;
-  max-height: 180px;
-  overflow-y: auto;
-}
-
-.sub-county-list li {
-  padding: 0.35rem 0.5rem;
-  color: #e7edf7;
-  border-left: 2px solid #33ac51;
-  margin-bottom: 0.25rem;
-  padding-left: 0.75rem;
-}
-
-.back-link {
-  color: #efefef;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
-
-.map-container {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-}
-
-#mapSvg {
-  width: 100%;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.35);
-}
-
-#tooltip {
-  position: absolute;
-  opacity: 0;
-  background: rgba(22, 28, 56, 0.95);
-  color: #ffffff;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #22344b;
-  pointer-events: none;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  max-width: 240px;
-}
-
-.tooltip-meta {
-  color: #b8d6e9;
-  font-size: 0.95rem;
-}
-</style>
