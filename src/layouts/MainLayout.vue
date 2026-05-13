@@ -1,15 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-
     <q-page-container>
-  <transition name="fade-slide" mode="out-in">
-    <router-view />
-  </transition>
-</q-page-container>
+      <router-view v-slot="{ Component }">
+        <transition name="fade-slide" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </q-page-container>
   </q-layout>
 </template>
 
-<script setup>
-
-
-</script>
+<script setup></script>

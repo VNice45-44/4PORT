@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Nairobi",
+    "code": "047",
+    "capital": "Nairobi",
+    "sub_counties": ["Westlands", "CBD", "Karen", "Langata"]
+  },
+  {
+    "name": "Kiambu",
+    "code": "022",
+    "capital": "Kiambu",
+    "sub_counties": ["Thika", "Limuru", "Ruiru", "Juja"]
+  },
+  {
+    "name": "Nakuru",
+    "code": "032",
+    "capital": "Nakuru",
+    "sub_counties": ["Nakuru Town", "Naivasha", "Molo"]
+  },
+  {
+    "name": "Mombasa",
+    "code": "001",
+    "capital": "Mombasa City",
+    "sub_counties": ["Nyali", "Likoni", "Mvita", "Kisauni"]
+  },
+  {
+    "name": "Kisumu",
+    "code": "042",
+    "capital": "Kisumu",
+    "sub_counties": ["Kisumu Central", "Nyando", "Muhoroni"]
+  },
+  {
+    "name": "Turkana",
+    "code": "023",
+    "capital": "Lodwar",
+    "sub_counties": ["Turkana West", "Turkana South", "Loima"]
+  },
+  {
+    "name": "Machakos",
+    "code": "016",
+    "capital": "Machakos Town",
+    "sub_counties": ["Mavoko", "Kathiani", "Yatta", "Mwala"]
+  }
+]
