@@ -2,10 +2,7 @@
   <q-page class="page landing">
     <div class="topbar">
       <router-link to="/" class="brand-link">
-        <svg width="28" height="28" viewBox="0 0 48 48">
-          <circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="4" />
-          <circle cx="24" cy="24" r="6" fill="var(--accent)" />
-        </svg>
+        <img class="brand-mark" src="/lion-logo.svg" alt="" />
         <span>KS</span>
       </router-link>
       <nav class="desktop-nav">
@@ -37,55 +34,83 @@
               common thread: systems that were either broken or invisible.
             </p>
             <div class="engineering-challenge">
-              <div class="challenge-item">
+              <button
+                v-for="(layer, index) in dataLayers"
+                :key="layer.label"
+                type="button"
+                class="challenge-item layer-card"
+                :class="{ active: index === activeLayerIndex }"
+                @click="activeLayerIndex = index"
+                @mouseenter="activeLayerIndex = index"
+              >
                 <div class="challenge-label">The Problem</div>
-                <p>
-                  Critical business data scattered across spreadsheets, databases, and paperwork. No
-                  visibility. No speed. No control.
-                </p>
-              </div>
-              <div class="challenge-item">
-                <div class="challenge-label">What We Build</div>
-                <p>
-                  Lightweight, fast interfaces that let you see and manage your entire operation at
-                  a glance. Real-time updates, clear decision-making, operational confidence.
-                </p>
-              </div>
+                <h4>{{ layer.label }}</h4>
+                <p>{{ layer.copy }}</p>
+              </button>
+            </div>
+            <div class="layer-build">
+              <div class="challenge-label">What We Build</div>
+              <p>
+                Lightweight interfaces that connect scattered inputs into a clear operational view:
+                real-time updates, confident decisions, and systems your team can actually steer.
+              </p>
             </div>
             <p class="case-conclusion">
-              We clean up, stabilize, and scale the systems that run your business.
+              We clean, stabilize, and scale systems that run your business.
             </p>
           </div>
           <div class="case-study-visual">
-            <div class="visual-placeholder">
-              <svg width="100%" height="100%" viewBox="0 0 300 300">
+            <div class="visual-placeholder layer-viz">
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 340 320"
+                aria-label="Interactive data layer visualization"
+              >
                 <circle
-                  cx="150"
-                  cy="150"
-                  r="80"
+                  v-for="(layer, index) in dataLayers"
+                  :key="layer.label"
+                  cx="170"
+                  cy="138"
+                  :r="layer.radius"
                   fill="none"
-                  stroke="rgba(51, 172, 81, 0.3)"
-                  stroke-width="2"
+                  :stroke="index === activeLayerIndex ? layer.color : 'var(--border-strong)'"
+                  :stroke-width="index === activeLayerIndex ? 5 : 2"
+                  :opacity="index === activeLayerIndex ? 1 : 0.32"
+                  class="layer-ring"
                 />
+                <g v-for="(node, index) in layerNodes" :key="node.label" class="layer-node">
+                  <line
+                    x1="170"
+                    y1="138"
+                    :x2="node.x"
+                    :y2="node.y"
+                    :stroke="index === activeLayerIndex ? dataLayers[index].color : 'var(--border)'"
+                    :stroke-width="index === activeLayerIndex ? 2 : 1"
+                  />
+                  <circle
+                    :cx="node.x"
+                    :cy="node.y"
+                    :r="index === activeLayerIndex ? 14 : 8"
+                    :fill="index === activeLayerIndex ? dataLayers[index].color : 'var(--card-bg)'"
+                    :stroke="dataLayers[index].color"
+                    stroke-width="2"
+                  />
+                </g>
                 <circle
-                  cx="150"
-                  cy="150"
-                  r="60"
-                  fill="none"
-                  stroke="rgba(51, 172, 81, 0.5)"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="150"
-                  cy="150"
-                  r="40"
-                  fill="none"
+                  cx="170"
+                  cy="138"
+                  r="18"
+                  fill="var(--card-bg)"
                   stroke="var(--accent)"
-                  stroke-width="2"
+                  stroke-width="3"
                 />
-                <circle cx="150" cy="150" r="10" fill="var(--accent)" />
-                <text x="150" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">
-                  Data Layers
+                <circle cx="170" cy="138" r="5" fill="var(--accent)" />
+                <text x="170" y="266" text-anchor="middle" font-size="13" fill="var(--text)">
+                  {{ activeLayer.label }}
+                </text>
+                <text x="170" y="286" text-anchor="middle" font-size="11" fill="var(--text-muted)">
+                  {{ activeLayer.signal }}
                 </text>
               </svg>
             </div>
@@ -124,6 +149,8 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue'
+
 const toggleTheme = () => {
   const isSoft = document.body.classList.toggle('theme-soft')
   document.body.classList.toggle('theme-dark', !isSoft)
@@ -131,6 +158,48 @@ const toggleTheme = () => {
   document.body.classList.toggle('body--light', isSoft)
   document.body.style.setProperty('--q-dark-page', isSoft ? '#faf8f6' : '#07110a')
 }
+
+const activeLayerIndex = ref(0)
+
+const dataLayers = [
+  {
+    label: 'Collection',
+    copy: 'Spreadsheets, field notes, bookings, and device signals start in different places.',
+    signal: 'Capture the signal',
+    radius: 96,
+    color: '#33ac51',
+  },
+  {
+    label: 'Structure',
+    copy: 'Records need shared meaning before teams can compare, search, and trust them.',
+    signal: 'Normalize the model',
+    radius: 74,
+    color: '#68e0ff',
+  },
+  {
+    label: 'Workflow',
+    copy: 'Approvals, assignments, alerts, and exceptions become repeatable operating logic.',
+    signal: 'Move work forward',
+    radius: 52,
+    color: '#f2c037',
+  },
+  {
+    label: 'Visibility',
+    copy: 'Dashboards and maps turn live operations into decisions people can act on quickly.',
+    signal: 'See the system',
+    radius: 30,
+    color: '#40a86b',
+  },
+]
+
+const layerNodes = [
+  { label: 'Collection', x: 84, y: 76 },
+  { label: 'Structure', x: 260, y: 78 },
+  { label: 'Workflow', x: 274, y: 205 },
+  { label: 'Visibility', x: 74, y: 210 },
+]
+
+const activeLayer = computed(() => dataLayers[activeLayerIndex.value])
 
 const services = [
   {

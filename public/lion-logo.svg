@@ -1,0 +1,38 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Kanu Systems mark</title>
+  <desc id="desc">A geometric lion head drawn from green and cyan system lines.</desc>
+  <defs>
+    <linearGradient id="lionGradient" x1="22" y1="18" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#68e0ff" />
+      <stop offset="0.54" stop-color="#33ac51" />
+      <stop offset="1" stop-color="#0f3c15" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="#07110a" />
+  <path
+    d="M64 12 91 25 111 51 103 87 78 115H50L25 87 17 51 37 25 64 12Z"
+    fill="none"
+    stroke="url(#lionGradient)"
+    stroke-width="6"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M39 36 28 55 36 82 51 73 64 104 77 73 92 82 100 55 89 36 73 52 64 35 55 52 39 36Z"
+    fill="url(#lionGradient)"
+    fill-opacity="0.22"
+    stroke="#33ac51"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M48 58 58 63 48 68M80 58 70 63 80 68"
+    fill="none"
+    stroke="#68e0ff"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path d="M56 83 64 77 72 83 64 91 56 83Z" fill="#33ac51" />
+  <path d="M48 96H80" stroke="#68e0ff" stroke-width="5" stroke-linecap="round" />
+  <circle cx="64" cy="64" r="4" fill="#68e0ff" />
+</svg>
