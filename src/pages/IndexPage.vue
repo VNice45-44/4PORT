@@ -10,7 +10,6 @@
       </router-link>
       <nav class="desktop-nav">
         <router-link to="/about">Method</router-link>
-        <router-link to="/map">Live Map</router-link>
       </nav>
       <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
     </div>
