@@ -16,11 +16,10 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="eyebrow">Nairobi // Software Intelligence</div>
+        <div class="eyebrow">Kilifi // Software Intelligence</div>
         <h1>Systems that stay nominal.</h1>
         <p class="tagline">
-          High-performance web applications and technical consultancy built for operational
-          continuity.
+          High-performance web applications and technical consultancy built for continuity.
         </p>
       </div>
     </section>
@@ -45,7 +44,7 @@
                 </p>
               </div>
               <div class="challenge-item">
-                <div class="challenge-label">Our Solution</div>
+                <div class="challenge-label">Solution</div>
                 <p>
                   Custom metadata schema, TopoJSON compression, and D3.js-driven rendering. The
                   result: submillisecond interactions on complex datasets.
@@ -128,17 +127,17 @@ const services = [
   {
     id: 1,
     title: 'Web Architecture',
-    desc: 'Interfaces designed for complex data and high-load environments.',
+    desc: 'Interfaces for complex data and high-load environments.',
   },
   {
     id: 2,
     title: 'App Development',
-    desc: 'Custom engines built with maintainability as the first priority.',
+    desc: 'Custom engines with maintainability as the first priority.',
   },
   {
     id: 3,
     title: 'Data Viz',
-    desc: 'Transforming geographical and systemic data into actionable insights.',
+    desc: 'Transforming geographical and systemic data into actionables.',
   },
   {
     id: 4,
