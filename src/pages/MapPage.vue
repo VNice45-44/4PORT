@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import * as d3 from 'd3'
+import { geoMercator, geoPath, groups, json, select } from 'd3'
 import { onMounted, ref } from 'vue'
 import geojsonUrl from 'src/stores/ken_admin2.geojson?url'
 
@@ -559,10 +559,10 @@ const selectSubCounty = (index) => {
 onMounted(async () => {
   const width = 700
   const height = 600
-  const svg = d3.select('#mapSvg').attr('viewBox', `0 0 ${width} ${height}`)
-  const tooltip = d3.select('#tooltip')
+  const svg = select('#mapSvg').attr('viewBox', `0 0 ${width} ${height}`)
+  const tooltip = select('#tooltip')
 
-  const geojson = await d3.json(geojsonUrl)
+  const geojson = await json(geojsonUrl)
   if (!geojson || !geojson.features) {
     console.error('Kenya GeoJSON not loaded', geojson)
     return
@@ -575,7 +575,7 @@ onMounted(async () => {
   // Use all features (no restrictive filter)
   const kenyaFeatures = geojson.features
 
-  const countyGroups = d3.groups(
+  const countyGroups = groups(
     kenyaFeatures,
     (feature) => feature.properties?.adm1_name || feature.properties?.adm1_ref_name,
   )
@@ -663,7 +663,7 @@ onMounted(async () => {
   const centerLon = (kenyaBounds.minLon + kenyaBounds.maxLon) / 2
   const centerLat = (kenyaBounds.minLat + kenyaBounds.maxLat) / 2
 
-  const baseProjection = d3.geoMercator().center([centerLon, centerLat]).scale(1).translate([0, 0])
+  const baseProjection = geoMercator().center([centerLon, centerLat]).scale(1).translate([0, 0])
   const projectedPoints = []
   kenyaFeatures.forEach((feature) => {
     collectCoordinates(feature.geometry).forEach(([lon, lat]) => {
@@ -686,12 +686,11 @@ onMounted(async () => {
   const translateX = (width - scale * (projectedMinX + projectedMaxX)) / 2
   const translateY = (height - scale * (projectedMinY + projectedMaxY)) / 2
 
-  const projection = d3
-    .geoMercator()
+  const projection = geoMercator()
     .center([centerLon, centerLat])
     .scale(scale)
     .translate([translateX, translateY])
-  const pathGenerator = d3.geoPath().projection(projection)
+  const pathGenerator = geoPath().projection(projection)
 
   svg.append('rect').attr('width', width).attr('height', height).attr('fill', '#091014')
 
@@ -725,7 +724,7 @@ onMounted(async () => {
       .attr('stroke-linejoin', 'round')
       .attr('cursor', 'pointer')
       .on('mouseover', function (event) {
-        d3.select(this).attr('stroke', '#a6f3ff').attr('stroke-width', 1.8)
+        select(this).attr('stroke', '#a6f3ff').attr('stroke-width', 1.8)
         tooltip
           .html(`<strong>${county.properties.code}</strong>`)
           .style('left', `${event.pageX + 15}px`)
@@ -737,7 +736,7 @@ onMounted(async () => {
       })
       .on('mouseout', function (event, fragment) {
         const isActive = fragment.fragmentIndex === activeSubCountyIndex
-        d3.select(this)
+        select(this)
           .attr('stroke', isActive ? '#a6f3ff' : '#ffffff')
           .attr('stroke-width', isActive ? 2.2 : 1.1)
         tooltip.style('opacity', 0)

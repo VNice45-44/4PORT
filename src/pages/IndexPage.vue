@@ -14,7 +14,7 @@
     <section class="hero">
       <div class="hero-content">
         <div class="eyebrow">Kilifi // Software Intelligence</div>
-        <h1>Systems that stay nominal</h1>
+        <h2>Systems that stay nominal</h2>
         <p class="tagline">
           High-performance web applications and technical consultancy built for continuity.
         </p>

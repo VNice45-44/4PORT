@@ -160,25 +160,37 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted } from 'vue'
-import * as d3 from 'd3'
+import {
+  color as d3Color,
+  curveCatmullRom,
+  curveLinearClosed,
+  easeCubicOut,
+  easeLinear,
+  hierarchy,
+  line as d3Line,
+  linkHorizontal,
+  range,
+  select,
+  timer,
+  tree,
+} from 'd3'
 
 const timers = []
 
 const themeColor = (name, fallback) =>
   getComputedStyle(document.body).getPropertyValue(name).trim() || fallback
 
-const alphaColor = (color, opacity) => {
-  const parsed = d3.color(color)
-  if (!parsed) return color
+const alphaColor = (value, opacity) => {
+  const parsed = d3Color(value)
+  if (!parsed) return value
   parsed.opacity = opacity
   return parsed.formatRgb()
 }
 
 const setupSvg = (selector, width, height) => {
-  d3.select(selector).selectAll('*').remove()
+  select(selector).selectAll('*').remove()
 
-  return d3
-    .select(selector)
+  return select(selector)
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('width', '100%')
@@ -270,9 +282,8 @@ const drawArchitectureTree = () => {
     .attr('flood-color', accent)
     .attr('flood-opacity', 0.25)
 
-  const root = d3.hierarchy(data)
-  d3
-    .tree()
+  const root = hierarchy(data)
+  tree()
     .size([height - 120, width - 200])
     .separation((a, b) => (a.parent === b.parent ? 1.2 : 2.2))(root)
 
@@ -286,8 +297,7 @@ const drawArchitectureTree = () => {
     .attr('stroke-width', 2)
     .attr(
       'd',
-      d3
-        .linkHorizontal()
+      linkHorizontal()
         .x((d) => d.y)
         .y((d) => d.x),
     )
@@ -391,9 +401,8 @@ const drawDeliveryFlow = () => {
     { label: 'Ops Feedback', x: 780, y: 92 },
   ]
 
-  const line = d3
-    .line()
-    .curve(d3.curveCatmullRom.alpha(0.7))
+  const line = d3Line()
+    .curve(curveCatmullRom.alpha(0.7))
     .x((d) => d.x)
     .y((d) => d.y)
 
@@ -413,7 +422,7 @@ const drawDeliveryFlow = () => {
       return this.getTotalLength()
     })
 
-  path.transition().duration(1400).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0)
+  path.transition().duration(1400).ease(easeCubicOut).attr('stroke-dashoffset', 0)
 
   const nodes = svg.selectAll('g.flow-node').data(lanes).join('g').attr('class', 'flow-node')
 
@@ -466,7 +475,7 @@ const drawDeliveryFlow = () => {
       .transition()
       .delay(delay)
       .duration(3200)
-      .ease(d3.easeLinear)
+      .ease(easeLinear)
       .attrTween('transform', () => {
         const pathNode = path.node()
         const length = pathNode.getTotalLength()
@@ -510,9 +519,9 @@ const drawCapabilityRadar = () => {
     center[0] + Math.cos(angle(i)) * radius * value,
     center[1] + Math.sin(angle(i)) * radius * value,
   ]
-  const radarLine = d3.line().curve(d3.curveLinearClosed)
+  const radarLine = d3Line().curve(curveLinearClosed)
 
-  d3.range(1, 5).forEach((ring) => {
+  range(1, 5).forEach((ring) => {
     svg
       .append('path')
       .attr('d', radarLine(metrics.map((_, i) => point(ring / 4, i))))
@@ -556,7 +565,7 @@ const drawCapabilityRadar = () => {
   shape
     .transition()
     .duration(1100)
-    .ease(d3.easeCubicOut)
+    .ease(easeCubicOut)
     .attr('d', radarLine(metrics.map((d, i) => point(d.value, i))))
 
   svg
@@ -673,7 +682,7 @@ const drawOpsPulse = () => {
     .attr('stroke', accent)
     .attr('stroke-width', 2)
   timers.push(
-    d3.timer((elapsed) => {
+    timer((elapsed) => {
       sweep.attr('transform', `rotate(${(elapsed / 26) % 360})`)
     }),
   )
