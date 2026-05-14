@@ -30,7 +30,7 @@
 }
 
 .page:not(.map-page) {
-  max-width: 1080px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
@@ -167,6 +167,10 @@ p {
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.15;
   margin-bottom: 1rem;
+  background: linear-gradient(120deg, #33ac51, #68e0ff 65%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-body p {
@@ -190,10 +194,15 @@ p {
 }
 
 .viz-container {
-  min-height: 400px;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.viz-container svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* ============================= */

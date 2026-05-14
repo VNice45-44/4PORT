@@ -104,7 +104,7 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p>Delivering field-ready code from Nairobi.</p>
+          <p>Delivering field-ready code from Kilifi.</p>
           <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
         <div class="footer-col">

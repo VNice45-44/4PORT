@@ -76,27 +76,27 @@
     </section>
 
     <section class="specs-section">
-      <h2>System Specifications</h2>
+      <h2>System Capabilities</h2>
       <div class="specs-grid">
         <div class="spec-item">
-          <div class="spec-label">Runtime</div>
-          <div class="spec-value">Modern tooling</div>
-          <p class="spec-desc">High-speed reactivity</p>
+          <div class="spec-label">Resilience</div>
+          <div class="spec-value">Built to adapt</div>
+          <p class="spec-desc">Enduring systems that shift without breaking.</p>
         </div>
         <div class="spec-item">
-          <div class="spec-label">Visualization</div>
-          <div class="spec-value">Mathematical models</div>
-          <p class="spec-desc">Data-driven graphics</p>
+          <div class="spec-label">Insight</div>
+          <div class="spec-value">Clear system view</div>
+          <p class="spec-desc">Actionable visibility into running behavior.</p>
         </div>
         <div class="spec-item">
-          <div class="spec-label">Components</div>
-          <div class="spec-value">UI/UX</div>
-          <p class="spec-desc">Enterprise-grade dev</p>
+          <div class="spec-label">Interfaces</div>
+          <div class="spec-value">Purposeful touchpoints</div>
+          <p class="spec-desc">Operational dashboards that stay intuitive.</p>
         </div>
         <div class="spec-item">
-          <div class="spec-label">Data Format</div>
-          <div class="spec-value">GeoJSON / TopoJSON</div>
-          <p class="spec-desc">Optimized geographical data</p>
+          <div class="spec-label">Structure</div>
+          <div class="spec-value">Organized systems</div>
+          <p class="spec-desc">Clean, predictable delivery of complex data.</p>
         </div>
       </div>
     </section>
@@ -105,7 +105,7 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p>Delivering high-performance code from Nairobi.</p>
+          <p>Delivering high-performance code from Kilifi.</p>
           <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
         <div class="footer-col">
@@ -128,85 +128,133 @@ import { onMounted } from 'vue'
 import * as d3 from 'd3'
 
 onMounted(() => {
-  const width = 500,
-    height = 400
-  const nodes = [
-    { id: 'CORE', r: 40, color: '#33ac51' },
-    { id: 'Data', r: 20 },
-    { id: 'Logic', r: 20 },
-    { id: 'UI', r: 20 },
-    { id: 'Ops', r: 20 },
-  ]
-  const links = nodes.slice(1).map((n) => ({ source: 'CORE', target: n.id }))
+  const width = 540,
+    height = 420
+  const data = {
+    name: 'CORE',
+    children: [
+      { name: 'Data', children: [{ name: 'Reports' }, { name: 'Signals' }] },
+      { name: 'Logic', children: [{ name: 'Flows' }, { name: 'Rules' }] },
+      { name: 'UI', children: [{ name: 'Field' }, { name: 'Control' }] },
+      { name: 'Ops', children: [{ name: 'Monitor' }, { name: 'Sync' }] },
+    ],
+  }
 
   const svg = d3
     .select('#aboutViz')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('width', '100%')
+    .attr('height', '100%')
     .style('overflow', 'visible')
 
-  const link = svg
-    .append('g')
-    .selectAll('line')
-    .data(links)
-    .enter()
-    .append('line')
-    .attr('stroke', 'rgba(51, 172, 81, 0.2)')
-    .attr('stroke-width', 2)
+  const defs = svg.append('defs')
+  const gradient = defs
+    .append('linearGradient')
+    .attr('id', 'linkGradient')
+    .attr('x1', '0%')
+    .attr('y1', '0%')
+    .attr('x2', '100%')
+    .attr('y2', '0%')
 
-  const node = svg.append('g').selectAll('g').data(nodes).enter().append('g')
+  gradient
+    .append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', '#33ac51')
+    .attr('stop-opacity', 0.28)
+
+  gradient
+    .append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', '#68e0ff')
+    .attr('stop-opacity', 0.75)
+
+  defs
+    .append('filter')
+    .attr('id', 'nodeGlow')
+    .append('feDropShadow')
+    .attr('dx', 0)
+    .attr('dy', 0)
+    .attr('stdDeviation', 4)
+    .attr('flood-color', '#33ac51')
+    .attr('flood-opacity', 0.25)
+
+  const root = d3.hierarchy(data)
+  d3
+    .tree()
+    .size([height - 100, width - 160])
+    .separation((a, b) => (a.parent === b.parent ? 1.4 : 2))(root)
+
+  const g = svg.append('g').attr('transform', 'translate(80,50)')
+
+  g.selectAll('path')
+    .data(root.links())
+    .join('path')
+    .attr('fill', 'none')
+    .attr('stroke', 'url(#linkGradient)')
+    .attr('stroke-width', 2)
+    .attr(
+      'd',
+      d3
+        .linkHorizontal()
+        .x((d) => d.y)
+        .y((d) => d.x),
+    )
+    .attr('stroke-dasharray', function () {
+      const len = this.getTotalLength()
+      return `${len} ${len}`
+    })
+    .attr('stroke-dashoffset', function () {
+      return this.getTotalLength()
+    })
+    .transition()
+    .duration(1200)
+    .attr('stroke-dashoffset', 0)
+
+  const node = g
+    .selectAll('g')
+    .data(root.descendants())
+    .join('g')
+    .attr('transform', (d) => `translate(${d.y},${d.x})`)
+    .style('opacity', 0)
+
+  node
+    .transition()
+    .delay((d, i) => i * 120)
+    .duration(600)
+    .style('opacity', 1)
 
   node
     .append('circle')
-    .attr('class', (d) => `node-${d.id}`)
-    .attr('r', (d) => d.r)
-    .attr('fill', (d) => d.color || 'rgba(255,255,255,0.05)')
-    .attr('stroke', '#33ac51')
-    .attr('stroke-width', 2)
+    .attr('r', (d) => (d.depth === 0 ? 28 : 16))
+    .attr('fill', (d) => (d.depth === 0 ? 'rgba(51,172,81,0.16)' : 'rgba(255,255,255,0.16)'))
+    .attr('stroke', (d) => (d.depth === 0 ? '#68e0ff' : '#33ac51'))
+    .attr('stroke-width', (d) => (d.depth === 0 ? 3.2 : 1.5))
+    .attr('filter', 'url(#nodeGlow)')
 
   node
     .append('text')
-    .text((d) => d.id)
-    .attr('text-anchor', 'middle')
+    .text((d) => d.data.name)
     .attr('dy', 5)
+    .attr('x', (d) => (d.depth === 0 ? 0 : 22))
+    .attr('text-anchor', (d) => (d.depth === 0 ? 'middle' : 'start'))
     .attr('fill', '#fff')
-    .attr('font-size', '10px')
+    .attr('font-size', (d) => (d.depth === 0 ? '0.95rem' : '0.8rem'))
     .style('pointer-events', 'none')
 
-  // Pulse effect for core
   const pulse = () => {
     svg
-      .select('.node-CORE')
+      .select('circle')
       .transition()
       .duration(1000)
-      .attr('r', 45)
-      .attr('stroke-opacity', 0.3)
+      .attr('r', 32)
+      .attr('stroke-opacity', 0.4)
       .transition()
       .duration(1000)
-      .attr('r', 40)
+      .attr('r', 28)
       .attr('stroke-opacity', 1)
       .on('end', pulse)
   }
-
-  d3.forceSimulation(nodes)
-    .force(
-      'link',
-      d3
-        .forceLink(links)
-        .id((d) => d.id)
-        .distance(120),
-    )
-    .force('charge', d3.forceManyBody().strength(-300))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .on('tick', () => {
-      link
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y)
-      node.attr('transform', (d) => `translate(${d.x},${d.y})`)
-    })
-    .restart()
 
   pulse()
 })
