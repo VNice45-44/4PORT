@@ -1,72 +1,103 @@
 <template>
   <q-page class="page about">
     <div class="topbar">
-      <div class="brand">
-        <router-link to="/" class="brand-link">
-          <div class="mark">
-            <svg width="28" height="28" viewBox="0 0 48 48">
-              <g fill="#33ac51">
-                <circle cx="20" cy="23" r="2" fill="#000" />
-                <circle cx="28" cy="23" r="2" fill="#000" />
-              </g>
-            </svg>
-          </div>
-          <span>Kanu Systems</span>
-        </router-link>
-      </div>
-
+      <router-link to="/" class="brand-link"><span>Kanu Systems</span></router-link>
       <nav class="desktop-nav">
-        <router-link to="/">Home</router-link>
-        <router-link to="/map">Map</router-link>
+        <router-link to="/about">Method</router-link>
+        <router-link to="/map">Live Map</router-link>
       </nav>
     </div>
 
-    <section class="hero">
+    <div class="hero grid-2">
       <div class="hero-body">
-        <p class="eyebrow">At Kanu Systems, we...</p>
-        <h1>Build systems that stay intact when the field changes.</h1>
-        <p class="hero-sub">
-          Engineering, installation, and planning work together in one continuous flow rather than
-          in isolated phases.
+        <div class="eyebrow">Our Philosophy</div>
+        <h1>Code is a living environment.</h1>
+        <p>
+          We treat software as an ecosystem. When one part changes, the whole must adapt. Our work
+          focuses on visibility—ensuring you can see how your data flows before it fails.
         </p>
       </div>
+      <div class="viz-container">
+        <div id="aboutViz" class="kanu-card"></div>
+      </div>
+    </div>
 
-      <div class="hero-viz">
-        <div id="aboutViz" class="viz-shell"></div>
+    <section class="protocol-section">
+      <h2>The Kanu Protocol</h2>
+      <p class="section-intro">Our methodology for building resilient systems.</p>
+      <div class="protocol-grid">
+        <div class="protocol-card">
+          <div class="phase-number">01</div>
+          <h3>Stress-Testing Requirements</h3>
+          <p>
+            We look for where the logic breaks before we write a single line of code. Understanding
+            edge cases defines the foundation.
+          </p>
+        </div>
+        <div class="protocol-card">
+          <div class="phase-number">02</div>
+          <h3>Modular Architecture</h3>
+          <p>
+            Building systems as independent, communicating nodes. Each component handles one
+            responsibility, enforcing clarity and resilience.
+          </p>
+        </div>
+        <div class="protocol-card">
+          <div class="phase-number">03</div>
+          <h3>Observability</h3>
+          <p>
+            Integrating real-time feedback loops so the system remains operational. Visibility into
+            system state is non-negotiable.
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="info-grid">
-      <div class="info-card">
-        <h2>What we bring</h2>
-        <p>
-          A practical approach to construction, solar energy, security, and site design — focused on
-          stability, visibility, and long-term performance.
-        </p>
-      </div>
-      <div class="info-card accent">
-        <h2>How we make it work</h2>
-        <p>
-          We treat systems as connected pieces, not separate deliverables. The shape of the work is
-          as important as the final asset.
-        </p>
+    <section class="edge-section">
+      <div class="edge-content">
+        <div class="edge-text">
+          <h2>Designed for the Edge</h2>
+          <p>
+            Software fails when it hits the field. Low bandwidth, changing requirements, offline
+            needs—these aren't edge cases, they're requirements.
+          </p>
+          <p>
+            At Kanu Systems, resilience is a core feature, not an afterthought. We build systems
+            that continue to work when conditions change.
+          </p>
+          <ul class="edge-features">
+            <li>Optimized for variable network conditions</li>
+            <li>Graceful degradation under load</li>
+            <li>Adaptive interfaces for changing contexts</li>
+            <li>Real-time synchronization and conflict resolution</li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <section class="details">
-      <div class="detail-block">
-        <h3>Design, build, maintain</h3>
-        <p>
-          The strongest systems are designed with execution in mind, monitored during deployment,
-          and adjusted before they fail.
-        </p>
-      </div>
-      <div class="detail-block">
-        <h3>Portfolio without flash</h3>
-        <p>
-          The site is intentionally direct: a map asset, a structured narrative, and a clean point
-          of view on how systems are assembled.
-        </p>
+    <section class="specs-section">
+      <h2>System Specifications</h2>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Runtime</div>
+          <div class="spec-value">Modern tooling</div>
+          <p class="spec-desc">High-speed reactivity</p>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Visualization</div>
+          <div class="spec-value">Mathematical models</div>
+          <p class="spec-desc">Data-driven graphics</p>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Components</div>
+          <div class="spec-value">UI/UX</div>
+          <p class="spec-desc">Enterprise-grade dev</p>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Data Format</div>
+          <div class="spec-value">GeoJSON / TopoJSON</div>
+          <p class="spec-desc">Optimized geographical data</p>
+        </div>
       </div>
     </section>
 
@@ -74,17 +105,20 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p class="sub">Field-ready systems and site work, based in Nairobi.</p>
+          <p>Delivering high-performance code from Nairobi.</p>
+          <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
-
         <div class="footer-col">
-          <h4>Contact</h4>
-          <p>Samuel Kanu</p>
-          <p>VersityVille House</p>
-          <p>Nairobi 1928-00300</p>
+          <h4>Protocol</h4>
+          <router-link to="/about">Philosophy</router-link>
+          <router-link to="/map">Data Systems</router-link>
+        </div>
+        <div class="footer-col">
+          <h4>Channel</h4>
           <p>ops@kanusystems.com</p>
         </div>
       </div>
+      <div class="subtle-sign">© 2026 KANU_SYSTEMS. STATUS: ALL_SYSTEMS_NOMINAL</div>
     </footer>
   </q-page>
 </template>
@@ -93,325 +127,87 @@
 import { onMounted } from 'vue'
 import * as d3 from 'd3'
 
-const nodes = [
-  { id: 'Kanu Systems', radius: 42, fixed: true },
-  { id: 'Construction', radius: 26 },
-  { id: 'Solar', radius: 24 },
-  { id: 'Security', radius: 24 },
-  { id: 'Resort Planning', radius: 21 },
-  { id: 'Maintenance', radius: 29 },
-]
-
-const links = [
-  { source: 'Kanu Systems', target: 'Construction' },
-  { source: 'Kanu Systems', target: 'Solar' },
-  { source: 'Kanu Systems', target: 'Security' },
-  { source: 'Kanu Systems', target: 'Resort Planning' },
-  { source: 'Kanu Systems', target: 'Maintenance' },
-]
-
 onMounted(() => {
-  const width = 620
-  const height = 420
+  const width = 500,
+    height = 400
+  const nodes = [
+    { id: 'CORE', r: 40, color: '#33ac51' },
+    { id: 'Data', r: 20 },
+    { id: 'Logic', r: 20 },
+    { id: 'UI', r: 20 },
+    { id: 'Ops', r: 20 },
+  ]
+  const links = nodes.slice(1).map((n) => ({ source: 'CORE', target: n.id }))
+
   const svg = d3
     .select('#aboutViz')
     .append('svg')
-    .attr('width', width)
-    .attr('height', height)
     .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('overflow', 'visible')
 
   const link = svg
     .append('g')
-    .attr('class', 'links')
     .selectAll('line')
     .data(links)
     .enter()
     .append('line')
-    .attr('stroke', 'rgba(255,255,255,0.0009)')
-    .attr('stroke-width', 1.2)
+    .attr('stroke', 'rgba(51, 172, 81, 0.2)')
+    .attr('stroke-width', 2)
 
-  const node = svg
-    .append('g')
-    .attr('class', 'nodes')
-    .selectAll('g')
-    .data(nodes)
-    .enter()
-    .append('g')
-    .attr('class', 'node')
-    .call(
-      d3
-        .drag()
-        .on('start', (event, d) => {
-          if (!event.active) simulation.alphaTarget(0.3).restart()
-          d.fx = d.x
-          d.fy = d.y
-        })
-        .on('drag', (event, d) => {
-          d.fx = event.x
-          d.fy = event.y
-        })
-        .on('end', (event, d) => {
-          if (!event.active) simulation.alphaTarget(0)
-          d.fx = null
-          d.fy = null
-        }),
-    )
+  const node = svg.append('g').selectAll('g').data(nodes).enter().append('g')
 
   node
     .append('circle')
-    .attr('r', (d) => d.radius)
-    .attr('fill', (d) => (d.id === 'Kanu Systems' ? '#33ac51' : 'rgba(255,255,255,0.08)'))
+    .attr('class', (d) => `node-${d.id}`)
+    .attr('r', (d) => d.r)
+    .attr('fill', (d) => d.color || 'rgba(255,255,255,0.05)')
     .attr('stroke', '#33ac51')
-    .attr('stroke-width', (d) => (d.id === 'Kanu Systems' ? 2.4 : 1.4))
+    .attr('stroke-width', 2)
 
   node
     .append('text')
     .text((d) => d.id)
-    .attr('fill', '#ffffff')
-    .attr('font-size', (d) => (d.id === 'Kanu Systems' ? 14 : 12))
-    .attr('font-weight', (d) => (d.id === 'Kanu Systems' ? 700 : 400))
     .attr('text-anchor', 'middle')
-    .attr('dy', (d) => (d.id === 'Kanu Systems' ? 5 : 4))
-    .call((text) =>
-      text.each(function (d) {
-        const el = d3.select(this)
-        const words = d.id.split(' ')
-        el.text('')
-        words.forEach((word, i) => {
-          el.append('tspan')
-            .attr('x', 0)
-            .attr('dy', i === 0 ? 0 : 14)
-            .text(word)
-        })
-      }),
-    )
+    .attr('dy', 5)
+    .attr('fill', '#fff')
+    .attr('font-size', '10px')
+    .style('pointer-events', 'none')
 
-  const simulation = d3
-    .forceSimulation(nodes)
+  // Pulse effect for core
+  const pulse = () => {
+    svg
+      .select('.node-CORE')
+      .transition()
+      .duration(1000)
+      .attr('r', 45)
+      .attr('stroke-opacity', 0.3)
+      .transition()
+      .duration(1000)
+      .attr('r', 40)
+      .attr('stroke-opacity', 1)
+      .on('end', pulse)
+  }
+
+  d3.forceSimulation(nodes)
     .force(
       'link',
       d3
         .forceLink(links)
         .id((d) => d.id)
-        .distance(140)
-        .strength(0.95),
+        .distance(120),
     )
-    .force('charge', d3.forceManyBody().strength(-220))
+    .force('charge', d3.forceManyBody().strength(-300))
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force(
-      'collision',
-      d3.forceCollide().radius((d) => d.radius + 16),
-    )
     .on('tick', () => {
       link
         .attr('x1', (d) => d.source.x)
         .attr('y1', (d) => d.source.y)
         .attr('x2', (d) => d.target.x)
         .attr('y2', (d) => d.target.y)
-
       node.attr('transform', (d) => `translate(${d.x},${d.y})`)
     })
+    .restart()
 
-  svg
-    .append('circle')
-    .attr('cx', width / 2)
-    .attr('cy', height / 2)
-    .attr('r', 176)
-    .attr('fill', 'none')
-    .attr('stroke', 'rgba(255,255,255,0.06)')
-    .attr('stroke-width', 1)
-
-  svg
-    .append('circle')
-    .attr('cx', width / 2)
-    .attr('cy', height / 2)
-    .attr('r', 240)
-    .attr('fill', 'none')
-    .attr('stroke', 'rgba(255,255,255,0.04)')
-    .attr('stroke-width', 1)
+  pulse()
 })
 </script>
-
-<style scoped lang="scss">
-.page.about {
-  padding: 1.5rem 1rem;
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.brand-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: #fff;
-  text-decoration: none;
-}
-
-.brand-link:hover {
-  opacity: 0.8;
-}
-
-.desktop-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.desktop-nav a {
-  color: rgba(255, 255, 255, 0.78);
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-
-.desktop-nav a.router-link-active,
-.desktop-nav a:hover {
-  color: #33ac51;
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 2rem;
-  align-items: center;
-  margin-bottom: 1.75rem;
-}
-
-.hero-body {
-  max-width: 520px;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  font-size: 0.78rem;
-  color: #33ac51;
-  margin-bottom: 1rem;
-}
-
-.hero h1 {
-  font-size: clamp(2.5rem, 3.5vw, 4rem);
-  line-height: 1.03;
-  margin: 0;
-}
-
-.hero-sub {
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.8;
-}
-
-.hero-viz {
-  display: flex;
-  justify-content: center;
-}
-
-.viz-shell {
-  width: 100%;
-  max-width: 620px;
-  min-height: 420px;
-  border-radius: 28px;
-  background: rgba(10, 16, 24, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.32);
-  overflow: hidden;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-}
-
-.info-card {
-  padding: 1.5rem;
-  background: rgba(10, 16, 24, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 22px;
-}
-
-.info-card.accent {
-  border-color: rgba(51, 172, 81, 0.24);
-  background: rgba(19, 38, 62, 0.9);
-}
-
-.info-card h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
-}
-
-.details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.detail-block {
-  padding: 1.3rem;
-  background: rgba(11, 23, 44, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-}
-
-.detail-block h3 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-}
-
-.detail-block p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.82);
-  line-height: 1.8;
-}
-
-.footer {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.footer-col h4 {
-  margin-bottom: 0.75rem;
-}
-
-.footer-col p {
-  margin: 0.45rem 0;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-@media (max-width: 960px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .info-grid,
-  .details,
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .desktop-nav {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-}
-</style>

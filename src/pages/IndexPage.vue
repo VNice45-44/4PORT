@@ -1,122 +1,149 @@
 <template>
   <q-page class="page landing">
     <div class="topbar">
-      <div class="brand">
-        <div class="mark">
-          <svg width="28" height="28" viewBox="0 0 48 48">
-            <g fill="#33ac51">
-              <circle cx="20" cy="23" r="2" fill="#000" />
-              <circle cx="28" cy="23" r="2" fill="#000" />
-            </g>
-          </svg>
-        </div>
+      <router-link to="/" class="brand-link">
+        <svg width="28" height="28" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="20" fill="none" stroke="#33ac51" stroke-width="4" />
+          <circle cx="24" cy="24" r="6" fill="#33ac51" />
+        </svg>
         <span>Kanu Systems</span>
-      </div>
-
+      </router-link>
       <nav class="desktop-nav">
-        <router-link to="/">Home</router-link>
-        <router-link to="/about">About</router-link>
-        <router-link to="/map">Map</router-link>
+        <router-link to="/about">Method</router-link>
+        <router-link to="/map">Live Map</router-link>
       </nav>
     </div>
 
     <section class="hero">
-      <div class="hero-text">
-        <h1>Field-ready systems for built environments.</h1>
+      <div class="hero-content">
+        <div class="eyebrow">Nairobi // Software Intelligence</div>
+        <h1>Systems that stay nominal.</h1>
         <p class="tagline">
-          Construction, solar energy, security, and estate planning — delivered from Nairobi, Kenya.
-        </p>
-        <p class="sub">
-          We design and execute systems that continue to work when conditions change. The map is a
-          live demonstration of our attention to place, structure, and data.
+          High-performance web applications and technical consultancy built for operational
+          continuity.
         </p>
       </div>
     </section>
 
-    <section class="card">
-      <h2>What we deliver</h2>
-      <div class="service-grid">
-        <div class="service-card">
-          <h3>Construction</h3>
-          <p>Structural work designed and built with durability and field conditions in mind.</p>
-        </div>
-        <div class="service-card">
-          <h3>Solar & electrical systems</h3>
-          <p>Power installations that are compact, maintainable, and designed to keep operating.</p>
-        </div>
-        <div class="service-card">
-          <h3>CCTV & security</h3>
-          <p>Site visibility systems that integrate into the broader execution workflow.</p>
-        </div>
-        <div class="service-card">
-          <h3>Resort & ranch planning</h3>
-          <p>High-end property layouts and site planning tuned for operational flow.</p>
+    <section class="case-study">
+      <div class="case-study-inner">
+        <h2>System Integrity: A Case Study</h2>
+        <div class="case-study-grid">
+          <div class="case-study-text">
+            <h3>Visualizing Administrative Complexity</h3>
+            <p>
+              We took a raw, 15MB GeoJSON file containing Kenya's administrative data—messy,
+              unoptimized, and prone to rendering failure—and transformed it into a lightweight,
+              interactive operational tool.
+            </p>
+            <div class="engineering-challenge">
+              <div class="challenge-item">
+                <div class="challenge-label">Engineering Challenge</div>
+                <p>
+                  Optimize geographical data for web performance without losing detail. Scale
+                  complex geometries to maintain responsiveness.
+                </p>
+              </div>
+              <div class="challenge-item">
+                <div class="challenge-label">Our Solution</div>
+                <p>
+                  Custom metadata schema, TopoJSON compression, and D3.js-driven rendering. The
+                  result: submillisecond interactions on complex datasets.
+                </p>
+              </div>
+            </div>
+            <p class="case-conclusion">
+              We transform raw geographical data into lightweight, interactive operational tools.
+            </p>
+          </div>
+          <div class="case-study-visual">
+            <div class="visual-placeholder">
+              <svg width="100%" height="100%" viewBox="0 0 300 300">
+                <circle
+                  cx="150"
+                  cy="150"
+                  r="80"
+                  fill="none"
+                  stroke="rgba(51, 172, 81, 0.3)"
+                  stroke-width="2"
+                />
+                <circle
+                  cx="150"
+                  cy="150"
+                  r="60"
+                  fill="none"
+                  stroke="rgba(51, 172, 81, 0.5)"
+                  stroke-width="2"
+                />
+                <circle cx="150" cy="150" r="40" fill="none" stroke="#33ac51" stroke-width="2" />
+                <circle cx="150" cy="150" r="10" fill="#33ac51" />
+                <text
+                  x="150"
+                  y="260"
+                  text-anchor="middle"
+                  font-size="12"
+                  fill="rgba(255,255,255,0.5)"
+                >
+                  Data Layers
+                </text>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="card">
-      <h2>How we think</h2>
-      <p class="sub">
-        Systems are not separate pieces. The work is successful when the whole remains stable.
-      </p>
-
-      <div class="design-flow">
-        <div class="design-step">
-          <h3>Define</h3>
-          <p>Set the constraints, the site logic, and what needs to stay working.</p>
-        </div>
-
-        <div class="design-branch">
-          <div class="design-step">
-            <h3>Build</h3>
-            <p>Execute with the structure of the system as the guide.</p>
-          </div>
-          <div class="design-step">
-            <h3>Maintain</h3>
-            <p>Keep the system observable and ready to adapt.</p>
-          </div>
-        </div>
-
-        <div class="design-step final">
-          <h3>Deliver</h3>
-          <p>Work that remains predictable after handover.</p>
-        </div>
+    <div class="service-grid q-mt-xl">
+      <div class="kanu-card" v-for="s in services" :key="s.title">
+        <div class="text-h6 text-green q-mb-md">// 0{{ s.id }}</div>
+        <h3>{{ s.title }}</h3>
+        <p class="sub">{{ s.desc }}</p>
       </div>
-    </section>
-
-    <section class="card transparent-card">
-      <h2>Portfolio note</h2>
-      <p class="sub">
-        The map, the site logic, and the way systems are presented are part of how we show our work.
-        It is a display of method, not just finished assets.
-      </p>
-    </section>
+    </div>
 
     <footer class="footer">
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p class="sub">Field-ready systems and site work from Nairobi.</p>
-          <p class="sub">Samuel Kanu<br />VersityVille House<br />Nairobi 1928-00300</p>
+          <p>Delivering field-ready code from Nairobi.</p>
+          <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
-
         <div class="footer-col">
-          <h4>Quick links</h4>
-          <router-link to="/map">Map</router-link>
-          <router-link to="/about">About</router-link>
+          <h4>Explore</h4>
+          <router-link to="/about">Methodology</router-link>
+          <router-link to="/map" class="footer-map-link">System Map</router-link>
         </div>
-
         <div class="footer-col">
-          <h4>Contact</h4>
+          <h4>Channel</h4>
           <p>ops@kanusystems.com</p>
-          <p>+254 700 000 000</p>
         </div>
       </div>
-
-      <div class="footer-bottom">
-        <p class="subtle-sign">© 2026 Kanu Systems. All systems nominal.</p>
-      </div>
+      <div class="subtle-sign">© 2026 KANU_SYSTEMS. STATUS: ALL_SYSTEMS_NOMINAL</div>
     </footer>
   </q-page>
 </template>
+
+<script setup>
+const services = [
+  {
+    id: 1,
+    title: 'Web Architecture',
+    desc: 'Interfaces designed for complex data and high-load environments.',
+  },
+  {
+    id: 2,
+    title: 'App Development',
+    desc: 'Custom engines built with maintainability as the first priority.',
+  },
+  {
+    id: 3,
+    title: 'Data Viz',
+    desc: 'Transforming geographical and systemic data into actionable insights.',
+  },
+  {
+    id: 4,
+    title: 'Consultancy',
+    desc: 'Technical strategy to bridge the gap between business and code.',
+  },
+]
+</script>
