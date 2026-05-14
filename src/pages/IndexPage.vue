@@ -3,8 +3,8 @@
     <div class="topbar">
       <router-link to="/" class="brand-link">
         <svg width="28" height="28" viewBox="0 0 48 48">
-          <circle cx="24" cy="24" r="20" fill="none" stroke="#33ac51" stroke-width="4" />
-          <circle cx="24" cy="24" r="6" fill="#33ac51" />
+          <circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="4" />
+          <circle cx="24" cy="24" r="6" fill="var(--accent)" />
         </svg>
         <span>Kanu Systems</span>
       </router-link>
@@ -27,33 +27,34 @@
 
     <section class="case-study">
       <div class="case-study-inner">
-        <h2>System Integrity: A Case Study</h2>
+        <h2>System Integrity: Real Impact</h2>
         <div class="case-study-grid">
           <div class="case-study-text">
-            <h3>Visualizing Administrative Complexity</h3>
+            <h3>From Chaos to Operational Clarity</h3>
             <p>
-              We took a raw, 15MB GeoJSON file containing Kenya's administrative data—messy,
-              unoptimized, and prone to rendering failure—and transformed it into a lightweight,
-              interactive operational tool.
+              We've helped construction firms visualize project timelines and resource allocation,
+              solar companies manage installation networks across regions, ride-hailing operators
+              track fleet performance, and resort owners streamline bookings and maintenance. The
+              common thread: systems that were either broken or invisible.
             </p>
             <div class="engineering-challenge">
               <div class="challenge-item">
-                <div class="challenge-label">Engineering Challenge</div>
+                <div class="challenge-label">The Problem</div>
                 <p>
-                  Optimize geographical data for web performance without losing detail. Scale
-                  complex geometries to maintain responsiveness.
+                  Critical business data scattered across spreadsheets, databases, and paperwork. No
+                  visibility. No speed. No control.
                 </p>
               </div>
               <div class="challenge-item">
-                <div class="challenge-label">Solution</div>
+                <div class="challenge-label">What We Build</div>
                 <p>
-                  Custom metadata schema, TopoJSON compression, and D3.js-driven rendering. The
-                  result: submillisecond interactions on complex datasets.
+                  Lightweight, fast interfaces that let you see and manage your entire operation at
+                  a glance. Real-time updates, clear decision-making, operational confidence.
                 </p>
               </div>
             </div>
             <p class="case-conclusion">
-              We transform raw geographical data into lightweight, interactive operational tools.
+              We clean up, stabilize, and scale the systems that run your business.
             </p>
           </div>
           <div class="case-study-visual">
@@ -75,14 +76,21 @@
                   stroke="rgba(51, 172, 81, 0.5)"
                   stroke-width="2"
                 />
-                <circle cx="150" cy="150" r="40" fill="none" stroke="#33ac51" stroke-width="2" />
-                <circle cx="150" cy="150" r="10" fill="#33ac51" />
+                <circle
+                  cx="150"
+                  cy="150"
+                  r="40"
+                  fill="none"
+                  stroke="var(--accent)"
+                  stroke-width="2"
+                />
+                <circle cx="150" cy="150" r="10" fill="var(--accent)" />
                 <text
                   x="150"
                   y="260"
                   text-anchor="middle"
                   font-size="12"
-                  fill="rgba(255,255,255,0.5)"
+                  fill="var(--text-muted)"
                 >
                   Data Layers
                 </text>
@@ -127,6 +135,9 @@
 const toggleTheme = () => {
   const isSoft = document.body.classList.toggle('theme-soft')
   document.body.classList.toggle('theme-dark', !isSoft)
+  document.body.classList.toggle('body--dark', !isSoft)
+  document.body.classList.toggle('body--light', isSoft)
+  document.body.style.setProperty('--q-dark-page', isSoft ? '#faf8f6' : '#07110a')
 }
 
 const services = [

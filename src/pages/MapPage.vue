@@ -1,14 +1,21 @@
 <template>
   <q-page class="page map-page">
+    <div class="topbar">
+      <router-link to="/" class="brand-link"><span>Kanu Systems</span></router-link>
+      <nav class="desktop-nav">
+        <router-link to="/about">Method</router-link>
+        <router-link to="/map">Live Map</router-link>
+      </nav>
+      <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
+    </div>
+
     <div class="map-header">
-      <div>
+      <div class="map-title">
+        <div class="eyebrow">Geospatial Operations</div>
         <h1>Kenya County Map</h1>
         <p class="sub">Interactive county boundaries rendered from the HUMDATA GeoJSON dataset.</p>
       </div>
-      <div class="header-actions">
-        <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
-        <router-link class="back-link" to="/">← Return home</router-link>
-      </div>
+      <router-link class="back-link" to="/">Return home</router-link>
     </div>
 
     <div class="page-layout">
@@ -69,6 +76,9 @@ import geojsonUrl from 'src/stores/ken_admin2.geojson?url'
 const toggleTheme = () => {
   const isSoft = document.body.classList.toggle('theme-soft')
   document.body.classList.toggle('theme-dark', !isSoft)
+  document.body.classList.toggle('body--dark', !isSoft)
+  document.body.classList.toggle('body--light', isSoft)
+  document.body.style.setProperty('--q-dark-page', isSoft ? '#faf8f6' : '#07110a')
 }
 
 // Full rich county metadata.

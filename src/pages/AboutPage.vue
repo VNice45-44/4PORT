@@ -19,7 +19,7 @@
         </p>
       </div>
       <div class="viz-container">
-        <div id="aboutViz" class="kanu-card"></div>
+        <div id="aboutViz" class="kanu-card d3-panel"></div>
       </div>
     </div>
 
@@ -50,6 +50,41 @@
             Integrating real-time feedback loops so the system remains operational. Visibility into
             system state is non-negotiable.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="systems-section">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Custom Systems Lab</div>
+          <h2>How we make complex operations legible</h2>
+        </div>
+        <p class="section-intro">
+          We design the logic, data movement, and feedback loops as one product surface.
+        </p>
+      </div>
+      <div class="systems-grid">
+        <div class="viz-card wide">
+          <div class="viz-copy">
+            <span>Delivery Flow</span>
+            <h3>From field signal to decision</h3>
+          </div>
+          <div id="deliveryFlowViz" class="mini-viz"></div>
+        </div>
+        <div class="viz-card">
+          <div class="viz-copy">
+            <span>Engineering Bias</span>
+            <h3>Balanced for resilience</h3>
+          </div>
+          <div id="capabilityRadarViz" class="mini-viz"></div>
+        </div>
+        <div class="viz-card">
+          <div class="viz-copy">
+            <span>Runtime Health</span>
+            <h3>Observe, adapt, recover</h3>
+          </div>
+          <div id="opsPulseViz" class="mini-viz"></div>
         </div>
       </div>
     </section>
@@ -125,34 +160,89 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import * as d3 from 'd3'
 
-const toggleTheme = () => {
-  const isSoft = document.body.classList.toggle('theme-soft')
-  document.body.classList.toggle('theme-dark', !isSoft)
+const timers = []
+
+const themeColor = (name, fallback) =>
+  getComputedStyle(document.body).getPropertyValue(name).trim() || fallback
+
+const alphaColor = (color, opacity) => {
+  const parsed = d3.color(color)
+  if (!parsed) return color
+  parsed.opacity = opacity
+  return parsed.formatRgb()
 }
 
-onMounted(() => {
-  const width = 540,
-    height = 420
-  const data = {
-    name: 'CORE',
-    children: [
-      { name: 'Data', children: [{ name: 'Reports' }, { name: 'Signals' }] },
-      { name: 'Logic', children: [{ name: 'Flows' }, { name: 'Rules' }] },
-      { name: 'UI', children: [{ name: 'Field' }, { name: 'Control' }] },
-      { name: 'Ops', children: [{ name: 'Monitor' }, { name: 'Sync' }] },
-    ],
-  }
+const setupSvg = (selector, width, height) => {
+  d3.select(selector).selectAll('*').remove()
 
-  const svg = d3
-    .select('#aboutViz')
+  return d3
+    .select(selector)
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('width', '100%')
     .attr('height', '100%')
-    .style('overflow', 'visible')
+    .attr('role', 'img')
+}
+
+const drawArchitectureTree = () => {
+  const width = 900
+  const height = 560
+  const accent = themeColor('--accent', '#33ac51')
+  const accentSoft = themeColor('--accent-soft', '#68e0ff')
+  const text = themeColor('--text', '#eef2f4')
+  const muted = themeColor('--text-muted', 'rgba(238, 242, 244, 0.72)')
+
+  const data = {
+    name: 'SYSTEM',
+    children: [
+      {
+        name: 'Data Layer',
+        children: [
+          {
+            name: 'Collection',
+            children: [{ name: 'Sensors' }, { name: 'Input' }, { name: 'API' }],
+          },
+          { name: 'Storage', children: [{ name: 'Cache' }, { name: 'Persist' }] },
+          { name: 'Access', children: [{ name: 'Query' }, { name: 'Index' }] },
+        ],
+      },
+      {
+        name: 'Logic Layer',
+        children: [
+          {
+            name: 'Processing',
+            children: [{ name: 'Transform' }, { name: 'Validate' }, { name: 'Compute' }],
+          },
+          { name: 'Rules', children: [{ name: 'Business' }, { name: 'State' }] },
+          { name: 'Workflow', children: [{ name: 'Sequence' }, { name: 'Branch' }] },
+        ],
+      },
+      {
+        name: 'Visibility',
+        children: [
+          {
+            name: 'Interface',
+            children: [{ name: 'Display' }, { name: 'Interact' }, { name: 'Feedback' }],
+          },
+          { name: 'Analytics', children: [{ name: 'Metrics' }, { name: 'Trace' }] },
+          { name: 'Control', children: [{ name: 'Admin' }, { name: 'Config' }] },
+        ],
+      },
+      {
+        name: 'Operations',
+        children: [
+          { name: 'Monitoring', children: [{ name: 'Health' }, { name: 'Performance' }] },
+          { name: 'Sync', children: [{ name: 'Reconcile' }, { name: 'Replicate' }] },
+          { name: 'Recovery', children: [{ name: 'Backup' }, { name: 'Restore' }] },
+        ],
+      },
+    ],
+  }
+
+  const svg = setupSvg('#aboutViz', width, height).style('overflow', 'visible')
 
   const defs = svg.append('defs')
   const gradient = defs
@@ -166,13 +256,13 @@ onMounted(() => {
   gradient
     .append('stop')
     .attr('offset', '0%')
-    .attr('stop-color', '#33ac51')
+    .attr('stop-color', accent)
     .attr('stop-opacity', 0.28)
 
   gradient
     .append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', '#68e0ff')
+    .attr('stop-color', accentSoft)
     .attr('stop-opacity', 0.75)
 
   defs
@@ -182,16 +272,16 @@ onMounted(() => {
     .attr('dx', 0)
     .attr('dy', 0)
     .attr('stdDeviation', 4)
-    .attr('flood-color', '#33ac51')
+    .attr('flood-color', accent)
     .attr('flood-opacity', 0.25)
 
   const root = d3.hierarchy(data)
   d3
     .tree()
-    .size([height - 100, width - 160])
-    .separation((a, b) => (a.parent === b.parent ? 1.4 : 2))(root)
+    .size([height - 120, width - 200])
+    .separation((a, b) => (a.parent === b.parent ? 1.2 : 2.2))(root)
 
-  const g = svg.append('g').attr('transform', 'translate(80,50)')
+  const g = svg.append('g').attr('transform', 'translate(100,60)')
 
   g.selectAll('path')
     .data(root.links())
@@ -232,20 +322,44 @@ onMounted(() => {
 
   node
     .append('circle')
-    .attr('r', (d) => (d.depth === 0 ? 28 : 16))
-    .attr('fill', (d) => (d.depth === 0 ? 'rgba(51,172,81,0.16)' : 'rgba(255,255,255,0.16)'))
-    .attr('stroke', (d) => (d.depth === 0 ? '#68e0ff' : '#33ac51'))
-    .attr('stroke-width', (d) => (d.depth === 0 ? 3.2 : 1.5))
+    .attr('r', (d) => {
+      if (d.depth === 0) return 24
+      if (d.depth === 1) return 18
+      return 12
+    })
+    .attr('fill', (d) => {
+      if (d.depth === 0) return alphaColor(accent, 0.16)
+      if (d.depth === 1) return alphaColor(accentSoft, 0.12)
+      return 'rgba(255,255,255,0.08)'
+    })
+    .attr('stroke', (d) => {
+      if (d.depth === 0) return accentSoft
+      if (d.depth === 1) return accent
+      return muted
+    })
+    .attr('stroke-width', (d) => {
+      if (d.depth === 0) return 3.2
+      if (d.depth === 1) return 2
+      return 1
+    })
     .attr('filter', 'url(#nodeGlow)')
 
   node
     .append('text')
     .text((d) => d.data.name)
-    .attr('dy', 5)
-    .attr('x', (d) => (d.depth === 0 ? 0 : 22))
+    .attr('dy', 4)
+    .attr('x', (d) => {
+      if (d.depth === 0) return 0
+      if (d.depth === 1) return 24
+      return 16
+    })
     .attr('text-anchor', (d) => (d.depth === 0 ? 'middle' : 'start'))
-    .attr('fill', '#fff')
-    .attr('font-size', (d) => (d.depth === 0 ? '0.95rem' : '0.8rem'))
+    .attr('fill', text)
+    .attr('font-size', (d) => {
+      if (d.depth === 0) return '0.95rem'
+      if (d.depth === 1) return '0.75rem'
+      return '0.65rem'
+    })
     .style('pointer-events', 'none')
 
   const pulse = () => {
@@ -263,5 +377,352 @@ onMounted(() => {
   }
 
   pulse()
-})
+}
+
+const drawDeliveryFlow = () => {
+  const width = 860
+  const height = 300
+  const accent = themeColor('--accent', '#33ac51')
+  const accentSoft = themeColor('--accent-soft', '#68e0ff')
+  const text = themeColor('--text', '#eef2f4')
+  const muted = themeColor('--text-muted', 'rgba(238, 242, 244, 0.72)')
+  const svg = setupSvg('#deliveryFlowViz', width, height)
+
+  const lanes = [
+    { label: 'Field Inputs', x: 80, y: 74 },
+    { label: 'Validation', x: 260, y: 168 },
+    { label: 'Workflow Engine', x: 450, y: 86 },
+    { label: 'Decision UI', x: 630, y: 170 },
+    { label: 'Ops Feedback', x: 780, y: 92 },
+  ]
+
+  const line = d3
+    .line()
+    .curve(d3.curveCatmullRom.alpha(0.7))
+    .x((d) => d.x)
+    .y((d) => d.y)
+
+  const path = svg
+    .append('path')
+    .datum(lanes)
+    .attr('d', line)
+    .attr('fill', 'none')
+    .attr('stroke', accentSoft)
+    .attr('stroke-width', 2.5)
+    .attr('stroke-opacity', 0.5)
+    .attr('stroke-dasharray', function () {
+      const len = this.getTotalLength()
+      return `${len} ${len}`
+    })
+    .attr('stroke-dashoffset', function () {
+      return this.getTotalLength()
+    })
+
+  path.transition().duration(1400).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0)
+
+  const nodes = svg.selectAll('g.flow-node').data(lanes).join('g').attr('class', 'flow-node')
+
+  nodes
+    .attr('transform', (d) => `translate(${d.x},${d.y})`)
+    .style('opacity', 0)
+    .transition()
+    .delay((_, i) => i * 160)
+    .duration(500)
+    .style('opacity', 1)
+
+  nodes
+    .append('circle')
+    .attr('r', 26)
+    .attr('fill', 'var(--card-bg)')
+    .attr('stroke', (_, i) => (i % 2 ? accentSoft : accent))
+    .attr('stroke-width', 2)
+
+  nodes.append('circle').attr('r', 7).attr('fill', (_, i) => (i % 2 ? accentSoft : accent))
+
+  nodes
+    .append('text')
+    .attr('y', 48)
+    .attr('text-anchor', 'middle')
+    .attr('fill', text)
+    .attr('font-size', 13)
+    .attr('font-weight', 600)
+    .text((d) => d.label)
+
+  nodes
+    .append('text')
+    .attr('y', 66)
+    .attr('text-anchor', 'middle')
+    .attr('fill', muted)
+    .attr('font-size', 11)
+    .text((_, i) => `0${i + 1}`)
+
+  const particleLayer = svg.append('g')
+  const emitParticle = (delay = 0) => {
+    const marker = particleLayer
+      .append('circle')
+      .attr('r', 5)
+      .attr('fill', accent)
+      .attr('filter', 'drop-shadow(0 0 8px currentColor)')
+
+    marker
+      .transition()
+      .delay(delay)
+      .duration(3200)
+      .ease(d3.easeLinear)
+      .attrTween('transform', () => {
+        const pathNode = path.node()
+        const length = pathNode.getTotalLength()
+        return (t) => {
+          const point = pathNode.getPointAtLength(t * length)
+          return `translate(${point.x},${point.y})`
+        }
+      })
+      .style('opacity', 0)
+      .on('end', () => {
+        marker.remove()
+        emitParticle(450)
+      })
+  }
+
+  emitParticle()
+  emitParticle(1100)
+}
+
+const drawCapabilityRadar = () => {
+  const width = 420
+  const height = 320
+  const center = [width / 2, height / 2 + 8]
+  const radius = 104
+  const accent = themeColor('--accent', '#33ac51')
+  const accentSoft = themeColor('--accent-soft', '#68e0ff')
+  const text = themeColor('--text', '#eef2f4')
+  const muted = themeColor('--text-muted', 'rgba(238, 242, 244, 0.72)')
+  const svg = setupSvg('#capabilityRadarViz', width, height)
+  const metrics = [
+    { label: 'UX', value: 0.86 },
+    { label: 'Data', value: 0.92 },
+    { label: 'Speed', value: 0.78 },
+    { label: 'Resilience', value: 0.9 },
+    { label: 'Ops', value: 0.84 },
+    { label: 'Scale', value: 0.76 },
+  ]
+
+  const angle = (i) => -Math.PI / 2 + (Math.PI * 2 * i) / metrics.length
+  const point = (value, i) => [
+    center[0] + Math.cos(angle(i)) * radius * value,
+    center[1] + Math.sin(angle(i)) * radius * value,
+  ]
+  const radarLine = d3.line().curve(d3.curveLinearClosed)
+
+  d3.range(1, 5).forEach((ring) => {
+    svg
+      .append('path')
+      .attr(
+        'd',
+        radarLine(metrics.map((_, i) => point(ring / 4, i))),
+      )
+      .attr('fill', 'none')
+      .attr('stroke', muted)
+      .attr('stroke-opacity', 0.16)
+  })
+
+  svg
+    .selectAll('line.axis')
+    .data(metrics)
+    .join('line')
+    .attr('x1', center[0])
+    .attr('y1', center[1])
+    .attr('x2', (_, i) => point(1, i)[0])
+    .attr('y2', (_, i) => point(1, i)[1])
+    .attr('stroke', muted)
+    .attr('stroke-opacity', 0.18)
+
+  svg
+    .selectAll('text.metric-label')
+    .data(metrics)
+    .join('text')
+    .attr('x', (_, i) => point(1.22, i)[0])
+    .attr('y', (_, i) => point(1.22, i)[1])
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', text)
+    .attr('font-size', 12)
+    .attr('font-weight', 700)
+    .text((d) => d.label)
+
+  const shape = svg
+    .append('path')
+    .attr('d', radarLine(metrics.map((_, i) => point(0.08, i))))
+    .attr('fill', accent)
+    .attr('fill-opacity', 0.16)
+    .attr('stroke', accentSoft)
+    .attr('stroke-width', 2.5)
+
+  shape
+    .transition()
+    .duration(1100)
+    .ease(d3.easeCubicOut)
+    .attr('d', radarLine(metrics.map((d, i) => point(d.value, i))))
+
+  svg
+    .selectAll('circle.score')
+    .data(metrics)
+    .join('circle')
+    .attr('cx', center[0])
+    .attr('cy', center[1])
+    .attr('r', 4.5)
+    .attr('fill', accent)
+    .transition()
+    .duration(1100)
+    .attr('cx', (d, i) => point(d.value, i)[0])
+    .attr('cy', (d, i) => point(d.value, i)[1])
+}
+
+const drawOpsPulse = () => {
+  const width = 420
+  const height = 320
+  const center = [width / 2, height / 2]
+  const accent = themeColor('--accent', '#33ac51')
+  const accentSoft = themeColor('--accent-soft', '#68e0ff')
+  const text = themeColor('--text', '#eef2f4')
+  const muted = themeColor('--text-muted', 'rgba(238, 242, 244, 0.72)')
+  const svg = setupSvg('#opsPulseViz', width, height)
+  const ring = svg.append('g').attr('transform', `translate(${center[0]},${center[1]})`)
+  const services = [
+    { label: 'API', a: -90, r: 96 },
+    { label: 'Sync', a: -18, r: 112 },
+    { label: 'Queue', a: 54, r: 92 },
+    { label: 'DB', a: 126, r: 108 },
+    { label: 'UI', a: 198, r: 94 },
+  ]
+
+  ring
+    .append('circle')
+    .attr('r', 78)
+    .attr('fill', alphaColor(accent, 0.08))
+    .attr('stroke', alphaColor(accent, 0.34))
+  ring
+    .append('circle')
+    .attr('r', 118)
+    .attr('fill', 'none')
+    .attr('stroke', alphaColor(accentSoft, 0.28))
+
+  const hub = ring
+    .append('g')
+    .attr('class', 'ops-hub')
+    .style('opacity', 0)
+    .attr('transform', 'scale(0.8)')
+
+  hub
+    .append('circle')
+    .attr('r', 36)
+    .attr('fill', 'var(--card-bg)')
+    .attr('stroke', accent)
+    .attr('stroke-width', 2)
+
+  hub
+    .append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', text)
+    .attr('font-size', 13)
+    .attr('font-weight', 800)
+    .text('LIVE')
+
+  hub.transition().duration(700).style('opacity', 1).attr('transform', 'scale(1)')
+
+  const service = ring.selectAll('g.service').data(services).join('g').attr('class', 'service')
+
+  service.attr('transform', (d) => {
+    const rad = (d.a * Math.PI) / 180
+    return `translate(${Math.cos(rad) * d.r},${Math.sin(rad) * d.r})`
+  })
+
+  service
+    .append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', (d) => {
+      const rad = (d.a * Math.PI) / 180
+      return -Math.cos(rad) * (d.r - 42)
+    })
+    .attr('y2', (d) => {
+      const rad = (d.a * Math.PI) / 180
+      return -Math.sin(rad) * (d.r - 42)
+    })
+    .attr('stroke', muted)
+    .attr('stroke-opacity', 0.18)
+
+  service
+    .append('circle')
+    .attr('r', 17)
+    .attr('fill', 'var(--card-bg)')
+    .attr('stroke', accentSoft)
+    .attr('stroke-width', 1.8)
+
+  service.append('circle').attr('r', 4).attr('fill', accent)
+
+  service
+    .append('text')
+    .attr('y', 34)
+    .attr('text-anchor', 'middle')
+    .attr('fill', text)
+    .attr('font-size', 12)
+    .attr('font-weight', 700)
+    .text((d) => d.label)
+
+  const sweep = ring
+    .append('line')
+    .attr('y1', 0)
+    .attr('y2', -118)
+    .attr('stroke', accent)
+    .attr('stroke-width', 2)
+  timers.push(
+    d3.timer((elapsed) => {
+      sweep.attr('transform', `rotate(${(elapsed / 26) % 360})`)
+    }),
+  )
+
+  const breathe = () => {
+    ring
+      .select('circle')
+      .transition()
+      .duration(1300)
+      .attr('r', 86)
+      .attr('fill-opacity', 0.6)
+      .transition()
+      .duration(1300)
+      .attr('r', 78)
+      .attr('fill-opacity', 1)
+      .on('end', breathe)
+  }
+
+  breathe()
+}
+
+const stopTimers = () => {
+  timers.forEach((timer) => timer.stop())
+  timers.splice(0, timers.length)
+}
+
+const renderVisuals = () => {
+  stopTimers()
+  drawArchitectureTree()
+  drawDeliveryFlow()
+  drawCapabilityRadar()
+  drawOpsPulse()
+}
+
+const toggleTheme = () => {
+  const isSoft = document.body.classList.toggle('theme-soft')
+  document.body.classList.toggle('theme-dark', !isSoft)
+  document.body.classList.toggle('body--dark', !isSoft)
+  document.body.classList.toggle('body--light', isSoft)
+  document.body.style.setProperty('--q-dark-page', isSoft ? '#faf8f6' : '#07110a')
+  renderVisuals()
+}
+
+onMounted(renderVisuals)
+
+onBeforeUnmount(stopTimers)
 </script>

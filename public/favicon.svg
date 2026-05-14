@@ -1,0 +1,32 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#33ac51;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#68e0ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer hexagon ring (system integrity) -->
+  <polygon points="24,8 35,14 35,26 24,32 13,26 13,14" 
+           fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+  
+  <!-- Middle hexagon -->
+  <polygon points="24,12 31,16 31,24 24,28 17,24 17,16" 
+           fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.7"/>
+  
+  <!-- Core hexagon (solid) -->
+  <polygon points="24,16 28,18.5 28,22.5 24,25 20,22.5 20,18.5" 
+           fill="#33ac51"/>
+  
+  <!-- Center node -->
+  <circle cx="24" cy="21" r="2" fill="#68e0ff"/>
+  
+  <!-- Top connectivity line -->
+  <line x1="24" y1="16" x2="24" y2="8" stroke="#68e0ff" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Right connectivity line -->
+  <line x1="28" y1="22.5" x2="35" y2="26" stroke="#33ac51" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Left connectivity line -->
+  <line x1="20" y1="22.5" x2="13" y2="26" stroke="#33ac51" stroke-width="1" opacity="0.5"/>
+</svg>
