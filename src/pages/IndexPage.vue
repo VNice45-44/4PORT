@@ -6,7 +6,7 @@
           <circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="4" />
           <circle cx="24" cy="24" r="6" fill="var(--accent)" />
         </svg>
-        <span>Kanu Systems</span>
+        <span>KS</span>
       </router-link>
       <nav class="desktop-nav">
         <router-link to="/about">Method</router-link>
@@ -18,7 +18,7 @@
     <section class="hero">
       <div class="hero-content">
         <div class="eyebrow">Kilifi // Software Intelligence</div>
-        <h1>Systems that stay nominal.</h1>
+        <h1>Systems that stay nominal</h1>
         <p class="tagline">
           High-performance web applications and technical consultancy built for continuity.
         </p>
@@ -85,13 +85,7 @@
                   stroke-width="2"
                 />
                 <circle cx="150" cy="150" r="10" fill="var(--accent)" />
-                <text
-                  x="150"
-                  y="260"
-                  text-anchor="middle"
-                  font-size="12"
-                  fill="var(--text-muted)"
-                >
+                <text x="150" y="260" text-anchor="middle" font-size="12" fill="var(--text-muted)">
                   Data Layers
                 </text>
               </svg>
@@ -113,7 +107,7 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p>Delivering field-ready code from Kilifi.</p>
+          <p>Delivering from Kilifi.</p>
           <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
         <div class="footer-col">

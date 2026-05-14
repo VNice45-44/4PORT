@@ -35,10 +35,10 @@ body {
 }
 
 body.theme-soft {
-  --bg: #faf8f6;
-  --q-dark-page: #faf8f6;
-  --surface: rgba(255, 255, 255, 0.92);
-  --surface-soft: rgba(242, 247, 244, 0.94);
+  --bg: #f0ffea;
+  --q-dark-page: #f0ffea;
+  --surface: rgba(241, 255, 238, 0.92);
+  --surface-soft: rgba(241, 255, 238, 0.94);
   --surface-strong: rgba(26, 122, 153, 0.06);
   --text: #2a2a28;
   --text-muted: rgba(42, 42, 40, 0.68);
@@ -46,7 +46,7 @@ body.theme-soft {
   --accent-soft: #1a7a99;
   --border: rgba(0, 0, 0, 0.08);
   --border-strong: rgba(64, 168, 107, 0.28);
-  --card-bg: rgba(255, 255, 255, 0.96);
+  --card-bg: rgba(241, 255, 238, 0.96);
 }
 
 body.theme-dark {
@@ -527,8 +527,7 @@ p {
   min-height: 420px;
   padding: 1rem;
   background:
-    radial-gradient(circle at 18% 20%, rgba(104, 224, 255, 0.12), transparent 28%),
-    var(--surface);
+    radial-gradient(circle at 18% 20%, rgba(104, 224, 255, 0.12), transparent 28%), var(--surface);
 }
 
 .systems-grid {

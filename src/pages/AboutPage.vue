@@ -1,7 +1,7 @@
 <template>
   <q-page class="page about">
     <div class="topbar">
-      <router-link to="/" class="brand-link"><span>Kanu Systems</span></router-link>
+      <router-link to="/" class="brand-link"><span>KS</span></router-link>
       <nav class="desktop-nav">
         <router-link to="/about">Method</router-link>
         <router-link to="/map">Live Map</router-link>
@@ -12,7 +12,7 @@
     <div class="hero grid-2">
       <div class="hero-body">
         <div class="eyebrow">Philosophy</div>
-        <h1>Code is a living environment.</h1>
+        <h1>Code is a living environment</h1>
         <p>
           We treat software like an ecosystem. When one part changes, the whole must adapt. Our work
           focuses on visibility. We ensure you can see how your data flows.
@@ -24,7 +24,7 @@
     </div>
 
     <section class="protocol-section">
-      <h2>The Kanu Protocol</h2>
+      <h2>The KS Protocol</h2>
       <p class="section-intro">Our methodology for building resilient systems.</p>
       <div class="protocol-grid">
         <div class="protocol-card">
@@ -98,8 +98,8 @@
             needs—these aren't edge cases, they're requirements.
           </p>
           <p>
-            At Kanu Systems, resilience is a core feature, not an afterthought. We build systems
-            that continue to work when conditions change.
+            At KS, resilience is a core feature, not an afterthought. We build systems that continue
+            to work when conditions change.
           </p>
           <ul class="edge-features">
             <li>Optimized for variable network conditions</li>
@@ -141,7 +141,7 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Kanu Systems</h4>
-          <p>Delivering high-performance code from Kilifi.</p>
+          <p>Delivering from Kilifi.</p>
           <p class="meta">Location: 1.2921° S, 36.8219° E</p>
         </div>
         <div class="footer-col">
@@ -253,11 +253,7 @@ const drawArchitectureTree = () => {
     .attr('x2', '100%')
     .attr('y2', '0%')
 
-  gradient
-    .append('stop')
-    .attr('offset', '0%')
-    .attr('stop-color', accent)
-    .attr('stop-opacity', 0.28)
+  gradient.append('stop').attr('offset', '0%').attr('stop-color', accent).attr('stop-opacity', 0.28)
 
   gradient
     .append('stop')
@@ -437,7 +433,10 @@ const drawDeliveryFlow = () => {
     .attr('stroke', (_, i) => (i % 2 ? accentSoft : accent))
     .attr('stroke-width', 2)
 
-  nodes.append('circle').attr('r', 7).attr('fill', (_, i) => (i % 2 ? accentSoft : accent))
+  nodes
+    .append('circle')
+    .attr('r', 7)
+    .attr('fill', (_, i) => (i % 2 ? accentSoft : accent))
 
   nodes
     .append('text')
@@ -517,10 +516,7 @@ const drawCapabilityRadar = () => {
   d3.range(1, 5).forEach((ring) => {
     svg
       .append('path')
-      .attr(
-        'd',
-        radarLine(metrics.map((_, i) => point(ring / 4, i))),
-      )
+      .attr('d', radarLine(metrics.map((_, i) => point(ring / 4, i))))
       .attr('fill', 'none')
       .attr('stroke', muted)
       .attr('stroke-opacity', 0.16)
