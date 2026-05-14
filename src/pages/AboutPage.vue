@@ -10,11 +10,11 @@
 
     <div class="hero grid-2">
       <div class="hero-body">
-        <div class="eyebrow">Our Philosophy</div>
+        <div class="eyebrow">Philosophy</div>
         <h1>Code is a living environment.</h1>
         <p>
-          We treat software as an ecosystem. When one part changes, the whole must adapt. Our work
-          focuses on visibility—ensuring you can see how your data flows before it fails.
+          We treat software like an ecosystem. When one part changes, the whole must adapt. Our work
+          focuses on visibility. We ensure you can see how your data flows.
         </p>
       </div>
       <div class="viz-container">
