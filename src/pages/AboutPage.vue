@@ -6,6 +6,7 @@
         <router-link to="/about">Method</router-link>
         <router-link to="/map">Live Map</router-link>
       </nav>
+      <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
     </div>
 
     <div class="hero grid-2">
@@ -56,7 +57,7 @@
     <section class="edge-section">
       <div class="edge-content">
         <div class="edge-text">
-          <h2>Designed for the Edge</h2>
+          <h2>Edge Case Design</h2>
           <p>
             Software fails when it hits the field. Low bandwidth, changing requirements, offline
             needs—these aren't edge cases, they're requirements.
@@ -126,6 +127,11 @@
 <script setup>
 import { onMounted } from 'vue'
 import * as d3 from 'd3'
+
+const toggleTheme = () => {
+  const isSoft = document.body.classList.toggle('theme-soft')
+  document.body.classList.toggle('theme-dark', !isSoft)
+}
 
 onMounted(() => {
   const width = 540,

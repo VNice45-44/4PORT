@@ -6,6 +6,6 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  document.body.classList.add('desktop', 'no-touch', 'body--dark')
+  document.body.classList.add('desktop', 'no-touch', 'body--dark', 'theme-dark')
 })
 </script>

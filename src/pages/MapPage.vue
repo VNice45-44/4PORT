@@ -5,7 +5,10 @@
         <h1>Kenya County Map</h1>
         <p class="sub">Interactive county boundaries rendered from the HUMDATA GeoJSON dataset.</p>
       </div>
-      <router-link class="back-link" to="/">← Return home</router-link>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
+        <router-link class="back-link" to="/">← Return home</router-link>
+      </div>
     </div>
 
     <div class="page-layout">
@@ -62,6 +65,11 @@
 import * as d3 from 'd3'
 import { onMounted, ref } from 'vue'
 import geojsonUrl from 'src/stores/ken_admin2.geojson?url'
+
+const toggleTheme = () => {
+  const isSoft = document.body.classList.toggle('theme-soft')
+  document.body.classList.toggle('theme-dark', !isSoft)
+}
 
 // Full rich county metadata.
 // The map will use this to attach capital, code, and sub-county details.

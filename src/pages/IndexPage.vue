@@ -12,6 +12,7 @@
         <router-link to="/about">Method</router-link>
         <router-link to="/map">Live Map</router-link>
       </nav>
+      <button type="button" class="theme-toggle" @click="toggleTheme">Theme</button>
     </div>
 
     <section class="hero">
@@ -123,6 +124,11 @@
 </template>
 
 <script setup>
+const toggleTheme = () => {
+  const isSoft = document.body.classList.toggle('theme-soft')
+  document.body.classList.toggle('theme-dark', !isSoft)
+}
+
 const services = [
   {
     id: 1,
