@@ -112,7 +112,6 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <router-link to="/about">Methodology</router-link>
-          <router-link to="/map" class="footer-map-link">System Map</router-link>
         </div>
         <div class="footer-col">
           <h4>Channel</h4>
