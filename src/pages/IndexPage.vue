@@ -28,10 +28,10 @@
           <div class="case-study-text">
             <h3>From Chaos to Operational Clarity</h3>
             <p>
-              We've helped construction firms visualize project timelines and resource allocation,
-              solar companies manage installation networks across regions, ride-hailing operators
-              track fleet performance, and resort owners streamline bookings and maintenance. The
-              common thread: systems that were either broken or invisible.
+              We've helped firms visualize project timelines and resource allocation, manage
+              installation networks across regions, run ride-hailing platforms to track fleet
+              performance, and several more. The common thread: systems that were either broken or
+              invisible.
             </p>
             <div class="engineering-challenge">
               <button
